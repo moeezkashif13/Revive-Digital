@@ -18,6 +18,11 @@ module.exports = {
         'secondary' : '#262729'
       },
 
+      padding:{
+        'common' : '112px'
+      },
+
+
       backgroundColor:{
         'primary' : '#EC0044',
         'secondary' : '#262729'

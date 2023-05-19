@@ -93,3 +93,62 @@ Read More
 
 
   }
+
+
+
+
+  export const DetailsSection = ({reverse,noFindOut})=>{
+    return <div className={`flex  ${reverse&&'flex-row-reverse'} `}>
+
+
+    <div className="w-1/2 px-20 py-16">
+
+
+        <CommonHeading special="what"  main="we do" />
+
+
+<div className="space-y-5 text-[#777777]">
+
+
+<p>Revive are a full service digital marketing agency. We flourish when we look after your entire digital presence – from the rankings in Google, to the social media, the brand, the messages, and the website.</p>
+
+<p>We came from website design, and that is still the primary vehicle we use to help promote your business online. But now we look at the big picture. How your logo and colours work along with your business stationery and livery. Your ranking in the search engines. Your paid marketing. Your social media. Conversion rates of visitors to enquiries and sales. Is your website actually working?</p>
+
+
+<p>The services we offer are varied, but all tie together to form a digital arsenal, allowing you to grow your business and expand your brand online.</p>
+
+{!noFindOut&&<div>
+
+<Link className="border border-primary text-primary underline px-6 py-1.5 rounded-2xl" href="/">Find out more</Link>
+
+
+
+</div>
+
+}
+
+
+
+</div>
+
+
+
+
+
+
+
+    </div>
+
+    <div className="w-1/2">
+
+<img  className="w-full max-w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/06/what-we-do.jpg" alt="" />
+
+
+    </div>
+
+
+
+
+
+</div>
+  }

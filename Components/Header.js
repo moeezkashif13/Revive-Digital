@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 
-export default function HeaderComp(){
+export default function HeaderComp({special="our", main="work"}){
     return (
         <div className="h-[280px]  relative ">
       
@@ -35,12 +35,12 @@ export default function HeaderComp(){
   <p>
 <span className='relative'>
         
-Our
+{special}
 
 <span className='absolute left-0 -bottom-1 bg-white w-full h-1'></span>
     
     
-    </span>  Work
+    </span>  {main}
   
     </p>
   
