@@ -1,6 +1,7 @@
+import Link from "next/link";
 import Navbar from "./Navbar";
 
-export default function HeaderComp({special="our", main="work"}){
+export default function HeaderComp({special="our", main="work",anotherAppearance}){
     return (
         <div className="h-[280px]  relative ">
       
@@ -27,7 +28,36 @@ export default function HeaderComp({special="our", main="work"}){
 
   {/* NAVBARR ENDDD */}
 
+{anotherAppearance
 
+
+?
+
+
+<div className=" h-full  z-20    absolute -bottom-3  w-full flex flex-col justify-center items-center gap-y-4" > 
+
+
+<p className="text-5xl font-medium">Google Partner Agency</p>
+
+<p className="font-semibold text-xl">Measurable ROI with our PPC Agency</p>
+
+
+<div className="flex gap-x-6 font-semibold text-white text-lg">
+
+  <Link style={{transition:'all 0.3s'}} href="#!" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">View Portfolio</Link>
+
+
+  <Link style={{transition:'all 0.3s'}} href="#!" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">Get a Quote</Link>
+
+</div>
+
+
+
+</div>
+
+
+
+:
   
   
   <div className=" h-1/2  z-20 bottom-4 text-4xl font-extrabold  absolute  left-28   w-[65%] flex flex-col justify-center" > 
@@ -46,9 +76,10 @@ export default function HeaderComp({special="our", main="work"}){
   
   </div>
   
-  
+}
   
   </div>
+  
   
   
   
