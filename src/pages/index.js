@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import MasonryComp from "../../Components/Masonry";
+import { CommonHeading } from "../../Components/Small";
 
 
 

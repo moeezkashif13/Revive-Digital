@@ -97,11 +97,11 @@ Read More
 
 
 
-  export const DetailsSection = ({reverse,noFindOut})=>{
-    return <div className={`flex  ${reverse&&'flex-row-reverse'} `}>
+  export const DetailsSection = ({reverse,noFindOut,secondType})=>{
+    return <div className={`flex ${secondType&&'gap-x-3.5'}  ${reverse&&'flex-row-reverse'} `}>
 
 
-    <div className="w-1/2 px-20 py-16">
+    <div className={`w-1/2 px-20 py-16  ${secondType&&'bg-[#FAFAFA]'} `}>
 
 
         <CommonHeading special="what"  main="we do" />

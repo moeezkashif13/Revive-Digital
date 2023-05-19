@@ -117,7 +117,8 @@ Send
 <div className="w-1/2 bg-purple-500">
 
 
-asdasd
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.684340008343!2d67.03697217461504!3d24.87462844469191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e5e736977c1%3A0x70ed36c8a6891d3a!2sMazar-e-Quaid!5e0!3m2!1sen!2s!4v1684529304405!5m2!1sen!2s"  style={{border:'none',width:'100%',height:'100%'}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
 
 
 </div>

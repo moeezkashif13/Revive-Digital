@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import {FaPhoneAlt} from 'react-icons/fa'
@@ -9,19 +10,65 @@ export default function Navbar(){
 
     const [navMenu,setNavMenu] = useState([]);
 
+    const [checkArr,setCheckArr] = useState([]);
+
+
     useEffect(()=>{
   
   axios.get('http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
   
+  // console.log(resp.data.items);
   
     setNavMenu(resp.data.items)
   
   })
+
+
+  const fetchInnerWhatWeDoTax = ()=>{
+
+    axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/custom_category?order=desc').then(resp=>{
+      // console.log(resp.data);
+
+      const gotARR = resp.data.map(eachTax=>{
+
+        return  axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/inner-what-we-do?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
+
+
+          return {
+            [eachTax.name] :gotIt.data,
+            slug: eachTax.slug
+          }
+        })
+
+      });
+
+       Promise.all(gotARR).then(check=>{
+      
+        setCheckArr(check)
+
+      })
+      
+
+      // console.log(gotARR);
+
+
+
+    })
+
+
+  }
+
+
+  fetchInnerWhatWeDoTax()
+
+
+
+
   
   
     },[])
-  
 
+    
 return (
 
     <div className=" px-4 pt-4 flex items-center justify-between">
@@ -36,29 +83,42 @@ return (
 <div className="flex gap-x-5 z-40">
 
 {navMenu.map(elem=>{
-  console.log(elem);
-  return <div className="relative">
+
+console.log(elem);
+
+  return <div className="relative ">
 
 
-<div className="text-lg font-medium ">{elem.title}</div>
+<Link href={`/${elem.object_slug}`} className="text-lg font-medium ">{elem.title}</Link>
 
 {elem.title=='What we do'&&
 
-  <div className=" hidden   absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+  <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
 
 <div className="flex  justify-between">
 
-  {elem?.children?.map(eachChild=>{
-    return <div className="flex flex-col gap-y-2.5">
+  {checkArr.map(eachChild=>{
 
-<p className="mb-2 text-lg text-primary font-semibold">{eachChild.title}</p>
 
-{[1,2,3,4,5].map(()=>{
-  return <p className="text-secondary font-medium text-[15px]">Google advertising</p>
+const checkavien = Object.keys(eachChild)
+
+
+
+    return <Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-2.5">
+
+<p className="mb-2 text-lg text-primary font-semibold">
+  
+{checkavien[0]}
+
+
+</p>
+
+{eachChild[checkavien[0]]?.map((main)=>{
+  return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
 })}
 
 
-    </div>
+    </Link>
   })}
 </div>
 
