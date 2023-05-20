@@ -1,21 +1,37 @@
 import axios from "axios";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 
+
+
+
+
 export default function Article(){
+
+
+  const [blogCategories,setBlogCategories] = useState([])
 
 
     useEffect(()=>{
 
-        axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=5aea4aa14be64107b9738a71075107b2').then(resp=>{
-            console.log(resp.data);
-        }).catch(err=>{
-            console.log(err);
-        })
+const fetchBlogCategories = async ()=>{
+
+  axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog-category?per_page=50').then(resp=>{
+    console.log(resp.data);
+    setBlogCategories(resp.data)
+  }).catch(err=>{
+    console.log(err);
+  })
+
+}
+
+fetchBlogCategories()
+
+
 
 
 
@@ -116,16 +132,10 @@ return <>
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
 
-{[1,2,3,4,5,6,7].map(()=>{
-    return <>
+{blogCategories.map((eachCategory)=>{
+    return <Link  href={`/blog/category/${eachCategory.slug}`}><span className="underline">{eachCategory.name}</span> ({eachCategory.count}) </Link>
 
-<Link  href="/"><span className="underline">Advertising</span> (2) </Link>
-
-<Link  href="/"><span className="underline">Branding</span> (2) </Link>
-
-
-</>
-
+    
 
 })}
 
