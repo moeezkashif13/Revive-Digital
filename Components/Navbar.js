@@ -4,6 +4,77 @@ import { useEffect, useState } from "react";
 
 import {FaPhoneAlt} from 'react-icons/fa'
 
+const WhoWeAreLink = ({elem})=>{
+  return   <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+
+  <div className="flex  justify-between">
+  
+  
+   <Link href={`/what-we-do/`} className="flex flex-col gap-y-2.5">
+  
+  
+  {elem?.children?.map((main)=>{
+    return <Link href={`/${main.object_slug}`} className="text-secondary font-medium text-[15px]">{main.title}</Link>
+  })}
+  
+  
+      </Link>
+    
+  </div>
+  
+  
+  
+  
+  
+    </div>
+}
+
+
+const WhatWeDoLink = ({checkArr,})=>{
+  
+  
+  return   <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+
+  <div className="flex  justify-between">
+  
+    {checkArr.map(eachChild=>{
+  
+  
+  const checkavien = Object.keys(eachChild)
+  
+  
+  
+      return <Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-2.5">
+  
+  <p className="mb-2 text-lg text-primary font-semibold">
+    
+  {checkavien[0]}
+  
+  
+  </p>
+  
+  {eachChild[checkavien[0]]?.map((main)=>{
+    return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
+  })}
+  
+  
+      </Link>
+    })}
+  </div>
+  
+  
+  
+  
+  
+    </div> 
+
+
+  
+}
+
+
+
+
 
 export default function Navbar(){
 
@@ -84,49 +155,25 @@ return (
 
 {navMenu.map(elem=>{
 
-console.log(elem);
-
   return <div className="relative ">
+
 
 
 <Link href={`/${elem.object_slug}`} className="text-lg font-medium ">{elem.title}</Link>
 
+
+{elem.title=='Who we are'&&
+
+<WhoWeAreLink  elem={elem} />
+
+
+}
+
+
+
 {elem.title=='What we do'&&
 
-  <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
-
-<div className="flex  justify-between">
-
-  {checkArr.map(eachChild=>{
-
-
-const checkavien = Object.keys(eachChild)
-
-
-
-    return <Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-2.5">
-
-<p className="mb-2 text-lg text-primary font-semibold">
-  
-{checkavien[0]}
-
-
-</p>
-
-{eachChild[checkavien[0]]?.map((main)=>{
-  return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
-})}
-
-
-    </Link>
-  })}
-</div>
-
-
-
-
-
-  </div>
+  <WhatWeDoLink  checkArr={checkArr} />
 
 
 }
