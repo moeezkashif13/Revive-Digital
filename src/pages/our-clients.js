@@ -11,7 +11,7 @@ export default function OurClients(){
         <div>
 
 
-<Header/>
+<Header  text="our clients"  />
 
 
 <BreadCrumbs/>

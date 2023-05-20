@@ -59,4 +59,23 @@
     height: 550px;
   }
   
-  
+
+
+
+  .eachBlogCardHeading{   
+    
+    overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+          line-clamp: 3; 
+  -webkit-box-orient: vertical;
+}
+
+.eachBlogCardExcerpt{   
+    
+  overflow: hidden;
+display: -webkit-box;
+-webkit-line-clamp: 6; /* number of lines to show */
+        line-clamp: 6; 
+-webkit-box-orient: vertical;
+}

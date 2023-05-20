@@ -2,39 +2,22 @@ import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Footer from "../../../../Components/Footer";
-import HeaderComp from "../../../../Components/Header";
-import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
+import Footer from "../../../Components/Footer";
+import HeaderComp from "../../../Components/Header";
+import { BreadCrumbs, CommonHeading } from "../../../Components/Small";
 
 
 
 
-export default function Article({gotArticle}){
+export default function TempFromCMS(){
 
 
     const [blogCategories,setBlogCategories] = useState([])
-
-    const [recentPosts,setRecentPosts] = useState([])
 
     const [article,setArticle] = useState({});
 
 
     useEffect(()=>{
-
-      const fetchRecentPosts = async ()=>{
-
-        axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?per_page=10').then(resp=>{
-          
-          setRecentPosts(resp.data)
-        }).catch(err=>{
-          console.log(err);
-        })
-      
-      }
-
-      fetchRecentPosts();
-
-
 
 const fetchBlogCategories = async ()=>{
 
@@ -50,14 +33,29 @@ const fetchBlogCategories = async ()=>{
 fetchBlogCategories()
 
 
+
+const fetchArticle = ()=>{
+
+    axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog/181').then(resp=>{
+        console.log(resp.data);
+        setArticle(resp.data)
+    })
+
+
+}
+
+
+fetchArticle();
+
+
     },[])
 
 
 useEffect(()=>{
 
     document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach((check,index)=>{
+        // console.log(check);
 
-      
         check.classList.add(`heading${String(check.nodeName).toLowerCase()}`)
 
         check.style.color = '#262729'
@@ -105,12 +103,13 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 
 
 
+
     return(
 
 
         <div>
 
-<HeaderComp text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
+<HeaderComp special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
 
 
 <BreadCrumbs/>
@@ -128,7 +127,7 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 
 {/* CONTENTTT STARTTT HEREEE */}
 
-<div className="space-y-5" dangerouslySetInnerHTML={{__html:gotArticle?.content?.rendered}}></div>
+<div className="space-y-5" dangerouslySetInnerHTML={{__html:article?.content?.rendered}}></div>
 
 
         {/* <p>If you are currently using Facebook or Instagram Ads, or plan on using them in the future, there’s one important tool that you should start using straight away.  The Facebook Pixel, now the Meta Pixel, will help you better analyse what’s going on and get the very most of your social media marketing budget. Here’s what you need to know about it and how it works.</p>
@@ -169,13 +168,15 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 
 <div className="pl-6 font-semibold flex flex-col gap-y-6 pt-4">
 
-{recentPosts?.map((eachRecentPost)=>{
+{[1,2,3,4].map(()=>{
 
+return <>
 
+<Link className="underline" href="/">What is Content Syndication in Digital Marketing?</Link>
 
-return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRecentPost?.title?.rendered}</Link>
+<Link className="underline" href="/">Keeping up with the algorithm: social media updates to have on your radar</Link>
 
-
+</>
 
 
 })}
@@ -197,7 +198,7 @@ return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRe
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
 
-{blogCategories?.map((eachCategory)=>{
+{blogCategories.map((eachCategory)=>{
     return <Link  href={`/blog/category/${eachCategory.slug}`}><span className="underline">{eachCategory.name}</span> ({eachCategory.count}) </Link>
 
     
@@ -234,36 +235,10 @@ return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRe
         </div>
 
 
+
+
     )
 
-
-
-}
-
-
-export const getServerSideProps = async(context)=>{
-
-
-   const gotArticle =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/blog/?slug=${context.query.article}`).then(resp=>{
-
-    
-        delete resp.data[0]['_links']
-
-        return resp.data[0]
-
-
-}).catch(err=>{
-  console.log(err);
-})
-
-
-  
-
-return {
-  props:{
-    gotArticle:gotArticle,
-  }
-}
 
 
 }

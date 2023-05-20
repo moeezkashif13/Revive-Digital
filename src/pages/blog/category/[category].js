@@ -63,8 +63,9 @@ No articles available in this category
 
 
 
-data.mainDataCheck.map(()=>{
-    return <EachBlogCard/>
+data.mainDataCheck.map((eachBlogDetail)=>{
+    console.log(eachBlogDetail);
+    return <EachBlogCard  details={eachBlogDetail} />
 })
 
 

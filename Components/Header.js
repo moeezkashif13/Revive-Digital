@@ -1,8 +1,39 @@
 import Link from "next/link";
 import Navbar from "./Navbar";
 
-export default function HeaderComp({special="our", main="work",anotherAppearance}){
-    return (
+export default function HeaderComp({text,special="our", main="work",anotherAppearance}){
+    
+
+  const splittingText = ()=>{
+
+    if(text){
+
+
+
+      
+      const splitText = text.split(" ");
+
+    
+      const getFirstWord = splitText.shift();
+
+      console.log(getFirstWord);
+
+      const joiningRemainingWords = splitText.join(" ")
+      console.log(joiningRemainingWords);
+
+return {getFirstWord,joiningRemainingWords}
+
+}
+
+
+  }
+
+  
+const mainString = splittingText()
+
+
+  
+  return (
         <div className="h-[280px]  relative ">
       
       <div className="bg-purple-500 h-full heroSectVideoDiv">
@@ -63,14 +94,17 @@ export default function HeaderComp({special="our", main="work",anotherAppearance
   <div className=" h-1/2  z-20 bottom-4 text-4xl font-extrabold  absolute  left-28   w-[65%] flex flex-col justify-center" > 
   
   <p>
-<span className='relative'>
-        
-{special}
+<span className='relative '>
+
+
+{mainString?<span>{mainString.getFirstWord}</span>: <span> {special}</span>}
 
 <span className='absolute left-0 -bottom-1 bg-white w-full h-1'></span>
     
     
-    </span>  {main}
+    </span>  
+    
+    {mainString?<span className="ml-3">{mainString.joiningRemainingWords}</span>: <span> {main}</span>}
   
     </p>
   

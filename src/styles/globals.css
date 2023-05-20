@@ -179,6 +179,8 @@
 
 
 @tailwind base;
+
+
 @tailwind components;
 @tailwind utilities;
 
@@ -241,8 +243,10 @@ body {
 font-family: Satoshi;
   /* line-height: 1.5; */
   color: #212529;
+
+
   text-align: left; /* 3 */
-  background-color: #fff; /* 2 */
+  
 
 }
 /*
@@ -608,3 +612,30 @@ Needed for proper display in IE 10-.
   display: none !important;
 }
 
+
+
+  .headingh1{
+    font-size: 2.8rem !important;
+  }
+
+  .headingh2{
+     background-color: red;
+    font-size: 2.5rem !important;
+  }
+
+  .headingh3{
+    font-size: 2.2rem !important;
+  }
+
+
+  .headingh4{
+    font-size: 1.9rem !important;
+  }
+
+  .headingh5{
+    font-size: 1.6rem !important;
+  }
+
+  .headingh6{
+    font-size: 1.4rem !important;
+  }

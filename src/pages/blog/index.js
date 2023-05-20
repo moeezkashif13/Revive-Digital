@@ -1,10 +1,13 @@
+import axios from "axios";
+import { useEffect } from "react";
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import { BreadCrumbs, EachBlogCard } from "../../../Components/Small";
 
-export default function Blog(){
+export default function Blog({allBlogPosts}){
 
-
+    console.log(allBlogPosts);
+    
     return(
 
         
@@ -19,8 +22,8 @@ export default function Blog(){
 <div className="px-28  pt-10 pb-20 bg-[#FAFAFA] flex flex-wrap justify-between gap-y-8">
 
 
-{[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(()=>{
-    return <EachBlogCard/>
+{allBlogPosts.map((eachBlogDetail)=>{
+    return <EachBlogCard  details={eachBlogDetail}   />
 })}
 
 
@@ -58,6 +61,26 @@ export default function Blog(){
 
 
     )
+
+
+}
+
+
+export const getServerSideProps = async ()=>{
+
+    const fetchBlogPosts = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media').then(resp=>{
+        return resp.data
+    }).catch(err=>{
+        console.log(err);
+    })
+
+
+
+    return {
+        props:{
+            allBlogPosts:fetchBlogPosts
+        }
+    }
 
 
 }

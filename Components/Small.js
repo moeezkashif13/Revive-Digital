@@ -1,4 +1,6 @@
+import axios from "axios"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import { FaHome } from "react-icons/fa"
 
 export const BreadCrumbs = ()=>{
@@ -62,24 +64,74 @@ export const CommonHeading = ({special="digital",main="marketing agency servicin
   }
 
 
-  export const EachBlogCard = ()=>{
+  export const EachBlogCard = ({details})=>{
+
+const [featuredImage,setFeaturedImage] = useState({
+    message:'',
+    imageAvailable:''
+});
+    
+
+useEffect(()=>{
+// ${details?.featured_image}
+    
+if(details.featured_media>0){
+
+
+     axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media/${details.featured_media}`).then(resp=>{
+
+        console.log(resp.data);
+
+        setFeaturedImage({imageAvailable:true,message:resp.data.source_url})
+    
+        }).catch(err=>{
+            console.log(err);
+        })
+    
+}else{
+
+    setFeaturedImage({imageAvailable:false,message:'No featured image available'})
+
+
+}
+
+
+
+},[])
+   
+
 
     return <div className="w-[350px] bg-white">
 
     <div className="w-full h-[175px] ">
-        <img className="w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2020/03/understanding-Meta-pixel-720x340.png" alt="" />
+        
+        {featuredImage.imageAvailable?
+// https://revive.digital/wp-content/uploads/2020/03/understanding-Meta-pixel-720x340.png
+        <img className="w-full h-full max-w-full object-cover" src={featuredImage.message} alt="" />
+
+
+:   
+
+<div className="bg-black text-center flex justify-center items-center text-2xl font-bold h-full text-primary">{featuredImage.message}</div>
+
+
+    }
+
+
+
+
     </div>
 
 <div className="py-4 px-2 space-y-5">
 
-<p className="font-bold text-lg underline">UNDERSTANDING AND IMPLEMENTING THE META PIXEL (FORMERLY FACEBOOK PIXEL)</p>
+<p className="eachBlogCardHeading font-bold text-lg underline h-[85px] bg-red-500" dangerouslySetInnerHTML={{__html:details?.title?.rendered}}  ></p>
 
 
-<p>If you are currently using Facebook or Instagram Ads, or plan on using them in the future, there's one important tool that you should start using straight away.  The Facebook Pixel, now the Meta Pixel........ IT SHOULDD BE DYNAMICCC</p>
+<p className="eachBlogCardExcerpt h-[145px]" dangerouslySetInnerHTML={{__html:details?.excerpt?.rendered}} ></p>
 
 
 <div>
-<Link href='/' style={{transition:'all 0.3s'}} className="hover:bg-primary hover:text-white hover:no-underline rounded-3xl underline px-7 font-medium text-primary py-1.5 border border-primary">
+<Link href={`/blog/${details?.slug}`} style={{transition:'all 0.3s'}} className="hover:bg-primary hover:text-white hover:no-underline rounded-3xl underline px-7 font-medium text-primary py-1.5 border border-primary">
 Read More
 </Link>
 </div>
