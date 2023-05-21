@@ -75,10 +75,10 @@ const mainString = splittingText()
 
 <div className="flex gap-x-6 font-semibold text-white text-lg">
 
-  <Link style={{transition:'all 0.3s'}} href="#!" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">View Portfolio</Link>
+  <Link style={{transition:'all 0.3s'}} href="/our-work" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">View Portfolio</Link>
 
 
-  <Link style={{transition:'all 0.3s'}} href="#!" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">Get a Quote</Link>
+  <Link style={{transition:'all 0.3s'}} href="/contact" className="hover:bg-white hover:text-black border px-7 py-2 rounded-3xl ">Get a Quote</Link>
 
 </div>
 

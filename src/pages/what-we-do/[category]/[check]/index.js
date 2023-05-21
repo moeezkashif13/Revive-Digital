@@ -84,7 +84,7 @@ export default function Check(){
 {/*  */}
 
 
-<div className="mb-4 flex bg-orange-400 gap-x-4 px-4">
+<div className="mb-4 flex gap-x-4 px-4">
 
 
 <div className="bg-green-300 w-[390px] min-w-[390px]">

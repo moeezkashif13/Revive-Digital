@@ -61,6 +61,27 @@
   
 
 
+  .serviceCardHeading{   
+    
+    overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+          line-clamp: 1; 
+  -webkit-box-orient: vertical;
+}
+
+.serviceCardParagraph{   
+    
+  overflow: hidden;
+display: -webkit-box;
+-webkit-line-clamp: 4; /* number of lines to show */
+        line-clamp: 4; 
+-webkit-box-orient: vertical;
+}
+
+
+
+
 
   .eachBlogCardHeading{   
     
@@ -78,4 +99,11 @@ display: -webkit-box;
 -webkit-line-clamp: 6; /* number of lines to show */
         line-clamp: 6; 
 -webkit-box-orient: vertical;
+}
+
+
+
+.toggleIt{
+  visibility: hidden;
+  opacity: 0;
 }

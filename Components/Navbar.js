@@ -1,16 +1,17 @@
 import axios from "axios";
 import Link from "next/link";
+
 import { useEffect, useState } from "react";
 
 import {FaPhoneAlt} from 'react-icons/fa'
 
 const WhoWeAreLink = ({elem})=>{
-  return   <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+  return   <div  className="  whoweareelem visible opacity-100 toggleIt  flex justify-center absolute top-9 w-[350px] px-6 py-4" style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
   
   
-   <Link href={`/what-we-do/`} className="flex flex-col gap-y-2.5">
+   <div Link={`/what-we-do/`} className="flex flex-col gap-y-2.5">
   
   
   {elem?.children?.map((main)=>{
@@ -18,7 +19,7 @@ const WhoWeAreLink = ({elem})=>{
   })}
   
   
-      </Link>
+      </div>
     
   </div>
   
@@ -30,10 +31,12 @@ const WhoWeAreLink = ({elem})=>{
 }
 
 
-const WhatWeDoLink = ({checkArr,})=>{
+const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   
+
+
   
-  return   <div className="    absolute top-9 w-[800px] px-6 py-4" style={{backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+  return   <div  className=" whatwedomainelem  visible opacity-100 toggleIt absolute top-9 w-[800px] px-6 py-4" style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
   
@@ -132,34 +135,80 @@ export default function Navbar(){
 
   fetchInnerWhatWeDoTax()
 
-
-
-
-  
   
     },[])
 
+
     
+useEffect(()=>{
+
+  const mainEventWhatWeDo = (event)=>{
+
+    event.stopPropagation()
+
+    const mainElem = document.querySelector('.whatwedomainelem')
+mainElem.classList.toggle('toggleIt')
+
+  }
+
+  const mainEventWhoWeAre = (event)=>{
+
+    event.stopPropagation()
+
+    const mainElem = document.querySelector('.whoweareelem')
+mainElem.classList.toggle('toggleIt')
+
+  }
+
+
+
+  document.querySelector('.whatwedoclass')?.addEventListener('mouseenter',mainEventWhatWeDo,)
+
+  document.querySelector('.whoweareclass')?.addEventListener('mouseenter',mainEventWhoWeAre,)
+
+  
+  
+
+  return()=>{
+    document.querySelector('.whatwedoclass')?.removeEventListener('mouseleave',mainEventWhatWeDo)
+  
+  document.querySelector('.whoweareclass')?.removeEventListener('mouseleave',mainEventWhoWeAre,)
+
+    
+  }
+
+
+
+},[navMenu.length])
+
+
+
+
 return (
 
-    <div className=" px-4 pt-4 flex items-center justify-between">
+    <div className=" px-4 pt-4 flex items-center justify-between ">
 
 
 
-<div>
+
+<div href='/'>
+
 <img width={200} src="/logo.svg" alt="" />
 </div>
 
 
-<div className="flex gap-x-5 z-40">
+<div className="flex gap-x-5 z-40 ">
+
 
 {navMenu.map(elem=>{
 
-  return <div className="relative ">
+  return <div className={` relative ${elem.title=='What we do'?'whatwedoclass':''} ${elem.title=='Who we are'?'whoweareclass':''} `}>
 
 
 
-<Link href={`/${elem.object_slug}`} className="text-lg font-medium ">{elem.title}</Link>
+<Link href={`/${elem.object_slug}`} className={`text-lg font-medium  `}>
+  
+<p>{elem.title}</p>
 
 
 {elem.title=='Who we are'&&
@@ -173,10 +222,16 @@ return (
 
 {elem.title=='What we do'&&
 
-  <WhatWeDoLink  checkArr={checkArr} />
+  <WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
 
 
 }
+
+
+
+  
+  </Link>
+
 
 
 
@@ -186,7 +241,7 @@ return (
 </div>
 
 
-<div className="flex gap-x-3 items-center">
+<div className="flex gap-x-3 items-center ">
 
 
   <div className="w-9 h-9 text-[18px] border border-white flex justify-center items-center rounded-full ">
