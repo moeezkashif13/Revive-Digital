@@ -3,20 +3,33 @@ import { useEffect } from "react";
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import { BreadCrumbs, EachBlogCard } from "../../../Components/Small";
+import TempBread from "../../../Components/Tempbread";
 
-export default function Blog({allBlogPosts}){
+export default function Blog({allBlogPosts,breadcrumbs}){
 
-    console.log(allBlogPosts);
-    
+    console.log(breadcrumbs);
+
+    const breadCrumbsData = breadcrumbs.map((c) => {
+        return {
+          label: c.text,
+          path: c.url,
+        };
+      })
+
+
+
     return(
 
         
         <div>
 
 
-<HeaderComp/>
+<HeaderComp  text="Blog"  />
 
-<BreadCrumbs/>
+{/* <BreadCrumbs/> */}
+
+<TempBread items={breadCrumbsData} />
+
 
 
 <div className="px-28  pt-10 pb-20 bg-[#FAFAFA] flex flex-wrap justify-between gap-y-8">
@@ -76,9 +89,52 @@ export const getServerSideProps = async ()=>{
 
 
 
+// TEMPPPPPPPPPPPPPP
+
+const db = [
+    {
+      "slug": "learn-python",
+      "courseTitle": "Learn Python: Python for Beginners",
+      "breadcrumbs": [
+        {
+          "text": "Home",
+          "url": "/"
+        },
+        {
+          "text": "Blog",
+          "url": "/blog"
+        },
+        
+      ]
+    }
+  ]
+
+
+  const slug = 'learn-python';
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+// TEMPPPPPPPP
+
+
+
     return {
         props:{
-            allBlogPosts:fetchBlogPosts
+            allBlogPosts:fetchBlogPosts,
+
+
+            // TEMPPPPPPPP
+        breadcrumbs: data.breadcrumbs,
+        courseTitle: data.courseTitle,
+// TEMPPPPPPPP
+
+
+
         }
     }
 

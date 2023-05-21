@@ -1,17 +1,37 @@
 import Footer from "../../../../../Components/Footer";
 import HeaderComp from "../../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../../Components/Small";
+import TempBread from "../../../../../Components/Tempbread";
 
-export default function Check(){
+
+
+
+export default function Check({breadcrumbs}){
+
+
+        const breadCrumbsData = breadcrumbs.map((c) => {
+          return {
+            label: c.text,
+            path: c.url,
+          };
+        })
+
+
+          
+
+
 
     return(
         <div>
             
 
+
+
+
 <HeaderComp anotherAppearance={true}   />
 
+<TempBread items={breadCrumbsData} />
 
-<BreadCrumbs/>
 
 
 <DetailsSection   secondType={true}  />
@@ -184,3 +204,66 @@ export default function Check(){
     )
 
 }
+
+
+export const getServerSideProps = async (context) => {
+
+  
+              // TEMPPPPPPPPPPPPPP
+
+              console.log(context.query);
+
+              const mainCateg = context.query.category;
+
+    const categoryName = context.query.check;
+
+const splitMainCateg = mainCateg.split('-').join(' ')
+const splitIt = categoryName.split('-').join(' ')
+
+const db = [
+    {
+      "slug": splitIt,
+      "courseTitle": "Learn Python: Python for Beginners",
+      "breadcrumbs": [
+        {
+          "text": "Home",
+          "url": "/"
+        },
+        {
+          "text": "What We Do",
+          "url": "/what-we-do"
+        },
+        {
+          text:splitMainCateg,
+          url:`/what-we-do/${splitMainCateg}`,
+        },
+        {
+          "text": splitIt,
+          "url": "/blog/branding"
+        },
+        
+      ]
+    }
+  ]
+  
+  
+  const slug = splitIt;
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+  
+  // TEMPPPPPPPP
+  
+
+    return {
+      props: {
+        breadcrumbs: data.breadcrumbs,
+        courseTitle: data.courseTitle,
+      },
+    };
+  };
+  

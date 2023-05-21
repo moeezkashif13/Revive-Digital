@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
+import TempBread from "../../../../Components/Tempbread";
 
 
 
 
-export default function Article({gotArticle}){
+export default function Article({gotArticle,breadcrumbs}){
 
+  console.log(gotArticle);
 
     const [blogCategories,setBlogCategories] = useState([])
 
@@ -103,6 +105,14 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 },[article])
 
 
+const breadCrumbsData = breadcrumbs.map((c) => {
+  return {
+    label: c.text,
+    path: c.url,
+  };
+})
+
+
 
 
     return(
@@ -110,10 +120,18 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 
         <div>
 
+
+{/* <TempBread items={breadCrumbsData} /> */}
+
+
+
 <HeaderComp text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
 
 
-<BreadCrumbs/>
+<TempBread items={breadCrumbsData} />
+
+
+{/* <BreadCrumbs/> */}
 
 
 
@@ -167,7 +185,7 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 <div>
 <CommonHeading   special="recent" main="posts"  />
 
-<div className="pl-6 font-semibold flex flex-col gap-y-6 pt-4">
+<div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
 {recentPosts?.map((eachRecentPost)=>{
 
@@ -257,11 +275,63 @@ export const getServerSideProps = async(context)=>{
 })
 
 
+
+// TEMPPPPPPPPPPPPPP
+
+const db = [
+  {
+    "slug": gotArticle.slug,
+    "courseTitle": "Learn Python: Python for Beginners",
+    "breadcrumbs": [
+      {
+        "text": "Home",
+        "url": "/"
+      },
+      {
+        "text": "Blog",
+        "url": "/blog"
+      },
+      {
+        "text": gotArticle.title.rendered,
+        "url": "/blog/branding"
+      },
+      // {
+      //   "text": "Python",
+      //   "url": "/course/python"
+      // }
+    ]
+  }
+]
+
+
+const slug = gotArticle.slug;
+// simulate a call to the backend server here to get the data
+const data = db.find((page) => page.slug === slug);
+if (!data) {
+  return {
+    notFound: true,
+  };
+}
+
+// TEMPPPPPPPP
+
+
+
   
 
 return {
   props:{
     gotArticle:gotArticle,
+
+
+    // TEMPPPPPPPP
+    breadcrumbs: data.breadcrumbs,
+    courseTitle: data.courseTitle,
+// TEMPPPPPPPP
+
+
+
+
   }
 }
 

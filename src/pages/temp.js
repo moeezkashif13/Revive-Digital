@@ -1,65 +1,63 @@
+import Image from "next/image";
 import { useEffect } from "react"
+import TempBread from "../../Components/Tempbread";
 
 export default function Temp(){
 
     const arr = 'google'
 
-    useEffect(()=>{
+    
 
-        const postType = 'inner-what-we-do';
-        const taxonomy = 'custom_category';
-        const terms = ['digital-marketing']; // Array of term slugs
-        const taxRelation = 'AND'; // Use 'AND' or 'OR' for tax_relation
-        
-        // Construct the tax_query argument
-        const taxQuery = {
-            relation: taxRelation,
-            taxonomy: taxonomy,
-            field: 'slug',
-            terms: terms.join(',')
-        };
-
-
-        
-// console.log(`http://localhost/revivedigitalbackend/wp-json/wp/v2/${postType}?_embed&tax_query=${JSON.stringify(taxQuery)}`);
-
-
-console.log(JSON.stringify(taxQuery));
-
-
-        
-// Build the API request URL with the arguments
-
-const url = `http://localhost/revivedigitalbackend/wp-json/wl/v1/taxonomy`;
-
-
-
-
-// Make the API request
-fetch(url)
-    .then(response => response.json())
-    .then(posts => {
-        
-        console.log(posts);
-        
-        
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-
-
-    },[])
-
-
-
-    return(
-
-<div>tempp</div>
-
-    )
-
-
+    return (
+        <div className="container mx-auto">
+          <h1 className="my-2"> Welcome To NextJS Tailwind Starter</h1>
+          <div className="my-2">
+            <TempBread
+              items={[
+                {
+                  label: 
+                    <Image src="/logo.svg" height={200} width={200} alt="home icon" />
+                  ,
+                  path: "/",
+                },
+                {
+                  label: "Development",
+                  path: "/courses/development",
+                },
+                {
+                  label: "Programming Languages",
+                  path: "/courses/development/programming-languages",
+                },
+                {
+                  label: "Python",
+                  path: "/topic/python",
+                },
+              ]}
+            />
+    
+            <TempBread
+              items={[
+                {
+                  label: "Home",
+                  path: "/",
+                },
+                {
+                  label: "Development",
+                  path: "/courses/development",
+                },
+                {
+                  label: "Programming Languages",
+                  path: "/courses/development/programming-languages",
+                },
+                {
+                  label: "Python",
+                  path: "/topic/python",
+                },
+              ]}
+            />
+          </div>
+        </div>
+      );
+    
 
 }

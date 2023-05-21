@@ -1,8 +1,57 @@
 import Footer from "../../Components/Footer";
-import Header from "../../Components/Header";
-import { BreadCrumbs } from "../../Components/Small";
+import HeaderComp from "../../Components/Header";
+
+
+import TempBread from "../../Components/Tempbread";
 
 export default function Contact(){
+
+
+
+
+        // TEMPPPPPPPPPPPPPP
+
+
+const db = [
+    {
+      "slug": "learn-python",
+      "courseTitle": "Learn Python: Python for Beginners",
+      "breadcrumbs": [
+        {
+          "text": "Home",
+          "url": "/"
+        },
+        {
+          "text": "Contact",
+          "url": "/contact"
+        },
+     
+      ]
+    }
+  ]
+
+
+  const slug = 'learn-python';
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+// TEMPPPPPPPP
+
+const breadCrumbsData = data.breadcrumbs.map((c) => {
+    return {
+      label: c.text,
+      path: c.url,
+    };
+  })
+
+
+
+
 
 
 return(
@@ -11,9 +60,14 @@ return(
     <div>
 
 
-<Header/>
+<HeaderComp text="Contact"  />
 
-<BreadCrumbs/>
+{/* <BreadCrumbs/> */}
+
+<TempBread items={breadCrumbsData} />
+
+
+
 
 {/*  */}
 <div className="px-28 flex pb-16 pt-8">
@@ -150,3 +204,6 @@ Send
 
 
 }
+
+
+

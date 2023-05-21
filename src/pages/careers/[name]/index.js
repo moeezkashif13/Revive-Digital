@@ -2,17 +2,30 @@ import Link from "next/link";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
+import TempBread from "../../../../Components/Tempbread";
 
-export default function CareerName(){
+export default function CareerName({breadcrumbs,splittedCareerName}){
+
+
+    const breadCrumbsData = breadcrumbs.map((c) => {
+        return {
+          label: c.text,
+          path: c.url,
+        };
+      })
+
 
     return(
 
         <div>
 
-<HeaderComp special="graduate" main="web developer role"  />
+<HeaderComp text={splittedCareerName}  />
 
 
-<BreadCrumbs/>
+{/* <BreadCrumbs/> */}
+
+<TempBread items={breadCrumbsData} />
+
 
 
 <div className="flex px-28 gap-x-8 mb-8">
@@ -64,9 +77,15 @@ export default function CareerName(){
 
 <CommonHeading   special="more" main="job roles"  />
 
-<div className="pl-6 font-semibold">
+<div className="pl-6 font-semibold flex flex-col gap-y-3 pt-2">
 
-<Link href="/">Front End Web Developer</Link>
+{[1,2,3,4].map(()=>{
+
+return <Link href="/careers/front-end-web-developer">Front End Web Developer</Link>
+
+
+})}
+
 
 
 </div>
@@ -94,6 +113,72 @@ export default function CareerName(){
 
     )
 
+
+
+}
+
+
+
+export const getServerSideProps = async (context)=>{
+
+
+        // TEMPPPPPPPPPPPPPP
+
+        const careerName = context.query.name
+
+        const splittedCareerName = careerName.split('-').join(' ')
+
+
+const db = [
+    {
+      "slug": "learn-python",
+      "courseTitle": "Learn Python: Python for Beginners",
+      "breadcrumbs": [
+        {
+          "text": "Home",
+          "url": "/"
+        },
+        {
+          "text": "Careers",
+          "url": "/careers"
+        },
+        {
+            "text": splittedCareerName,
+            "url": "/careers"
+          },
+     
+      ]
+    }
+  ]
+
+
+  const slug = 'learn-python';
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+// TEMPPPPPPPP
+
+
+
+    return{
+        props:{
+    
+    
+    // TEMPPPPPPPP
+            splittedCareerName: splittedCareerName,
+            breadcrumbs: data.breadcrumbs,
+            courseTitle: data.courseTitle,
+    // TEMPPPPPPPP
+    
+    
+    
+        }
+    }
 
 
 }

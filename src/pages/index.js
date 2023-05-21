@@ -9,11 +9,22 @@ import MasonryComp from "../../Components/Masonry";
 import { CommonHeading } from "../../Components/Small";
 
 
+import { Splide, SplideSlide,SplideTrack } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+
 
 
 export default function Home() {
 
 
+  const heroSectArr = [
+
+    {special:'WE',main:'help you get more leads through Digital Marketing'},
+    {special:'WE',main:'help you get more leads through Digital Marketing'},
+    {special:'WE',main:'help you get more leads through Digital Marketing'},
+
+
+  ]
 
 
 
@@ -24,7 +35,7 @@ export default function Home() {
 {/* FIRSTTT SECTIONNN STARTT */}
     <div className="h-[550px]  relative ">
       
-    <div className="bg-purple-500 h-full heroSectVideoDiv">
+    <div className=" h-full heroSectVideoDiv">
 
     <video width="100%" height="100%"  autoPlay loop muted playsinline>
 <source src="/intro.mp4" type="video/mp4" />
@@ -52,18 +63,38 @@ export default function Home() {
 <div className=" h-full  z-20  absolute bottom-0 w-[65%] flex flex-col justify-center" style={{left:'50%',transform:'translateX(-50%)'}}> 
 
 
-<h1 className="text-[4.2rem] font-semibold leading-[5.5rem] ">
+{/* <h1 className="text-[4.2rem] font-semibold leading-[5.5rem] "> */}
 
-  <span className="text-primary">WE</span>
-<span> help you get more leads through Digital Marketing</span>
+<Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:2000,arrows:false,pagination:false,}}  hasTrack={ false }>
+  <SplideTrack >
+    {heroSectArr.map((elem)=>{
+      return     <SplideSlide>
+
+<h1 className="text-[4.25rem] font-semibold leading-[5.5rem] ">
+
+<span className="text-primary">{elem.special}</span>
+<span> {elem.main}</span>
+
 </h1>
+      
+      </SplideSlide>
+    })}
+
+  </SplideTrack>
+</Splide>
+
+
+  {/* <span className="text-primary">WE</span>
+<span> help you get more leads through Digital Marketing</span> */}
+
+{/* </h1> */}
 
 
 <div className="flex gap-x-7 mt-7 font-medium">
 
 
-<Link href="/" className="border  px-6 py-1 rounded-2xl">Who we are</Link>
-<Link href="/" className="border  px-6 py-1 rounded-2xl">Our work</Link>
+<Link href="/who-we-are" className="border  px-6 py-1 rounded-2xl">Who we are</Link>
+<Link href="/our-work" className="border  px-6 py-1 rounded-2xl">Our work</Link>
 
 
 

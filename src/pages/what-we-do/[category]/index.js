@@ -5,13 +5,18 @@ import { useEffect } from "react";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../Components/Small";
+import TempBread from "../../../../Components/Tempbread";
 
-export default function WhatWeDoEachCategory({getAssociatedServices}){
+export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}){
 
     const router = useRouter();
 
-
-    console.log(getAssociatedServices);
+    const breadCrumbsData = breadcrumbs.map((c) => {
+        return {
+          label: c.text,
+          path: c.url,
+        };
+      })
 
 
 return (
@@ -21,7 +26,11 @@ return (
 <HeaderComp special="website" main="design" /> 
 
 
-<BreadCrumbs/>
+{/* <BreadCrumbs/> */}
+
+<TempBread items={breadCrumbsData} />
+
+
 
 
 {/*  */}
@@ -139,11 +148,64 @@ export const getServerSideProps = async (context)=>{
     
 
 
+
+            // TEMPPPPPPPPPPPPPP
+
+const splitIt = categoryName.split('-').join(' ')
+
+const db = [
+    {
+      "slug": splitIt,
+      "courseTitle": "Learn Python: Python for Beginners",
+      "breadcrumbs": [
+        {
+          "text": "Home",
+          "url": "/"
+        },
+        {
+          "text": "What We Do",
+          "url": "/what-we-do"
+        },
+        {
+          "text": splitIt,
+          "url": "/blog/branding"
+        },
+        // {
+        //   "text": "Python",
+        //   "url": "/course/python"
+        // }
+      ]
+    }
+  ]
+  
+  
+  const slug = splitIt;
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+  
+  // TEMPPPPPPPP
+  
+
     
     return {
         props : {
-            hello : 'dasdasd',
-            getAssociatedServices:getAssociatedServices
+
+            
+            getAssociatedServices:getAssociatedServices,
+
+                // TEMPPPPPPPP
+    breadcrumbs: data.breadcrumbs,
+    courseTitle: data.courseTitle,
+// TEMPPPPPPPP
+        
+        
+        
+        
         }
     }
 

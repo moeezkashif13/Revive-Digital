@@ -34,7 +34,7 @@ const mainString = splittingText()
 
   
   return (
-        <div className="h-[280px]  relative ">
+        <div className="h-[280px]  relative capitalize">
       
       <div className="bg-purple-500 h-full heroSectVideoDiv">
   
