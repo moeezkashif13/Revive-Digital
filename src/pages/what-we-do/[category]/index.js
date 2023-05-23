@@ -7,6 +7,11 @@ import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
 
+
+const mainArr = [];
+
+
+
 export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}){
 
     const router = useRouter();
@@ -17,6 +22,51 @@ export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}
           path: c.url,
         };
       })
+
+      let windex = 0;
+
+
+      useEffect(()=>{
+
+
+
+        axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/mainservices').then(resp=>{
+
+          console.log(resp.data);
+
+          const mainPage = resp.data.filter(eachPage=>{
+            return eachPage.slug=='web'
+          })
+
+const customFields = mainPage[0].custom_fields
+          
+          const getKeys = Object.keys(customFields)
+
+console.log(getKeys);
+
+const onlyGetDetailsKey = getKeys.filter(eachKey=>{
+  return eachKey.startsWith('details')
+}).sort();
+
+console.log(onlyGetDetailsKey);
+
+
+  
+
+
+
+          // const objWork = mainPage[0].custom_fields
+
+          // console.log(Object.entries(objWork));
+
+
+        }).catch(err=>{
+          console.log(err);
+        })
+
+
+
+      },[])
 
 
 return (
@@ -49,16 +99,16 @@ return (
 
             <div className="w-full h-[160px] ">
                 
-                <img className="w-full max-w-full  h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/07/e-commerce-2.jpg" alt="" />
+                {/* <img className="w-full max-w-full  h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/07/e-commerce-2.jpg" alt="" /> */}
 
 
             </div>
 
     <div className="px-4 py-4 space-y-4">
 
-<p className="font-bold underline h-[24px] serviceCardHeading">{eachService.title.rendered}</p>
+<p className="font-bold underline h-[24px] serviceCardHeading">{eachService?.title?.rendered}</p>
 
-<p className="text-[15px] h-[90px] serviceCardParagraph" dangerouslySetInnerHTML={{__html:eachService.excerpt.rendered}}></p>
+<p className="text-[15px] h-[90px] serviceCardParagraph" dangerouslySetInnerHTML={{__html:eachService?.excerpt?.rendered}}></p>
 
 
 <div>
@@ -125,26 +175,32 @@ export const getServerSideProps = async (context)=>{
  
     const categoryName = context.query.category;
 
-    const getAssociatedServices =        await  axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/custom_category').then(async resp=>{
+
+    const getAssociatedServices = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/services-categories').then(async resp=>{
+
+        const filterMainCateg = resp.data.filter(eachCateg=>{
+          return eachCateg.slug == categoryName
+        })
+
+        console.log(filterMainCateg,'filterMainCateg filterMainCateg');
+
+
+        return await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?${filterMainCateg[0].taxonomy}=${filterMainCateg[0].id}`).then(response=>{
+
+          return response.data;
+
+
+        }).catch(errObj=>{
+          console.log(errObj);
+        })
+        
+
+
+
+        }).catch(err=>{
+          console.log(err);
+        })
     
-            
-                const getMainCateg = resp.data.filter(eachCateg=>{
-                    return eachCateg.slug==categoryName
-                })
-    
-    
-                const articlesByCateg =  await  axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/inner-what-we-do?${getMainCateg[0].taxonomy}=${getMainCateg[0].id}`).then(responseObj=>{
-    
-                    return responseObj.data
-            
-                    }).catch(errorObj=>{
-    
-                        console.log(errorObj);
-                    })
-    
-    return articlesByCateg;
-    
-            })
     
 
 

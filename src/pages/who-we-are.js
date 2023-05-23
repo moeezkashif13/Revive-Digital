@@ -147,14 +147,14 @@ VIew all articles
 
 <CommonHeading special="meet" main="the team" />
 
-<div className="flex flex-wrap justify-between gap-y-10">
+<div className="flex flex-wrap justify-between gap-x-4 gap-y-10">
 
 
 {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(()=>{
 
-return <div className="w-[255px]">
+return <div className="w-[245px]">
 
-        <div className="w-full h-[255px] bg-green-500">
+        <div className="w-full h-[245px] bg-green-500">
 
                 <img className="w-full max-w-full" src="https://revive.digital/wp-content/uploads/2021/09/James-Higgs-1.jpg" alt="" />
 

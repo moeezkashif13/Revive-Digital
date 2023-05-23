@@ -75,7 +75,7 @@ const [featuredImage,setFeaturedImage] = useState({
 useEffect(()=>{
 // ${details?.featured_image}
     
-if(details.featured_media>0){
+if(details?.featured_media>0){
 
 
      axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media/${details.featured_media}`).then(resp=>{
@@ -193,7 +193,7 @@ Read More
 
     <div className="w-1/2">
 
-<img  className="w-full max-w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/06/what-we-do.jpg" alt="" />
+{/* <img  className="w-full max-w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/06/what-we-do.jpg" alt="" /> */}
 
 
     </div>

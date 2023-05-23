@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useEffect } from "react";
+import CustomError from "../../../../../Components/CustomError";
 import Footer from "../../../../../Components/Footer";
 import HeaderComp from "../../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../../Components/Small";
@@ -6,7 +9,16 @@ import TempBread from "../../../../../Components/Tempbread";
 
 
 
-export default function Check({breadcrumbs}){
+export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks}){
+
+
+  
+  if(errorCame){
+    return <CustomError/>
+  }
+
+
+
 
 
         const breadCrumbsData = breadcrumbs.map((c) => {
@@ -16,10 +28,8 @@ export default function Check({breadcrumbs}){
           };
         })
 
-
-          
-
-
+        
+    
 
     return(
         <div>
@@ -28,7 +38,7 @@ export default function Check({breadcrumbs}){
 
 
 
-<HeaderComp anotherAppearance={true}   />
+<HeaderComp specialAppearanceFields={gotMainService.custom_fields} anotherAppearance={true}   />
 
 <TempBread items={breadCrumbsData} />
 
@@ -46,16 +56,25 @@ export default function Check({breadcrumbs}){
 
 <p className="text-center mb-12 text-[#262729] font-semibold text-3xl">Fabulous clients we work with</p>
 
-<div className="px-28 flex flex-wrap justify-between gap">
+<div className="px-28  flex flex-wrap justify-between gap">
     
+    
+    {gotMediaLinks?gotMediaLinks.map((eachLogo)=>{
+        return <div className=" w-[90px]   flex items-center  ">
 
-    {[1,2,3,4,5,6].map(()=>{
-        return <div className="w-[200px] h-[125px] bg-pink-500">
-
-            <img className="w-full max-w-full object-cover h-full" src="https://revive.digital/wp-content/uploads/2017/10/diageo.jpg" alt="" />
+            <img   className=" max-w-full  object-contain   " src={eachLogo.source_url} alt="" />
 
         </div>
-    })}
+
+    }):<div className="font-semibold text-2xl text-primary mx-auto">No images available</div>}
+
+
+
+{/* <div className=" bg-blue-500 flex items-center  ">
+
+            <img   className=" max-w-full  " src="/layslogo.png" alt="" />
+
+        </div> */}
 
 
 </div>
@@ -211,59 +230,144 @@ export const getServerSideProps = async (context) => {
   
               // TEMPPPPPPPPPPPPPP
 
-              console.log(context.query);
+              // console.log(context.query);
+
 
               const mainCateg = context.query.category;
 
-    const categoryName = context.query.check;
+    const serviceName = context.query.check;
 
 const splitMainCateg = mainCateg.split('-').join(' ')
-const splitIt = categoryName.split('-').join(' ')
+const splitIt = serviceName.split('-').join(' ')
 
-const db = [
-    {
-      "slug": splitIt,
-      "courseTitle": "Learn Python: Python for Beginners",
-      "breadcrumbs": [
-        {
-          "text": "Home",
-          "url": "/"
-        },
-        {
-          "text": "What We Do",
-          "url": "/what-we-do"
-        },
-        {
-          text:splitMainCateg,
-          url:`/what-we-do/${splitMainCateg}`,
-        },
-        {
-          "text": splitIt,
-          "url": "/blog/branding"
-        },
-        
-      ]
-    }
-  ]
-  
-  
-  const slug = splitIt;
-  // simulate a call to the backend server here to get the data
-  const data = db.find((page) => page.slug === slug);
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+
   
   // TEMPPPPPPPP
   
 
+const gotMainService =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?slug=${serviceName}`).then(resp=>{
+    // console.log(resp.data,'resp.data resp.data resp.data');
+  return resp.data;
+
+
+  }).catch(err=>{
+    console.log('thissss service does notttt existttt');
+    return err;
+  })
+
+  console.log(gotMainService);
+
+  if(gotMainService.length>0){
+
+    console.log(gotMainService[0],);
+
+// RELATED TO BREADCRUMS 
+
+const db = [
+  {
+    "slug": splitIt,
+    "courseTitle": "Learn Python: Python for Beginners",
+    "breadcrumbs": [
+      {
+        "text": "Home",
+        "url": "/"
+      },
+      {
+        "text": "What We Do",
+        "url": "/what-we-do"
+      },
+      {
+        text:splitMainCateg,
+        url:`/what-we-do/${splitMainCateg}`,
+      },
+      {
+        "text": splitIt,
+        "url": "/blog/branding"
+      },
+      
+    ]
+  }
+]
+
+
+const slug = splitIt;
+// simulate a call to the backend server here to get the data
+const data = db.find((page) => page.slug === slug);
+if (!data) {
+  return {
+    notFound: true,
+  };
+}
+
+// RELATED TO BREADCRUMBS
+
+
+
+
+
+  const {custom_fields} = gotMainService[0];
+
+
+  const getCompanyLogos = Object.keys(custom_fields).filter(eachField=>{
+    return eachField.includes('company-logo')
+  }).map(eachLogo=>{
+
+    return custom_fields[eachLogo][0]
+
+  })
+
+
+
+let gotMediaLinks;
+
+  if(getCompanyLogos.length>0){
+
+ await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[...getCompanyLogos]}`).then(media=>{
+
+ console.log(media.data,'media.datamedia.data media.data')
+
+ gotMediaLinks=media.data
+
+//  return media.data
+
+
+  }).catch(err=>{
+    console.log('errrr');
+    // return 22222
+    // console.log(err.statusCode,'err err err err err');
+  })
+
+  
+}else {
+  gotMediaLinks= false;
+
+}
+
     return {
+
       props: {
         breadcrumbs: data.breadcrumbs,
         courseTitle: data.courseTitle,
+        
+        gotMainService: gotMainService,
+        gotMediaLinks: gotMediaLinks,
+      
       },
     };
-  };
-  
+
+  }else{
+
+    return {
+      props:{
+        errorCame:true
+
+      }
+    }
+  }
+
+
+
+}
+
+
+

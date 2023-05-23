@@ -1,8 +1,8 @@
 import { MasonryGrid } from "@egjs/react-grid";
 
 
-export default function MasonryComp(){
-
+export default function MasonryComp({gotAllWork}){
+console.log(gotAllWork);
 return (
     <div>
 
@@ -18,7 +18,7 @@ return (
       console.log(e);
     }}
   >
-   {[1,2,3,4,5,6,7,8,9,10,11,12].map((elem,index)=>{
+   {gotAllWork.map((eachWork,index)=>{
 
 
 
@@ -37,9 +37,15 @@ return (
 {/* (index + 1) % 4 === 2) */}
 <div className={`absolute bottom-5  ${(index+1)%4===1 ?'left-12':'left-5' }   `}>
 
-    <div className="bg-primary font-medium inline px-4 py-1.5 rounded-md">btmk</div>
+    <div className="bg-primary font-medium inline  py-1.5 rounded-md"  dangerouslySetInnerHTML={{__html:eachWork?.excerpt.rendered}}>
 
-    <p className="mt-2.5   font-bold text-[1.6vw]">making your space work</p>
+
+
+    </div>
+
+
+
+    <p className="mt-2.5   font-bold text-[1.6vw]" dangerouslySetInnerHTML={{__html:eachWork?.title?.rendered}} ></p>
 
 
 </div>

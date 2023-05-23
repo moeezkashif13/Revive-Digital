@@ -10,7 +10,6 @@ const WhoWeAreLink = ({elem})=>{
 
   <div className="flex  justify-between">
   
-  
    <div Link={`/what-we-do/`} className="flex flex-col gap-y-2.5">
   
   
@@ -33,35 +32,48 @@ const WhoWeAreLink = ({elem})=>{
 
 const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   
+  // 
+  
+  // toggleIt
+  return   <div  className="whatwedomainelem   visible opacity-100  absolute top-9 shadow-2xl w-[750px] px-6 py-4  " style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+
+  <div className=" flex flex-wrap gap-x-5 gap-y-3  ">
+  
+    {checkArr?.map(eachChild=>{
+  
+  if(eachChild){
+
+    const checkavien = Object.keys(eachChild)
+  
+  
+  
+    return <><Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-1  w-[22.8%] ">
+
+<p className="mb-2 text-lg  text-primary font-semibold">
+  
+{checkavien[0]}
 
 
-  
-  return   <div  className=" whatwedomainelem  visible opacity-100 toggleIt absolute top-9 w-[800px] px-6 py-4" style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+</p>
 
-  <div className="flex  justify-between">
-  
-    {checkArr.map(eachChild=>{
-  
-  
-  const checkavien = Object.keys(eachChild)
-  
-  
-  
-      return <Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-2.5">
-  
-  <p className="mb-2 text-lg text-primary font-semibold">
+{eachChild[checkavien[0]]?.map((main)=>{
+  return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
+})}
+
+
+    </Link>
     
-  {checkavien[0]}
+
+   
+
+
+</>
+
+
+  }
   
-  
-  </p>
-  
-  {eachChild[checkavien[0]]?.map((main)=>{
-    return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
-  })}
-  
-  
-      </Link>
+
+      
     })}
   </div>
   
@@ -100,12 +112,19 @@ export default function Navbar(){
 
   const fetchInnerWhatWeDoTax = ()=>{
 
-    axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/custom_category?order=desc').then(resp=>{
+    axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/services-categories?order=desc').then(resp=>{
       // console.log(resp.data);
+
+      console.log(resp.data);
 
       const gotARR = resp.data.map(eachTax=>{
 
-        return  axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/inner-what-we-do?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
+        if(eachTax.count==0){
+          return;
+        }
+
+
+        return  axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
 
 
           return {
@@ -162,17 +181,17 @@ mainElem.classList.toggle('toggleIt')
 
 
 
-  document.querySelector('.whatwedoclass')?.addEventListener('mouseenter',mainEventWhatWeDo,)
+  // document.querySelector('.whatwedoclass')?.addEventListener('mouseenter',mainEventWhatWeDo,)
 
-  document.querySelector('.whoweareclass')?.addEventListener('mouseenter',mainEventWhoWeAre,)
+  // document.querySelector('.whoweareclass')?.addEventListener('mouseenter',mainEventWhoWeAre,)
 
   
   
 
   return()=>{
-    document.querySelector('.whatwedoclass')?.removeEventListener('mouseleave',mainEventWhatWeDo)
-  
-  document.querySelector('.whoweareclass')?.removeEventListener('mouseleave',mainEventWhoWeAre,)
+    // document.querySelector('.whatwedoclass')?.removeEventListener('mouseleave',mainEventWhatWeDo)
+  // 
+  // document.querySelector('.whoweareclass')?.removeEventListener('mouseleave',mainEventWhoWeAre,)
 
     
   }
@@ -191,10 +210,10 @@ return (
 
 
 
-<div href='/'>
+<Link href='/'>
 
 <img width={200} src="/logo.svg" alt="" />
-</div>
+</Link>
 
 
 <div className="flex gap-x-5 z-40 ">

@@ -1,7 +1,13 @@
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
-export default function HeaderComp({text,special="our", main="work",anotherAppearance}){
+
+
+
+export default function HeaderComp({specialAppearanceFields,text,special="our", main="work",
+anotherAppearance}){
     
 
   const splittingText = ()=>{
@@ -34,8 +40,20 @@ const mainString = splittingText()
 
   
   return (
-        <div className="h-[280px]  relative capitalize">
+        <div className="h-[380px]  relative capitalize ">
       
+      <div className="absolute text-white top-5 left-0 w-full px-2  z-20 ">
+        
+      <Navbar/>  
+
+
+
+
+
+      </div>
+
+
+
       <div className="bg-purple-500 h-full heroSectVideoDiv">
   
       <video width="100%" height="100%"  autoPlay loop muted playsinline>
@@ -49,12 +67,12 @@ const mainString = splittingText()
   
   <div className="absolute top-4 pl-4 h-full frontDiv w-full text-white" >
     
-  <div className="h-full" style={{backgroundColor:'rgba(0,0,0,0.7)'}}>
+  <div className="h-full relative " style={{backgroundColor:'rgba(0,0,0,0.7)'}}>
 
 
   {/* NAVBARR STARTT */}
 
-<Navbar/>  
+
 
 
   {/* NAVBARR ENDDD */}
@@ -68,9 +86,9 @@ const mainString = splittingText()
 <div className=" h-full  z-20    absolute -bottom-3  w-full flex flex-col justify-center items-center gap-y-4" > 
 
 
-<p className="text-5xl font-medium">Google Partner Agency</p>
-
-<p className="font-semibold text-xl">Measurable ROI with our PPC Agency</p>
+<p className="text-5xl font-medium">{specialAppearanceFields?.['each-service-header']}</p>
+{/* {specialAppearanceFields?.['each-service-paragraph']} */}
+<p className="font-semibold text-xl w-1/2 ">{specialAppearanceFields?.['each-service-paragraph']} </p>
 
 
 <div className="flex gap-x-6 font-semibold text-white text-lg">
