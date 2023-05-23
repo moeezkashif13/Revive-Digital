@@ -162,9 +162,9 @@ export default function Home() {
 
 {[1,2,3,4].map((elem,index)=>{
 
-return <div className={`flex  ${index%2!=0&&'flex-row-reverse'} `}>
+return <div className={`flex flex-col  ${index%2!=0&&'flex-row-reverse'} `}>
 
-<div className="w-1/2 px-24 py-10">
+<div className="w-full lg:w-1/2  px-4 lg:px-24 py-10">
 
 
 <CommonHeading   special="full"   main="service digital marketing agency"  />  
@@ -190,7 +190,7 @@ return <div className={`flex  ${index%2!=0&&'flex-row-reverse'} `}>
 
 
 
-<div className="w-1/2 bg-gray-500">
+<div className="w-full h-[300px] lg:h-auto lg:w-1/2 ">
 
 
 

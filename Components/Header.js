@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 
 
 
-export default function HeaderComp({specialAppearanceFields,text,special="our", main="work",
+export default function HeaderComp({specialAppearanceFields,text,special="our", main="workkkkkk",
 anotherAppearance}){
     
 
@@ -42,7 +42,7 @@ const mainString = splittingText()
   return (
         <div className="h-[380px]  relative capitalize ">
       
-      <div className="absolute text-white top-5 left-0 w-full px-2  z-20 ">
+      <div className="absolute text-white top-10 left-0 w-full px-12  z-20 ">
         
       <Navbar/>  
 
@@ -115,14 +115,14 @@ const mainString = splittingText()
 <span className='relative '>
 
 
-{mainString?<span>{mainString.getFirstWord}</span>: <span> {special}</span>}
+{mainString?<span>{mainString.getFirstWord}</span>: <span> {special}  </span>}
 
 <span className='absolute left-0 -bottom-1 bg-white w-full h-1'></span>
     
     
     </span>  
     
-    {mainString?<span className="ml-3">{mainString.joiningRemainingWords}</span>: <span> {main}</span>}
+    {mainString?<span className="ml-3">{mainString.joiningRemainingWords}</span>: <span> {main} </span>}
   
     </p>
   

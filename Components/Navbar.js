@@ -205,7 +205,7 @@ mainElem.classList.toggle('toggleIt')
 
 return (
 
-    <div className=" px-4 pt-4 flex items-center justify-between ">
+    <div className="   flex  justify-between items-center   ">
 
 
 
@@ -221,7 +221,7 @@ return (
 
 {navMenu.map(elem=>{
 
-  return <div className={` relative ${elem.title=='What we do'?'whatwedoclass':''} ${elem.title=='Who we are'?'whoweareclass':''} `}>
+  return <div className={` flex   relative ${elem.title=='What we do'?'whatwedoclass':''} ${elem.title=='Who we are'?'whoweareclass':''} `}>
 
 
 

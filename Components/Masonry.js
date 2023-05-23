@@ -1,24 +1,33 @@
 import { MasonryGrid } from "@egjs/react-grid";
+import { useEffect } from "react";
 
 
 export default function MasonryComp({gotAllWork}){
-console.log(gotAllWork);
+
+  
+
+
 return (
     <div>
 
 <MasonryGrid
-    className="custom-container "
+    className="custom-container   "
     gap={20}
     defaultDirection={"end"}
     align={"justify"}
     column={4}
     columnSize={0}
+    
     columnSizeRatio={0}
     onRenderComplete={e => {
       console.log(e);
     }}
   >
-   {gotAllWork.map((eachWork,index)=>{
+   {gotAllWork?.data?.map((eachWork,index)=>{
+
+
+const getImage = gotAllWork.mediaURL[index]
+
 
 
 
@@ -26,7 +35,7 @@ return (
 
 <div className="h-full w-full overflow-hidden">
 
-<img style={{transition:'all 0.3s '}} className=" hover:scale-110 w-full max-w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/08/ku-kitchens-1-768x768.jpg" alt="" />
+<img style={{transition:'all 0.3s '}} className=" hover:scale-110 w-full max-w-full h-full object-cover object-center" src={getImage?.source_url} alt="" />
 
 
 </div>
@@ -37,9 +46,9 @@ return (
 {/* (index + 1) % 4 === 2) */}
 <div className={`absolute bottom-5  ${(index+1)%4===1 ?'left-12':'left-5' }   `}>
 
-    <div className="bg-primary font-medium inline  py-1.5 rounded-md"  dangerouslySetInnerHTML={{__html:eachWork?.excerpt.rendered}}>
+    <div className="bg-primary font-medium inline px-4 py-1.5 rounded-md"  >
 
-
+btmk
 
     </div>
 
