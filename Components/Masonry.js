@@ -25,8 +25,9 @@ return (
   >
    {gotAllWork?.data?.map((eachWork,index)=>{
 
+console.log(eachWork);
 
-const getImage = gotAllWork.mediaURL[index]
+const getImage = gotAllWork?.mediaURL[index]
 
 
 
@@ -48,13 +49,13 @@ const getImage = gotAllWork.mediaURL[index]
 
     <div className="bg-primary font-medium inline px-4 py-1.5 rounded-md"  >
 
-btmk
+btmkdddddd
 
     </div>
 
 
 
-    <p className="mt-2.5   font-bold text-[1.6vw]" dangerouslySetInnerHTML={{__html:eachWork?.title?.rendered}} ></p>
+    <p className="mt-2.5   font-bold text-[1.6vw]" dangerouslySetInnerHTML={{__html:eachWork?.excerpt?.rendered}} ></p>
 
 
 </div>

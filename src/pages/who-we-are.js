@@ -1,200 +1,262 @@
+import axios from "axios";
 import Link from "next/link";
+import { useEffect } from "react";
+
 import Footer from "../../Components/Footer";
 import HeaderComp from "../../Components/Header";
-import { BreadCrumbs, CommonHeading, EachBlogCard, Quote } from "../../Components/Small";
-
-
-export default function WhoWeAre(){
-
-
-    return(
-
-<div>
-
-
-<HeaderComp/>
-
-
-<BreadCrumbs/>
-
-
-{/*  */}
-
-
-<div className="flex px-28 gap-x-16 text-[15px] mt-16 mb-16">
-
-<div className="w-1/2">
-
-<CommonHeading   special="why" main="revive" />
-
-
-<div className="flex flex-col gap-y-5">
-
-        <p>Your website, your brand, your logo, your colours. Your letters, business cards, your packaging, your lorries, your cars. Your advertising.</p>
-
-<p>They all make a statement about you.</p>
-
-<p>Revive isn’t just websites, or graphics. We’re not just keywords and acronyms. We understand. We seek to learn what makes you tick, and what your customers see in you, and want from you. We visualise you, your vision and message, and we monitor, analyse and improve, constantly, consistently.</p>
-
-<p>We’re your partner. We don’t work for you, but we do work with you. We’ll be clear – and we’ll tell you if something isn’t right. We’ll always listen, always help. We won’t try and do anything we’re not really good at. When you work with Revive, you expect excellence, clarity, and results. We deliver.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div className="w-1/2">
-
-<CommonHeading   special="how" main="we work" />
-
-
-<div className="flex flex-col gap-y-5">
-
-        <p>We ask a lot of questions. We produce plans. We explain why, and we don’t use jargon.
-
-</p>
-
-<p>We make sure you’re happy with what we are going to do, the cost, and the timescale.
-
-</p>
-
-<p>We communicate regularly. We select the team most suited to your project and we schedule the work or campaign. We time-track, and log everything. We present, and review, monitor, and measure.
-
-</p>
-
-<p>And when you are happy – we, too are happy.
-
-
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-{/*  */}
-
-
-
-<div className="bg-[#FAFAFA] px-28 py-12">
-
-
-<CommonHeading special="our" main="blog"  />
-
-
-<div className="flex flex-wrap justify-between gap-y-8">
-
-{[1,2,3,4,5].map(()=>{
-
-    return <EachBlogCard/>
-
-
-})}
-</div>
-
-
-
-<div className="text-right mt-7">
-<Link href="/" className="font-bold underline   ">
-
-VIew all articles
-
-</Link>
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-{/*  */}
-
-
-
-<Quote/>
-
-
-
-
-{/*  */}
-
-
-
-<div className="px-28 bg-[#FAFAFA] py-10">
-
-
-<CommonHeading special="meet" main="the team" />
-
-<div className="flex flex-wrap justify-between gap-x-4 gap-y-10">
-
-
-{[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(()=>{
-
-return <div className="w-[245px]">
-
-        <div className="w-full h-[245px] bg-green-500">
-
-                <img className="w-full max-w-full" src="https://revive.digital/wp-content/uploads/2021/09/James-Higgs-1.jpg" alt="" />
-
+import {
+  BreadCrumbs,
+  CommonHeading,
+  EachBlogCard,
+  Quote,
+} from "../../Components/Small";
+
+function isNumeric(str) {
+  if (typeof str != "string") return false; // we only process strings!
+  return (
+    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
+}
+
+export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
+  console.log(custom_fields);
+
+  const getTeamMembers = Object.keys(custom_fields).filter((eachField) =>
+    eachField.includes("who-we-are-team")
+  );
+
+  const chunkSize = 3;
+  const teamMembers = [];
+
+  for (let i = 0; i < getTeamMembers.length; i += chunkSize) {
+    const chunk = getTeamMembers.slice(i, i + chunkSize);
+    teamMembers.push(chunk);
+  }
+
+  const detailsSectHeading =
+    custom_fields["who-we-are-details-section-heading"][0].split(" ");
+
+  const firstword = detailsSectHeading[0];
+
+  let remainingWords = detailsSectHeading.slice(1).join(" ");
+
+  const detailsSectHeadingFirst =
+    custom_fields["who-we-are-details-section-heading_1"][0].split(" ");
+
+  const secondword = detailsSectHeadingFirst[0];
+
+  let secondremainingWords = detailsSectHeadingFirst.slice(1).join(" ");
+
+  console.log(fetchBlogs);
+
+  return (
+    <div>
+      <HeaderComp text="who we are" />
+
+      <BreadCrumbs />
+
+      {/*  */}
+
+      <div className="mb-16 mt-16 flex gap-x-16 px-28 text-[15px]">
+        <div className="w-1/2">
+          <CommonHeading special={firstword} main={remainingWords} />
+
+          <div
+            className="flex flex-col gap-y-5"
+            dangerouslySetInnerHTML={{
+              __html: custom_fields["who-we-are-details-section-paragraph"][0],
+            }}
+          >
+            {/* <p>
+              Your website, your brand, your logo, your colours. Your letters,
+              business cards, your packaging, your lorries, your cars. Your
+              advertising.
+            </p>
+
+            <p>They all make a statement about you.</p>
+
+            <p>
+              Revive isn’t just websites, or graphics. We’re not just keywords
+              and acronyms. We understand. We seek to learn what makes you tick,
+              and what your customers see in you, and want from you. We
+              visualise you, your vision and message, and we monitor, analyse
+              and improve, constantly, consistently.
+            </p>
+
+            <p>
+              We’re your partner. We don’t work for you, but we do work with
+              you. We’ll be clear – and we’ll tell you if something isn’t right.
+              We’ll always listen, always help. We won’t try and do anything
+              we’re not really good at. When you work with Revive, you expect
+              excellence, clarity, and results. We deliver.
+            </p> */}
+          </div>
         </div>
 
-    <div className="px-4 py-3 font-bold bg-white">
-        <p className="uppercase">Phil Thomas</p>
-        <p className="text-primary">Director</p>
+        <div className="w-1/2">
+          <CommonHeading special={secondword} main={secondremainingWords} />
+
+          <div
+            className="flex flex-col gap-y-5"
+            dangerouslySetInnerHTML={{
+              __html:
+                custom_fields["who-we-are-details-section-paragraph_1"][0],
+            }}
+          >
+            {/* <p>
+              Your website, your brand, your logo, your colours. Your letters,
+              business cards, your packaging, your lorries, your cars. Your
+              advertising.
+            </p>
+
+            <p>They all make a statement about you.</p>
+
+            <p>
+              Revive isn’t just websites, or graphics. We’re not just keywords
+              and acronyms. We understand. We seek to learn what makes you tick,
+              and what your customers see in you, and want from you. We
+              visualise you, your vision and message, and we monitor, analyse
+              and improve, constantly, consistently.
+            </p>
+
+            <p>
+              We’re your partner. We don’t work for you, but we do work with
+              you. We’ll be clear – and we’ll tell you if something isn’t right.
+              We’ll always listen, always help. We won’t try and do anything
+              we’re not really good at. When you work with Revive, you expect
+              excellence, clarity, and results. We deliver.
+            </p> */}
+          </div>
+        </div>
+      </div>
+
+      {/*  */}
+
+      <div className="bg-[#FAFAFA] px-28 py-12">
+        <CommonHeading special="our" main="blog" />
+
+        <div className="flex flex-wrap justify-between gap-y-8">
+          {fetchBlogs.map((eachArticle) => {
+            return <EachBlogCard details={eachArticle} />;
+          })}
+        </div>
+
+        <div className="mt-7 text-right">
+          <Link href="/blog" className="font-bold underline   ">
+            VIew all articles
+          </Link>
+        </div>
+      </div>
+
+      {/*  */}
+
+      <Quote
+        author={custom_fields["who-we-are-quote-author"]}
+        quote={custom_fields["who-we-are-quote-quote"]}
+      />
+
+      {/*  */}
+
+      <div className="bg-[#FAFAFA] px-28 py-10">
+        <CommonHeading special="meet" main="the team" />
+
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-10">
+          {teamMembers.map((eachTeamMember, index) => {
+            const firstElement = eachTeamMember.splice(0, 1);
+            const secondElment = eachTeamMember.splice(0, 1);
+            const thirdElement = eachTeamMember.splice(0, 1);
+
+            const mediaID = custom_fields[thirdElement[0]];
+
+            const findLinkedMedia = fetchMediaURL.find((eachMedia) => {
+              return eachMedia.id == mediaID;
+            });
+
+            return (
+              <div className="w-[245px]">
+                <div className=" h-[245px] w-full bg-white ">
+                  <img
+                    className=" h-full   w-full max-w-full object-contain  "
+                    src={findLinkedMedia?.source_url}
+                    alt=""
+                  />
+                </div>
+
+                <div className="bg-white px-4 py-3 font-bold">
+                  <p className="uppercase">{custom_fields[firstElement[0]]}</p>
+                  <p className="mt-1 text-primary">
+                    {custom_fields[secondElment[0]]}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/*  */}
+
+      <Footer />
     </div>
-
-
-</div>
-
-
-})}
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-{/*  */}
-
-
-
-
-<Footer/>
-
-
-
-</div>
-
-
-    )
-
+  );
 }
+
+export const getStaticProps = async () => {
+  const fetchBlogs = await axios
+    .get("http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?per_page=5")
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((err) => {
+      console.log(err);
+
+      return false;
+    });
+
+  const WhoWeAreData = await axios
+    .get("http://localhost/revivedigitalbackend/wp-json/wp/v2/whoweare")
+    .then((resp) => {
+      return resp.data[0];
+    })
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
+
+  const { custom_fields } = WhoWeAreData;
+
+  delete custom_fields["_edit_last"];
+  delete custom_fields["_edit_lock"];
+
+  const getMediaID = Object.values(custom_fields).filter((eachField) => {
+    return isNumeric(eachField[0]);
+  });
+
+  const allToSingleArray = getMediaID.map((eachID) => eachID[0]);
+
+  const fetchMediaURL = await axios
+    .get(
+      `http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[
+        ...allToSingleArray,
+      ]}`
+    )
+    .then((mediaURLS) => {
+      return mediaURLS.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return {
+    props: {
+      // WhoWeAreData: WhoWeAreData,
+
+      fetchBlogs: fetchBlogs,
+
+      custom_fields: custom_fields,
+
+      fetchMediaURL: fetchMediaURL,
+    },
+  };
+};

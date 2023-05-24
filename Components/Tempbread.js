@@ -2,7 +2,7 @@ import Link from "next/link";
 // ...omitted for brevity
 // components/breadcrumbs/Breadcrumbs.ts
 const TempBread = ({ items }) => {
-  console.log(items);
+
   return (
     <div className="flex pl-28 mt-12 mb-8 space-x-2 items-center text-[#777777] font-medium capitalize">
       {items.map((crumb, i) => {

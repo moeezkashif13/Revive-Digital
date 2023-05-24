@@ -23,7 +23,6 @@ export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}
         };
       })
 
-      let windex = 0;
 
 
       useEffect(()=>{
@@ -32,17 +31,18 @@ export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}
 
         axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/mainservices').then(resp=>{
 
-          console.log(resp.data);
 
           const mainPage = resp.data.filter(eachPage=>{
             return eachPage.slug=='web'
           })
 
+          // console.log(mainPage);
+
 const customFields = mainPage[0].custom_fields
           
           const getKeys = Object.keys(customFields)
 
-console.log(getKeys);
+// console.log(getKeys);
 
 const onlyGetDetailsKey = getKeys.filter(eachKey=>{
   return eachKey.startsWith('details')
@@ -181,8 +181,6 @@ export const getServerSideProps = async (context)=>{
         const filterMainCateg = resp.data.filter(eachCateg=>{
           return eachCateg.slug == categoryName
         })
-
-        console.log(filterMainCateg,'filterMainCateg filterMainCateg');
 
 
         return await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?${filterMainCateg[0].taxonomy}=${filterMainCateg[0].id}`).then(response=>{

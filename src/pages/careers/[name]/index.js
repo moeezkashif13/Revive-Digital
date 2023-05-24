@@ -1,28 +1,73 @@
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
+import { ManageContent } from "../../../../utils/utils";
 
-export default function CareerName({breadcrumbs,splittedCareerName}){
+export default function CareerName({singleCareer,moreJobRoles}){
 
 
-    const breadCrumbsData = breadcrumbs.map((c) => {
-        return {
-          label: c.text,
-          path: c.url,
-        };
-      })
+      const splittedName = singleCareer.title.rendered.split('-').join(' ')
+  
+
+      
+  const db = [
+  {
+    "slug": "learn-python",
+    "courseTitle": "Learn Python: Python for Beginners",
+    "breadcrumbs": [
+      {
+        "text": "Home",
+        "url": "/"
+      },
+      {
+        "text": splittedName,
+        "url": "/careers"
+      },
+   
+    ]
+  }
+  ]
+  
+  
+  const slug = 'learn-python';
+  // simulate a call to the backend server here to get the data
+  const data = db.find((page) => page.slug === slug);
+  if (!data) {
+  return {
+    notFound: true,
+  };
+  }
+  
+  
+   const breadCrumbsData = data.breadcrumbs.map((c) => {
+          return {
+            label: c.text,
+            path: c.url,
+          };
+        })
+
+        useEffect(()=>{
+
+          ManageContent()
+
+
+
+        },[singleCareer.id])
+    
+  
 
 
     return(
 
         <div>
 
-<HeaderComp text={splittedCareerName}  />
+<HeaderComp text={splittedName}  />
 
-
-{/* <BreadCrumbs/> */}
 
 <TempBread items={breadCrumbsData} />
 
@@ -30,10 +75,11 @@ export default function CareerName({breadcrumbs,splittedCareerName}){
 
 <div className="flex px-28 gap-x-8 mb-8">
 
-
 <div className="w-3/4  pr-8 space-y-5 text-lg text-[#777777]">
-    
 
+<div className="space-y-5"  dangerouslySetInnerHTML={{__html:singleCareer?.content?.rendered}} >
+    
+{/* 
 <p>Revive is a growing Digital Marketing Agency, made up of designers, developers and marketeers with an aim to help our clients grow. We look for the best people – positive minded, enthusiastic, bright and creative individuals. We value excellence. We support each other, but don’t carry people – average is not our game.</p>
 
 <p>We are looking for a Computer Science (or similar) graduate to join our team as a trainee developer. We will consider candidates with experience, but this role is aimed at new graduates.</p>
@@ -50,7 +96,12 @@ export default function CareerName({breadcrumbs,splittedCareerName}){
 
 <p>If you don’t like problem solving or a challenge – this probably isn’t for you.</p>
 
-<p>Our culture is friendly and fun – we don’t do office politics, and we support each other in our respective roles. We all work for a common goal, which is our clients’ success – we celebrate when they get results. We do pizzas once a month, dress smart casual during the week and dress down on Fridays. We get down the pub for the occasional drink, and we party hard at Christmas! The culture is work hard, but enjoy the work.</p>
+<p>Our culture is friendly and fun – we don’t do office politics, and we support each other in our respective roles. We all work for a common goal, which is our clients’ success – we celebrate when they get results. We do pizzas once a month, dress smart casual during the week and dress down on Fridays. We get down the pub for the occasional drink, and we party hard at Christmas! The culture is work hard, but enjoy the work.</p> */}
+
+
+
+</div>
+
 
 
 <p className="text-black text-2xl font-semibold">Apply for this role</p>
@@ -72,6 +123,7 @@ export default function CareerName({breadcrumbs,splittedCareerName}){
 </div>
 
 
+
 <div className="w-1/4 ">
     
 
@@ -79,9 +131,11 @@ export default function CareerName({breadcrumbs,splittedCareerName}){
 
 <div className="pl-6 font-semibold flex flex-col gap-y-3 pt-2">
 
-{[1,2,3,4].map(()=>{
+{moreJobRoles.map((eachJob)=>{
 
-return <Link href="/careers/front-end-web-developer">Front End Web Developer</Link>
+  if(eachJob?.title?.rendered==singleCareer?.title?.rendered)return;
+
+return <Link href={`/careers/${eachJob?.slug}`}>{eachJob?.title?.rendered}</Link>
 
 
 })}
@@ -117,68 +171,136 @@ return <Link href="/careers/front-end-web-developer">Front End Web Developer</Li
 
 }
 
+export async function getStaticPaths() {
+
+  const allCareers =  await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/careers').then(resp=>{
+  return resp.data
+}).catch(err=>{
+  return false;
+})
 
 
-export const getServerSideProps = async (context)=>{
+const ways = allCareers.map(post=>{
 
+  console.log(post.slug,'post.slug post.slug post.slug');
 
-        // TEMPPPPPPPPPPPPPP
-
-        const careerName = context.query.name
-
-        const splittedCareerName = careerName.split('-').join(' ')
-
-
-const db = [
-    {
-      "slug": "learn-python",
-      "courseTitle": "Learn Python: Python for Beginners",
-      "breadcrumbs": [
-        {
-          "text": "Home",
-          "url": "/"
-        },
-        {
-          "text": "Careers",
-          "url": "/careers"
-        },
-        {
-            "text": splittedCareerName,
-            "url": "/careers"
-          },
-     
-      ]
+  return {
+    params:{
+      name: post.slug
     }
-  ]
-
-
-  const slug = 'learn-python';
-  // simulate a call to the backend server here to get the data
-  const data = db.find((page) => page.slug === slug);
-  if (!data) {
-    return {
-      notFound: true,
-    };
   }
 
-// TEMPPPPPPPP
+
+})
 
 
+console.log(ways,'ways ways ways ways ways');
 
-    return{
-        props:{
-    
-    
-    // TEMPPPPPPPP
-            splittedCareerName: splittedCareerName,
-            breadcrumbs: data.breadcrumbs,
-            courseTitle: data.courseTitle,
-    // TEMPPPPPPPP
-    
-    
-    
-        }
-    }
+return { paths:ways,fallback:true }
 
 
 }
+
+
+
+
+
+
+export const getStaticProps = async({params })=>{
+
+  console.log(params,'params params params params');
+
+  const singleCareer = await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/careers?slug=${params.name}`).then(resp=>{
+    
+    return resp.data[0];
+  }).catch(err=>{
+    console.log(err);
+  })
+
+
+  const moreJobRoles = await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/careers`).then(resp=>{
+    
+    return resp.data;
+  }).catch(err=>{
+    console.log(err);
+  })
+
+
+
+
+  return {
+    props : {
+      singleCareer : singleCareer,
+      moreJobRoles: moreJobRoles
+    }
+  }
+
+
+
+}
+
+
+
+// export const getServerSideProps = async (context)=>{
+
+
+//         // TEMPPPPPPPPPPPPPP
+
+//         const careerName = context.query.name
+
+//         const splittedCareerName = careerName.split('-').join(' ')
+
+
+// const db = [
+//     {
+//       "slug": "learn-python",
+//       "courseTitle": "Learn Python: Python for Beginners",
+//       "breadcrumbs": [
+//         {
+//           "text": "Home",
+//           "url": "/"
+//         },
+//         {
+//           "text": "Careers",
+//           "url": "/careers"
+//         },
+//         {
+//             "text": splittedCareerName,
+//             "url": "/careers"
+//           },
+     
+//       ]
+//     }
+//   ]
+
+
+//   const slug = 'learn-python';
+//   // simulate a call to the backend server here to get the data
+//   const data = db.find((page) => page.slug === slug);
+//   if (!data) {
+//     return {
+//       notFound: true,
+//     };
+//   }
+
+// // TEMPPPPPPPP
+
+
+
+//     return{
+//         props:{
+    
+    
+//     // TEMPPPPPPPP
+//             splittedCareerName: splittedCareerName,
+//             breadcrumbs: data.breadcrumbs,
+//             courseTitle: data.courseTitle,
+//     // TEMPPPPPPPP
+    
+    
+    
+//         }
+//     }
+
+
+// }

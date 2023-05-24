@@ -5,41 +5,81 @@ import TempBread from "../../Components/Tempbread";
 
 export default function Temp(){
 
-    
+  
+  const [gotIt,setGotIt] = useState([])
+
+
   useEffect(()=>{
 
-    const funcTest = async()=>{
+    const originalArray = [
+      'details-background-color',
+      'details-background-color_1',
+      'details-background-color_2',
+      'details-heading',
+      'details-heading_1',
+      'details-heading_2',
+      'details-image',
+      'details-image_1',
+      'details-image_2',
+      'details-paragraph',
+      'details-paragraph_1',
+      'details-paragraph_2'
+    ];
+    
+    const newArray = [];
+    const numbsArray = [];
 
-      try {
-          await     axios.get('http://localhost/reviveeeedigitalbackend/wp-json/wp/v2/eachservice?slug=bespoke-systemsssssssssssss').then(resp=>{
-            console.log(resp.data);
+    
+    var r = /\d+/;
 
-            if(resp.data.length==0){
+    
+    const prefixes = ['details-background-color', 'details-heading', 'details-image', 'details-paragraph'];
+    
+    const howMuchNumbers = originalArray.map(eachElem=>{
 
-              throw new Error('ERROR AA GYAAA')
-              
-            }
+      var s = eachElem.match(r);
 
-          }).catch(err=>{
-            console.log(err);
-          })
-
-
-
-          setTimeout(() => {
-              throw new Error('yahann b aagyaa')
-          }, 5000);
-
-
-
-      } catch (error) {
-          console.log(error,'errorrrr fromm tryyyy catchhh blockkk');
+      if(s){
+        return Number(s[0])
       }
+
+    }).filter(removeUnwanted=>removeUnwanted)
+
+    let uniqueChars = [...new Set(howMuchNumbers)];
+
+    console.log(uniqueChars);
+
+
+
+
+    const seperate = uniqueChars.map(checkAvien=>{
+
+
+ const mainHello = originalArray.filter(eachCheck=>eachCheck.includes(`_${checkAvien}`))
       
-    }
+//  console.log(mainHello);
 
-    funcTest()
+ return mainHello
 
+    })
+
+    console.log(seperate);
+
+
+    const finalArray = [prefixes,...seperate]
+    
+    console.log(finalArray);
+
+
+setGotIt(finalArray)
+
+    
+    
+    // console.log(newArray);
+
+    // setGotIt(newArray)
+    
+    
 
 
   },[])
@@ -48,7 +88,24 @@ export default function Temp(){
     return (
 <>
 
-sdadasd
+
+      <div>
+
+{gotIt.map((checking,index)=>{ 
+
+
+
+
+   return <div>dadasdasd</div> 
+
+ })}
+
+
+
+      </div>
+
+
+
 
 
     {/* <img src="/layslogo.png"  /> */}

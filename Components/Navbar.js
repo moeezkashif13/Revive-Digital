@@ -115,7 +115,6 @@ export default function Navbar(){
     axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/services-categories?order=desc').then(resp=>{
       // console.log(resp.data);
 
-      console.log(resp.data);
 
       const gotARR = resp.data.map(eachTax=>{
 

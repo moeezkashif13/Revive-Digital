@@ -1,20 +1,153 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
-import { BreadCrumbs, EachBlogCard } from "../../../Components/Small";
+import { BreadCrumbs, EachBlogCard, Loader } from "../../../Components/Small";
 import TempBread from "../../../Components/Tempbread";
 
-export default function Blog({allBlogPosts,breadcrumbs}){
+import tempdata from '../../../Components/tempdata.json'
 
-    console.log(breadcrumbs);
 
+var pagesCount = [];
+
+
+export default function Blog({breadcrumbs}){
+
+  const [allBlogPosts,setAllBlogPosts] = useState([])
+
+  const [pageNumber,setPageNumber] = useState(1);
+
+  const [errorMessage,setErrorMessage] = useState('');
+
+  // const [pagesCount,setPagesCount] = useState(0)
+
+  // const [loading,setLoading] = useState(false)
+
+
+
+useEffect(()=>{
+
+
+  const fetchBlogPosts = async()=>{
+
+    
+    
+    setAllBlogPosts([]);
+    
+   const allBlogs =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media&page=${pageNumber}&order=asc`).then(resp=>{
+
+   
+    if(pagesCount.length==0){
+      for(var i=1; i<=resp.headers['x-wp-totalpages']; i++) {
+        pagesCount.push(i.toString());
+     }
+    }
+
+
+   
+  //  setPagesCount(resp.headers['x-wp-totalpages'])
+
+    setErrorMessage('')
+
+    return resp.data
+
+}).catch(err=>{
+    console.log(err);
+    setErrorMessage('Error in fetching articles')
+  return [];
+  })
+
+
+
+  setAllBlogPosts(allBlogs);
+
+    
+
+
+
+}
+
+
+fetchBlogPosts()
+
+
+},[pageNumber])
+
+
+const fetchNewPages = (event)=>{
+
+
+  const pageNumber = event.target.innerText;
+  
+  setPageNumber(pageNumber)
+  
+
+}
+
+  
     const breadCrumbsData = breadcrumbs.map((c) => {
         return {
           label: c.text,
           path: c.url,
         };
       })
+
+     
+
+      // useEffect(()=>{
+
+        // 5aea4aa14be64107b9738a71075107b2
+
+//         console.log(tempdata);
+
+// tempdata.articles.forEach((eachArticle,index)=>{
+
+//   const data = {
+//     "title" : eachArticle.title,
+//     "excerpt" : eachArticle.description,
+//     "content" : eachArticle.content,
+//     "status" : "publish"
+  // }
+
+
+  // axios.post('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog',data,{
+
+  //         headers:{
+  //           // "Authorization" : `Basic admin:${process.env.NEXT_PUBLIC_APPLICATION_PASSWORD}`
+  //           'Authorization': 'Basic ' + btoa('admin' + ':' + process.env.NEXT_PUBLIC_APPLICATION_PASSWORD)
+
+  //         }
+
+
+  //       }).then(resp=>{
+  //         console.log(resp.data);
+  //       }).catch(err=>{
+  //         console.log(err.response);
+  //       })
+
+// })
+
+
+        // axios.post('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog',data,{
+
+        //   headers:{
+        //     // "Authorization" : `Basic admin:${process.env.NEXT_PUBLIC_APPLICATION_PASSWORD}`
+        //     'Authorization': 'Basic ' + btoa('admin' + ':' + process.env.NEXT_PUBLIC_APPLICATION_PASSWORD)
+
+        //   }
+
+
+        // }).then(resp=>{
+        //   console.log(resp.data);
+        // }).catch(err=>{
+        //   console.log(err.response);
+        // })
+
+
+
+      // },[])
+
+
 
 
 
@@ -32,35 +165,50 @@ export default function Blog({allBlogPosts,breadcrumbs}){
 
 
 
-<div className="px-28  pt-10 pb-20 bg-[#FAFAFA] flex flex-wrap justify-between gap-y-8">
+<div className={`px-28  pt-10 ${errorMessage?'pb-10':'pb-20'} bg-[#FAFAFA] flex flex-wrap justify-between gap-y-8`}>
 
 
-{allBlogPosts.map((eachBlogDetail)=>{
+{allBlogPosts.length>0?allBlogPosts.map((eachBlogDetail)=>{
     return <EachBlogCard  details={eachBlogDetail}   />
-})}
+}):<Loader/>}
+
 
 
 
 </div>
 
+{errorMessage&&
+<div className="pb-6 mb-6 bg-[#FAFAFA] text-center text-primary text-3xl font-semibold">
+
+{errorMessage}
+
+</div>
+
+}
 
 
+{errorMessage?null:
 
 <div className="flex justify-center gap-x-5 py-5 font-semibold ">
 
-{[1,2,3,4,5].map(elem=>{
-    return <div className="border border-primary text-primary underline px-3 py-1 ">{elem}</div>
+{pagesCount.map(eachNumber=>{
+    return <div style={{transition:'all 0.4s'}} onClick={fetchNewPages} className="hover:bg-primary hover:text-white   border border-primary cursor-pointer text-primary underline px-3 py-1 ">{eachNumber}</div>
 })}
 
 
-<div className="border border-primary text-primary px-3 py-1 ">...</div>
 
-<div className="border border-primary text-primary px-3 py-1 underline ">Last</div>
+
+
+<div className="border border-primary text-primary px-3 py-1 ">check {/*......*/}</div>
+
+<div className="border border-primary text-primary px-3 py-1 underline ">checkk {/*lastttt*/}</div>
 
 
 
 
 </div>
+
+}
 
 
 <Footer/>
@@ -81,11 +229,11 @@ export default function Blog({allBlogPosts,breadcrumbs}){
 
 export const getServerSideProps = async ()=>{
 
-    const fetchBlogPosts = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media').then(resp=>{
-        return resp.data
-    }).catch(err=>{
-        console.log(err);
-    })
+    // const fetchBlogPosts = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media').then(resp=>{
+    //     return resp.data
+    // }).catch(err=>{
+    //     console.log(err);
+    // })
 
 
 
@@ -125,7 +273,7 @@ const db = [
 
     return {
         props:{
-            allBlogPosts:fetchBlogPosts,
+            // allBlogPosts:fetchBlogPosts,
 
 
             // TEMPPPPPPPP
