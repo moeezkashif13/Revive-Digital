@@ -1,6 +1,6 @@
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
-import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../Components/Small";
+import { BreadCrumbs, CloneDetailsSection, CommonHeading, DetailsSection } from "../../../Components/Small";
 
 export default function WhatWeDo(){
 
@@ -23,7 +23,7 @@ export default function WhatWeDo(){
 
 {[1,2,3,4,5].map((elem,index)=>{
 
-return <DetailsSection noFindOut={index==0&&true} reverse={index%2==0&&true}  />
+return <CloneDetailsSection noFindOut={index==0&&true} reverse={index%2==0&&true}  />
 
 })}
 

@@ -93,7 +93,18 @@ setGotIt(finalArray)
 
 {gotIt.map((checking,index)=>{ 
 
+  const hello = {};
 
+  console.log(checking);
+
+  checking.forEach((eachCheck,index)=>{
+
+    
+
+
+  })
+
+  console.log(hello);
 
 
    return <div>dadasdasd</div> 

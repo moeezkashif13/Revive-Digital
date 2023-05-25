@@ -1,7 +1,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../Components/Small";
@@ -12,7 +12,9 @@ const mainArr = [];
 
 
 
-export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}){
+export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields}){
+console.log(metaFields);
+  
 
     const router = useRouter();
 
@@ -23,50 +25,10 @@ export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs}
         };
       })
 
-
-
-      useEffect(()=>{
-
-
-
-        axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/mainservices').then(resp=>{
-
-
-          const mainPage = resp.data.filter(eachPage=>{
-            return eachPage.slug=='web'
-          })
-
-          // console.log(mainPage);
-
-const customFields = mainPage[0].custom_fields
-          
-          const getKeys = Object.keys(customFields)
-
-// console.log(getKeys);
-
-const onlyGetDetailsKey = getKeys.filter(eachKey=>{
-  return eachKey.startsWith('details')
-}).sort();
-
-console.log(onlyGetDetailsKey);
-
-
-  
+      
 
 
 
-          // const objWork = mainPage[0].custom_fields
-
-          // console.log(Object.entries(objWork));
-
-
-        }).catch(err=>{
-          console.log(err);
-        })
-
-
-
-      },[])
 
 
 return (
@@ -138,8 +100,33 @@ return (
 <div>
 
 
-{[1,2,3,4,5].map((elem,index)=>{
-    return <DetailsSection reverse={index%2!=0&&true}  />
+{allMainServices.map((checking,index)=>{
+
+let hello = {};
+
+
+checking.forEach((eachCheck,index)=>{
+
+
+const subString = eachCheck.substring(8,50)
+
+
+    hello[subString] = metaFields[eachCheck][0]
+
+
+
+
+})
+
+console.log(checking);
+
+console.log(hello);
+
+console.log(index);
+
+    return <DetailsSection allMedia={getMedia} details={hello} index={index} reverse={index%2!=0&&true}  />
+
+
 })}
 
 
@@ -243,7 +230,100 @@ const db = [
   }
   
   // TEMPPPPPPPP
-  
+
+    const getMedia = await axios('http://localhost/revivedigitalbackend/wp-json/wp/v2/media?per_page=100').then(resp=>{
+      console.log(resp.data);
+
+    return resp.data
+
+
+    }).catch(err=>{
+      return false
+
+    })
+
+
+    let metaFields = {}
+
+    const allMainServices = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/mainservices').then(resp=>{
+
+
+      const mainPage = resp.data.filter(eachPage=>{
+        return eachPage.slug==categoryName
+      })
+
+      metaFields = {...mainPage[0].custom_fields}
+
+      // console.log(mainPage);
+
+const customFields = mainPage[0].custom_fields
+      
+      const getKeys = Object.keys(customFields)
+
+// console.log(getKeys);
+
+const onlyGetDetailsKey = getKeys.filter(eachKey=>{
+return eachKey.startsWith('details')
+}).sort();
+
+
+
+var r = /\d+/;
+
+
+const prefixes = ['details-background-color', 'details-heading', 'details-image', 'details-paragraph'];
+
+const howMuchNumbers = onlyGetDetailsKey.map(eachElem=>{
+
+var s = eachElem.match(r);
+
+if(s){
+return Number(s[0])
+}
+
+}).filter(removeUnwanted=>removeUnwanted)
+
+let uniqueChars = [...new Set(howMuchNumbers)];
+
+
+
+const seperate = uniqueChars.map(checkAvien=>{
+
+
+const mainHello = onlyGetDetailsKey.filter(eachCheck=>eachCheck.includes(`_${checkAvien}`))
+
+//  console.log(mainHello);
+
+return mainHello
+
+})
+
+
+const finalArray = [prefixes,...seperate]
+
+
+return finalArray;
+
+
+
+      // const objWork = mainPage[0].custom_fields
+
+      // console.log(Object.entries(objWork));
+
+
+    }).catch(err=>{
+      console.log(err);
+    })
+
+
+
+
+console.log(allMainServices,' allMainServices allMainServices allMainServices allMainServices');
+
+
+
+
+
 
     
     return {
@@ -251,6 +331,10 @@ const db = [
 
             
             getAssociatedServices:getAssociatedServices,
+            getMedia: getMedia,
+
+            allMainServices : allMainServices,
+            metaFields : metaFields,
 
                 // TEMPPPPPPPP
     breadcrumbs: data.breadcrumbs,

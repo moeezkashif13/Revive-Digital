@@ -11,7 +11,7 @@ const TempBread = ({ items }) => {
           return (
             <>
               <Link
-                href={'/'}
+                href={crumb.path}
                 key={i}
                 className="text-indigo-500 hover:text-indigo-400 hover:underline"
               >

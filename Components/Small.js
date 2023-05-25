@@ -124,7 +124,33 @@ export const EachBlogCard = ({ details }) => {
   );
 };
 
-export const DetailsSection = ({ reverse, noFindOut, secondType }) => {
+export const DetailsSection = ({ reverse, noFindOut, secondType,details,index,allMedia }) => {
+
+  const heading = index==0?details['heading']:details[`heading_${index}`]
+
+  const splitText = heading.split(" ");
+
+  const getFirstWord = splitText.shift();
+
+  const joiningRemainingWords = splitText.join(" ");
+
+  console.log(getFirstWord);
+  console.log(joiningRemainingWords);
+
+  const paragraph = index==0?details['paragraph']:details[`paragraph_${index}`]
+
+  const image = index==0?details['image']:details[`image_${index}`];
+
+console.log(image);
+
+  const getLinkedImage = allMedia.filter(eachMedia=>eachMedia.id==image)
+  
+  console.log(getLinkedImage);
+  
+  const backgroundColor = index==0?details['background-color']:details[`background-color_${index}`]
+  
+  
+
   return (
     <div
       className={`flex ${secondType && "gap-x-3.5"}  ${
@@ -132,9 +158,87 @@ export const DetailsSection = ({ reverse, noFindOut, secondType }) => {
       } `}
     >
       <div className={`w-1/2 px-20 py-16  ${secondType && "bg-[#FAFAFA]"} `}>
-        <CommonHeading special="what" main="we do" />
+        <CommonHeading  special={getFirstWord} main={joiningRemainingWords} />
 
-        <div className="space-y-5 text-[#777777]">
+        <div className="space-y-5 text-[#777777]" dangerouslySetInnerHTML={{__html:paragraph}} >
+          {/* <p>
+            Revive are a full service digital marketing agency. We flourish when
+            we look after your entire digital presence – from the rankings in
+            Google, to the social media, the brand, the messages, and the
+            website.
+          </p>
+
+          <p>
+            We came from website design, and that is still the primary vehicle
+            we use to help promote your business online. But now we look at the
+            big picture. How your logo and colours work along with your business
+            stationery and livery. Your ranking in the search engines. Your paid
+            marketing. Your social media. Conversion rates of visitors to
+            enquiries and sales. Is your website actually working?
+          </p>
+
+          <p>
+            The services we offer are varied, but all tie together to form a
+            digital arsenal, allowing you to grow your business and expand your
+            brand online.
+          </p> */}
+
+          {/* {!noFindOut && (
+            <div>
+              <Link
+                className="rounded-2xl border border-primary px-6 py-1.5 text-primary underline"
+                href="/"
+              >
+                Find out more
+              </Link>
+            </div>
+          )} */}
+        </div>
+      </div>
+
+      <div className={`w-1/2  ` } style={{backgroundColor:backgroundColor}}  >
+        
+        {getLinkedImage[0].mime_type=='video/mp4'?
+
+<div className="w-full h-full videoElem">
+<video  className="object-cover h-full" autoPlay loop muted playsinline>
+          <source src={getLinkedImage[0].source_url} type="video/mp4" />
+        </video>
+        </div>   
+        
+        
+        :
+
+
+
+        
+        <img  className="w-full max-w-full h-full object-cover" src={getLinkedImage[0].source_url} alt="" />
+
+      }
+
+
+
+      </div>
+    </div>
+  );
+};
+
+
+export const CloneDetailsSection = ({ reverse, noFindOut, secondType,details,index,allMedia }) => {
+
+  
+  
+
+  return (
+    <div
+      className={`flex ${secondType && "gap-x-3.5"}  ${
+        reverse && "flex-row-reverse"
+      } `}
+    >
+      <div className={`w-1/2 px-20 py-16  ${secondType && "bg-[#FAFAFA]"} `}>
+        <CommonHeading  special="first" main="remaining words" />
+
+        <div className="space-y-5 text-[#777777]"  >
           <p>
             Revive are a full service digital marketing agency. We flourish when
             we look after your entire digital presence – from the rankings in
@@ -170,12 +274,22 @@ export const DetailsSection = ({ reverse, noFindOut, secondType }) => {
         </div>
       </div>
 
-      <div className="w-1/2">
-        {/* <img  className="w-full max-w-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/06/what-we-do.jpg" alt="" /> */}
+      <div className={`w-1/2  ` }  >
+        
+
+
+
+        
+        <img  className="w-full max-w-full h-full object-cover" src={''} alt="" />
+
+
+
+
       </div>
     </div>
   );
 };
+
 
 export const Loader = () => {
   return <div class="lds-dual-ring"></div>;
