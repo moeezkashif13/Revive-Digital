@@ -26,7 +26,7 @@ export default function HeaderComp({
   const mainString = splittingText();
 
   return (
-    <div className="relative  h-[500px] lg:h-[380px] capitalize     ">
+    <div className="relative  h-[700px] lg:h-[380px] capitalize     ">
       <div className="absolute left-0 top-10 z-20 w-full px-12   text-white ">
         <Navbar navMenu={navMenu} />
       </div>
@@ -47,16 +47,16 @@ export default function HeaderComp({
           {/* NAVBARR ENDDD */}
 
           {anotherAppearance ? (
-            <div className=" absolute  -bottom-3    z-20 flex  h-full w-full flex-col items-center justify-center gap-y-4">
-              <p className="text-5xl font-medium">
+            <div className="  relative top-[340px]   lg:absolute lg:-bottom-3    z-20 flex  lg:h-full w-full flex-col items-center justify-center gap-y-4">
+              <p className="text-3xl lg:text-5xl font-medium">
                 {specialAppearanceFields?.["each-service-header"]}
               </p>
               {/* {specialAppearanceFields?.['each-service-paragraph']} */}
-              <p className="w-1/2 text-xl text-center font-semibold ">
-                {specialAppearanceFields?.["each-service-paragraph"]}{" "}
+              <p className=" w-full lg:w-1/2 text-[1rem] lg:text-xl text-center font-semibold ">
+                {specialAppearanceFields?.["each-service-paragraph"]} das nasknd asnd snad {" "} 
               </p>
 
-              <div className="flex gap-x-6 text-lg font-semibold text-white">
+              <div className="flex flex-col lg:flex-row gap-y-6 gap-x-6 text-lg font-semibold text-white">
                 <Link
                   style={{ transition: "all 0.3s" }}
                   href="/our-work"

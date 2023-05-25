@@ -180,7 +180,6 @@ export async function getStaticPaths() {
   return [];
 })
 
-console.log(allCareers,'allCareers allCareers allCareers');
 
 
 const ways = allCareers.map(post=>{
@@ -217,7 +216,6 @@ export const getStaticProps = async({params })=>{
     console.log(err);
   })
 
-  console.log(singleCareer,'singleCareer singleCareer singleCareer');
 
   const moreJobRoles = await axiosClient.get(`/careers`).then(resp=>{
     
