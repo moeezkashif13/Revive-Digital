@@ -4,7 +4,7 @@ import { FaFacebookF, FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from "reac
 export default function Footer(){
 
     return (
-        <div className="flex justify-between relative bg-[#262729] py-14 px-5 text-white">
+        <div className=" lg:h-auto flex flex-col   lg:space-y-0 lg:flex-row lg:justify-between relative bg-[#262729] py-10 lg:py-14 px-5 text-white">
 
 
   <div>
@@ -12,8 +12,8 @@ export default function Footer(){
   </div>
 
 
-  <div className="absolute left-[50%]" style={{transform:'translateX(-50%)'}}>
-    <p className="text-[14px]">7th Floor, Maitland House, Warrior Square, Southend on Sea, Essex, SS1 2JY</p>
+  <div className="relative left-44 top-5 lg:absolute    lg:left-[50%]" style={{transform:'translateX(-50%)'}}>
+    <p className="text-center lg:text-left text-[14px]">7th Floor, Maitland House, Warrior Square, Southend on Sea, Essex, SS1 2JY</p>
 
 <div className="space-x-5 text-center text-sm mt-1">
 <Link href='/' className="underline">Terms</Link>
@@ -25,7 +25,7 @@ export default function Footer(){
 
 
 
-<div className="flex gap-x-4 items-center text-2xl text-white ">
+<div className="flex gap-x-4 justify-center mt-10 lg:mt-0 items-center text-2xl text-white ">
 
 
 <div>

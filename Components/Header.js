@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
 export default function HeaderComp({
+  navMenu,
   specialAppearanceFields,
   text,
   special = "our",
@@ -25,18 +26,18 @@ export default function HeaderComp({
   const mainString = splittingText();
 
   return (
-    <div className="relative  h-[380px] capitalize ">
-      <div className="absolute left-0 top-10 z-20 w-full px-12  text-white ">
-        <Navbar />
+    <div className="relative  h-[500px] lg:h-[380px] capitalize     ">
+      <div className="absolute left-0 top-10 z-20 w-full px-12   text-white ">
+        <Navbar navMenu={navMenu} />
       </div>
 
-      <div className="heroSectVideoDiv h-full bg-purple-500">
-        <video width="100%" height="100%" autoPlay loop muted playsinline>
+      <div className="heroSectVideoDiv h-full ">
+        <video className="w-full h-full object-cover" autoPlay loop muted playsinline>
           <source src="/intro.mp4" type="video/mp4" />
         </video>
       </div>
 
-      <div className="frontDiv absolute top-4 h-full w-full pl-4 text-white">
+      <div className="frontDiv absolute top-2 lg:top-4 pl-2 lg:pl-4 h-full w-full  text-white">
         <div
           className="relative h-full "
           style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
@@ -51,7 +52,7 @@ export default function HeaderComp({
                 {specialAppearanceFields?.["each-service-header"]}
               </p>
               {/* {specialAppearanceFields?.['each-service-paragraph']} */}
-              <p className="w-1/2 text-xl font-semibold ">
+              <p className="w-1/2 text-xl text-center font-semibold ">
                 {specialAppearanceFields?.["each-service-paragraph"]}{" "}
               </p>
 
@@ -74,7 +75,7 @@ export default function HeaderComp({
               </div>
             </div>
           ) : (
-            <div className=" absolute  bottom-4 left-28 z-20 flex  h-1/2  w-[65%]   flex-col justify-center text-4xl font-extrabold">
+            <div className=" absolute  bottom-4  left-0 lg:left-28 z-20 flex  h-1/2  w-full text-center lg:text-start lg:w-[65%]    flex-col justify-center text-4xl font-extrabold   ">
               <p>
                 <span className="relative ">
                   {mainString ? (

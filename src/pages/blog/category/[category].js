@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -5,8 +6,9 @@ import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, EachBlogCard } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
+import axiosClient from "../../../../utils/axiosClient";
 
-export default function ArticleCategory({data,categoryName,breadcrumbs}){
+export default function ArticleCategory({data,categoryName,breadcrumbs,navMenu}){
 
 const router = useRouter();
 
@@ -23,22 +25,22 @@ const [allArticles,setAllArticles] = useState([])
       })
 
 
-console.log(data.mainDataCheck);
 
+      
     return (
 
         <div>
 
 
 
-<HeaderComp   text={categoryName} />
+<HeaderComp navMenu={navMenu}  text={categoryName} />
 
 
 <TempBread items={breadCrumbsData} />
 
 
 
-<div className="px-28 bg-[#FAFAFA] py-12 flex flex-wrap justify-between gap-y-10 mb-6">
+<div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding bg-[#FAFAFA] py-12 flex flex-wrap  justify-center md:justify-between gap-y-10 mb-6">
 
 {data.mainDataCheck==404?
 
@@ -61,8 +63,8 @@ No articles available in this category
 
 
 data.mainDataCheck.map((eachBlogDetail)=>{
-    console.log(eachBlogDetail);
-    return <EachBlogCard  details={eachBlogDetail} />
+
+  return <EachBlogCard  details={eachBlogDetail} />
 })
 
 
@@ -123,10 +125,10 @@ export const getServerSideProps = async(context)=>{
 
     const categoryName = context.query.category
 
-    const url = `http://localhost/revivedigitalbackend/wp-json/wp/v2/blog-category?per_page=50`;
+    const url = `/blog-category?per_page=50`;
     
 
-     const mainData = await axios.get(url).then(async resp=>{
+     const mainData = await axiosClient.get(url).then(async resp=>{
 
         const requiredCategory = resp.data.filter(eachCateg=>{
 
@@ -135,7 +137,7 @@ export const getServerSideProps = async(context)=>{
 
         if(requiredCategory.length>0){
 
-        const articlesByCateg = await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?${requiredCategory[0].taxonomy}=${requiredCategory[0].id}`).then(responseObj=>{
+        const articlesByCateg = await axiosClient.get(`/blog?${requiredCategory[0].taxonomy}=${requiredCategory[0].id}`).then(responseObj=>{
 
         return responseObj.data
 
@@ -202,7 +204,11 @@ const db = [
 
 
 
-
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
 
 
 
@@ -211,6 +217,8 @@ return{
     props:{
 
         data : mainData,
+
+        navMenu : navMenu,
 
 // TEMPPPPPPPP
       categoryName:categoryName,

@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -10,6 +10,7 @@ import {
   EachBlogCard,
   Quote,
 } from "../../Components/Small";
+import axiosClient from "../../utils/axiosClient";
 
 function isNumeric(str) {
   if (typeof str != "string") return false; // we only process strings!
@@ -20,8 +21,8 @@ function isNumeric(str) {
 }
 
 export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
-  console.log(custom_fields);
-
+  
+  
   const getTeamMembers = Object.keys(custom_fields).filter((eachField) =>
     eachField.includes("who-we-are-team")
   );
@@ -48,18 +49,16 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
 
   let secondremainingWords = detailsSectHeadingFirst.slice(1).join(" ");
 
-  console.log(fetchBlogs);
-
   return (
     <div>
-      <HeaderComp text="who we are" />
+      {/* <HeaderComp text="who we are" /> */}
 
-      <BreadCrumbs />
+      {/* <BreadCrumbs /> */}
 
       {/*  */}
 
-      <div className="mb-16 mt-16 flex gap-x-16 px-28 text-[15px]">
-        <div className="w-1/2">
+      <div className="mb-16 mt-16 flex flex-col md:flex-row gap-y-6 md:gap-y-0  gap-x-16 px-mobilePadding  md:px-tabletPadding  lg:px-desktopPadding lg:px text-[15px]">
+        <div className="w-full md:w-1/2">
           <CommonHeading special={firstword} main={remainingWords} />
 
           <div
@@ -94,7 +93,7 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
           </div>
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <CommonHeading special={secondword} main={secondremainingWords} />
 
           <div
@@ -133,10 +132,10 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
 
       {/*  */}
 
-      <div className="bg-[#FAFAFA] px-28 py-12">
+      <div className="bg-[#FAFAFA] px-mobilePadding md:px-tabletPadding lg:px-desktopPadding py-12">
         <CommonHeading special="our" main="blog" />
 
-        <div className="flex flex-wrap justify-between gap-y-8">
+        <div className="flex flex-wrap justify-center md:justify-between gap-y-8">
           {fetchBlogs.map((eachArticle) => {
             return <EachBlogCard details={eachArticle} />;
           })}
@@ -158,10 +157,10 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
 
       {/*  */}
 
-      <div className="bg-[#FAFAFA] px-28 py-10">
+      <div className="bg-[#FAFAFA] px-mobilePadding md:px-tabletPadding lg:px-desktopPadding py-10">
         <CommonHeading special="meet" main="the team" />
 
-        <div className="flex flex-wrap justify-between gap-x-4 gap-y-10">
+        <div className="flex flex-wrap justify-center lg:justify-between  gap-x-4 gap-y-10">
           {teamMembers.map((eachTeamMember, index) => {
             const firstElement = eachTeamMember.splice(0, 1);
             const secondElment = eachTeamMember.splice(0, 1);
@@ -203,8 +202,8 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
 }
 
 export const getStaticProps = async () => {
-  const fetchBlogs = await axios
-    .get("http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?per_page=5")
+  const fetchBlogs = await axiosClient
+    .get("/blog?per_page=5")
     .then((resp) => {
       return resp.data;
     })
@@ -214,8 +213,8 @@ export const getStaticProps = async () => {
       return false;
     });
 
-  const WhoWeAreData = await axios
-    .get("http://localhost/revivedigitalbackend/wp-json/wp/v2/whoweare")
+  const WhoWeAreData = await axiosClient
+    .get("/whoweare")
     .then((resp) => {
       return resp.data[0];
     })
@@ -235,9 +234,9 @@ export const getStaticProps = async () => {
 
   const allToSingleArray = getMediaID.map((eachID) => eachID[0]);
 
-  const fetchMediaURL = await axios
+  const fetchMediaURL = await axiosClient
     .get(
-      `http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[
+      `/media?include=${[
         ...allToSingleArray,
       ]}`
     )

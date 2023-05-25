@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
@@ -6,15 +7,16 @@ import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
+import axiosClient from "../../../../utils/axiosClient";
 import { ManageContent } from "../../../../utils/utils";
 
 
 
 
-export default function Article({gotArticle,breadcrumbs}){
+export default function Article({gotArticle,breadcrumbs,navMenu}){
 
-  console.log(gotArticle);
 
+  
     const [blogCategories,setBlogCategories] = useState([])
 
     const [recentPosts,setRecentPosts] = useState([])
@@ -26,7 +28,7 @@ export default function Article({gotArticle,breadcrumbs}){
 
       const fetchRecentPosts = async ()=>{
 
-        axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?per_page=10').then(resp=>{
+        axiosClient.get('/blog?per_page=10').then(resp=>{
           
           setRecentPosts(resp.data)
         }).catch(err=>{
@@ -41,7 +43,7 @@ export default function Article({gotArticle,breadcrumbs}){
 
 const fetchBlogCategories = async ()=>{
 
-  axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog-category?per_page=50').then(resp=>{
+  axiosClient.get('/blog-category?per_page=50').then(resp=>{
     
     setBlogCategories(resp.data)
   }).catch(err=>{
@@ -84,7 +86,7 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 
 
 
-<HeaderComp text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
+<HeaderComp navMenu={navMenu} text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
 
 
 <TempBread items={breadCrumbsData} />
@@ -94,10 +96,10 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 
 
 
-<div className="flex px-28 gap-x-8 mb-8">
+<div className="flex flex-col lg:flex-row px-mobilePadding md:px-tabletPadding lg:px-desktopPadding gap-x-8 mb-8">
 
 
-<div className="w-3/4  pr-8 space-y-5 text-lg text-[#777777]">
+<div className="w-full lg:w-3/4  pr-8 space-y-5 text-lg text-[#777777]">
     
 
 <p>19/04/2023</p>
@@ -139,7 +141,7 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 </div>
 
 
-<div className="w-1/4 space-y-12">
+<div className="w-full lg:w-1/4 space-y-12">
     
 <div>
 <CommonHeading   special="recent" main="posts"  />
@@ -221,7 +223,7 @@ return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRe
 export const getServerSideProps = async(context)=>{
 
 
-   const gotArticle =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/blog/?slug=${context.query.article}`).then(resp=>{
+   const gotArticle =  await axiosClient.get(`/blog/?slug=${context.query.article}`).then(resp=>{
 
     
         delete resp.data[0]['_links']
@@ -274,7 +276,11 @@ if (!data) {
 
 // TEMPPPPPPPP
 
-
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
 
   
 
@@ -282,6 +288,7 @@ return {
   props:{
     gotArticle:gotArticle,
 
+    navMenu : navMenu,
 
     // TEMPPPPPPPP
     breadcrumbs: data.breadcrumbs,

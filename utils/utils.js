@@ -7,6 +7,9 @@ export const ManageContent = ()=>{
         check.classList.add(`heading${String(check.nodeName).toLowerCase()}`)
 
         check.style.color = '#262729'
+        check.style.lineHeight = '2.5rem'
+
+
     })
 
 document.querySelectorAll('ul').forEach(eachUL=>{

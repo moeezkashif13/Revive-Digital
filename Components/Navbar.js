@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import {FaPhoneAlt} from 'react-icons/fa'
+import axiosClient from "../utils/axiosClient";
 
 const WhoWeAreLink = ({elem})=>{
-  return   <div  className="  whoweareelem visible opacity-100 toggleIt  flex justify-center absolute top-9 w-[350px] px-6 py-4" style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+  return   <div  className="  bg-[#ffffff] lg:bg-[#ffffffe6] flex justify-center absolute top-7 z-20 w-[250px] lg:w-[350px] px-6 py-4" style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
   
@@ -35,9 +36,9 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   // 
   
   // toggleIt
-  return   <div  className="whatwedomainelem   visible opacity-100  absolute top-9 shadow-2xl w-[750px] px-6 py-4  " style={{transition:'all 0.3s',backgroundColor:'rgba(255,255,255,0.9)',left:'50%',transform:'translateX(-50%)'}}  >
+  return   <div  className=" bg-[#ffffff] lg:bg-[#ffffffe6] absolute top-7 shadow-2xl z-20  w-full lg:w-[750px] px-6 py-4  " style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
-  <div className=" flex flex-wrap gap-x-5 gap-y-3  ">
+  <div className=" flex flex-wrap flex-col   lg:flex-row gap-x-5 gap-y-3  ">
   
     {checkArr?.map(eachChild=>{
   
@@ -47,7 +48,7 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   
   
   
-    return <><Link href={`/what-we-do/${eachChild.slug}`} className="flex flex-col gap-y-1  w-[22.8%] ">
+    return <><Link href={`/what-we-do/${eachChild.slug}`} className=" w-full text-center lg:text-left  flex flex-col gap-y-1  lg:w-[22.8%] ">
 
 <p className="mb-2 text-lg  text-primary font-semibold">
   
@@ -91,28 +92,28 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
 
 
 
-export default function Navbar(){
+export default function Navbar({navMenu}){
 
 
-    const [navMenu,setNavMenu] = useState([]);
+    // const [navMenu,setNavMenu] = useState([]);
 
     const [checkArr,setCheckArr] = useState([]);
 
 
     useEffect(()=>{
   
-  axios.get('http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  // axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
   
-  // console.log(resp.data.items);
+  // // console.log(resp.data.items);
   
-    setNavMenu(resp.data.items)
+  //   setNavMenu(resp.data.items)
   
-  })
+  // })
 
 
   const fetchInnerWhatWeDoTax = ()=>{
 
-    axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/services-categories?order=desc').then(resp=>{
+    axiosClient.get('/services-categories?order=desc').then(resp=>{
       // console.log(resp.data);
 
 
@@ -123,7 +124,7 @@ export default function Navbar(){
         }
 
 
-        return  axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
+        return  axiosClient.get(`/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
 
 
           return {
@@ -158,53 +159,16 @@ export default function Navbar(){
 
 
     
-useEffect(()=>{
+    const [showWhoWeAreLink,setShowWhoWeAreLink] = useState(false);
 
-  const mainEventWhatWeDo = (event)=>{
-
-    event.stopPropagation()
-
-    const mainElem = document.querySelector('.whatwedomainelem')
-mainElem.classList.toggle('toggleIt')
-
-  }
-
-  const mainEventWhoWeAre = (event)=>{
-
-    event.stopPropagation()
-
-    const mainElem = document.querySelector('.whoweareelem')
-mainElem.classList.toggle('toggleIt')
-
-  }
-
-
-
-  // document.querySelector('.whatwedoclass')?.addEventListener('mouseenter',mainEventWhatWeDo,)
-
-  // document.querySelector('.whoweareclass')?.addEventListener('mouseenter',mainEventWhoWeAre,)
-
-  
-  
-
-  return()=>{
-    // document.querySelector('.whatwedoclass')?.removeEventListener('mouseleave',mainEventWhatWeDo)
-  // 
-  // document.querySelector('.whoweareclass')?.removeEventListener('mouseleave',mainEventWhoWeAre,)
-
-    
-  }
-
-
-
-},[navMenu.length])
+    const [showWhatWeDo,setShowWhatWeDo] = useState(false);
 
 
 
 
 return (
 
-    <div className="   flex  justify-between items-center   ">
+    <div className="   flex  flex-col lg:flex-row gap-y-3 justify-between items-center capitalize  ">
 
 
 
@@ -215,35 +179,66 @@ return (
 </Link>
 
 
-<div className="flex gap-x-5 z-40 ">
+<div className="flex flex-col w-full lg:w-auto items-center lg:items-start lg:flex-row gap-y-3 gap-x-5 z-40 ">
 
 
 {navMenu.map(elem=>{
 
-  return <div className={` flex   relative ${elem.title=='What we do'?'whatwedoclass':''} ${elem.title=='Who we are'?'whoweareclass':''} `}>
+  return <div className={` flex  w-full justify-center lg:w-auto lg:justify-start  relative `}>
 
 
 
-<Link href={`/${elem.object_slug}`} className={`text-lg font-medium  `}>
+<Link href={`/${elem.object_slug}`} className={`text-lg  font-medium  `}>
   
-<p>{elem.title}</p>
+<p  onMouseEnter={(event)=>{
 
 
-{elem.title=='Who we are'&&
+if(event.target.innerText=='Who We Are'){
+  
+  setShowWhoWeAreLink(true)
+}else{
+  setShowWhoWeAreLink(false)
+
+}
+
+
+if(event.target.innerText=='What We Do'){
+  
+  setShowWhatWeDo(true)
+}else{
+  setShowWhatWeDo(false)
+
+}
+
+
+
+}}  >{elem.title}</p>
+
+
+ {(showWhoWeAreLink&&elem.title=='Who we are')&&
 
 <WhoWeAreLink  elem={elem} />
+
+}
+
+{(showWhatWeDo&&elem.title == 'What we do')&&
+
+<WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
 
 
 }
 
 
+
+
+{/*
 
 {elem.title=='What we do'&&
 
   <WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
 
 
-}
+} */}
 
 
 

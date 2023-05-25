@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,9 +10,12 @@ import MasonryComp from "../../Components/Masonry";
 import Navbar from "../../Components/Navbar";
 import { BreadCrumbs } from "../../Components/Small";
 import TempBread from "../../Components/Tempbread";
+import axiosClient from "../../utils/axiosClient";
 
-export default function OurWork({ breadcrumbs, gotAllWork }) {
+export default function OurWork({ breadcrumbs, gotAllWork,navMenu }) {
   const router = useRouter();
+
+
 
 
   const splittedName = router.pathname.split("/")[1].split("-").join(" ");
@@ -53,7 +57,7 @@ export default function OurWork({ breadcrumbs, gotAllWork }) {
     <div>
       {/* HEADERRRRR STARTTT */}
 
-      <HeaderComp text={splittedName} />
+      <HeaderComp navMenu={navMenu} text={splittedName} />
 
       {/* HEADERRRRR ENDDD */}
 
@@ -69,9 +73,9 @@ export default function OurWork({ breadcrumbs, gotAllWork }) {
 }
 
 export const getStaticProps = async () => {
-  const gotAllWork = await axios
+  const gotAllWork = await axiosClient
     .get(
-      "http://localhost/revivedigitalbackend/wp-json/wp/v2/ourworktype?order=desc"
+      "/ourworktype?order=desc"
     )
     .then(async (resp) => {
      
@@ -79,11 +83,11 @@ export const getStaticProps = async () => {
         return eachWork.featured_media;
       });
 
-      console.log(getAllWorksMediaIDS,'getAllWorksMediaIDS getAllWorksMediaIDS');
 
-      const getWorkMediaURL = await axios
+      
+      const getWorkMediaURL = await axiosClient
         .get(
-          `http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[...getAllWorksMediaIDS]}`
+          `/media?include=${[...getAllWorksMediaIDS]}`
         )
         .then((gotMedia) => {
 
@@ -123,11 +127,17 @@ export const getStaticProps = async () => {
     });
 
 
-    // console.log(gotAllWork,'gotAllWork gotAllWork gotAllWork');
-
+    const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
+    
+    
   return {
     props: {
       gotAllWork: gotAllWork,
+      navMenu : navMenu
     },
   };
 };

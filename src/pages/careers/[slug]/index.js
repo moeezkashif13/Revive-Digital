@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,10 +7,10 @@ import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
+import axiosClient from "../../../../utils/axiosClient";
 import { ManageContent } from "../../../../utils/utils";
 
-export default function CareerName({singleCareer,moreJobRoles}){
-
+export default function CareerName({singleCareer,moreJobRoles,navMenu}){
 
       const splittedName = singleCareer.title.rendered.split('-').join(' ')
   
@@ -66,16 +67,16 @@ export default function CareerName({singleCareer,moreJobRoles}){
 
         <div>
 
-<HeaderComp text={splittedName}  />
+<HeaderComp  navMenu={navMenu} text={splittedName}  />
 
 
 <TempBread items={breadCrumbsData} />
 
 
 
-<div className="flex px-28 gap-x-8 mb-8">
+<div className="flex flex-col lg:flex-row px-mobilePadding md:px-tabletPadding lg:px-28 gap-x-8 mb-8">
 
-<div className="w-3/4  pr-8 space-y-5 text-lg text-[#777777]">
+<div className="w-full lg:w-3/4 pr-0 lg:pr-8 space-y-5 text-lg text-[#777777]">
 
 <div className="space-y-5"  dangerouslySetInnerHTML={{__html:singleCareer?.content?.rendered}} >
     
@@ -107,7 +108,7 @@ export default function CareerName({singleCareer,moreJobRoles}){
 <p className="text-black text-2xl font-semibold">Apply for this role</p>
 
 
-<div className="flex items-center gap-x-5 text-primary font-semibold text-[1rem]">
+<div className="flex flex-col md:flex-row gap-y-3 items-center gap-x-5 text-primary font-semibold text-[1rem]">
 
 <div className="border border-primary px-4 py-1 rounded-3xl">Apply Online</div>
 
@@ -124,7 +125,7 @@ export default function CareerName({singleCareer,moreJobRoles}){
 
 
 
-<div className="w-1/4 ">
+<div className="w-full lg:w-1/4 mt-6 lg:mt-0">
     
 
 <CommonHeading   special="more" main="job roles"  />
@@ -173,20 +174,20 @@ return <Link href={`/careers/${eachJob?.slug}`}>{eachJob?.title?.rendered}</Link
 
 export async function getStaticPaths() {
 
-  const allCareers =  await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/careers').then(resp=>{
+  const allCareers =  await axiosClient.get('/careers').then(resp=>{
   return resp.data
 }).catch(err=>{
-  return false;
+  return [];
 })
+
+console.log(allCareers,'allCareers allCareers allCareers');
 
 
 const ways = allCareers.map(post=>{
 
-  console.log(post.slug,'post.slug post.slug post.slug');
-
   return {
     params:{
-      name: post.slug
+      slug: post.slug
     }
   }
 
@@ -194,9 +195,8 @@ const ways = allCareers.map(post=>{
 })
 
 
-console.log(ways,'ways ways ways ways ways');
 
-return { paths:ways,fallback:true }
+return { paths:ways,fallback:false }
 
 
 }
@@ -208,30 +208,38 @@ return { paths:ways,fallback:true }
 
 export const getStaticProps = async({params })=>{
 
-  console.log(params,'params params params params');
-
-  const singleCareer = await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/careers?slug=${params.name}`).then(resp=>{
+  const singleCareer = await axiosClient.get(`/careers?slug=${params.slug}`).then(resp=>{
     
+    delete resp.data[0]['_links']
+
     return resp.data[0];
   }).catch(err=>{
     console.log(err);
   })
 
+  console.log(singleCareer,'singleCareer singleCareer singleCareer');
 
-  const moreJobRoles = await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/careers`).then(resp=>{
+  const moreJobRoles = await axiosClient.get(`/careers`).then(resp=>{
     
     return resp.data;
   }).catch(err=>{
     console.log(err);
   })
 
+  
+  const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
 
 
 
   return {
     props : {
       singleCareer : singleCareer,
-      moreJobRoles: moreJobRoles
+      moreJobRoles: moreJobRoles,
+      navMenu : navMenu,
     }
   }
 

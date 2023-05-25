@@ -1,10 +1,11 @@
+import axios from "axios";
 import Footer from "../../Components/Footer";
 import HeaderComp from "../../Components/Header";
 
 
 import TempBread from "../../Components/Tempbread";
 
-export default function Contact(){
+export default function Contact({navMenu}){
 
 
 
@@ -60,7 +61,7 @@ return(
     <div>
 
 
-<HeaderComp text="Contact"  />
+<HeaderComp navMenu={navMenu} text="Contact"  />
 
 {/* <BreadCrumbs/> */}
 
@@ -70,10 +71,10 @@ return(
 
 
 {/*  */}
-<div className="px-28 flex pb-16 pt-8">
+<div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding flex flex-col lg:flex-row gap-y-4 pb-8 lg:pb-16 pt-0 lg:pt-8">
 
 
-<div className="w-1/2 text-[15px] text-[#777]">
+<div className="w-full lg:w-1/2 text-[15px] text-[#777]">
     <p>Contact Revive Digital via email, phone or carrier pigeon. If you use the pigeon, make sure you feed it first and point it in the right direction. Our phone is answered during office hours, and our e-mails are checked a lot more than they probably should be. We look forward to hearing from you.
 
 </p>
@@ -81,7 +82,7 @@ return(
 
 
 
-<div className="w-1/2 flex gap-x-4 justify-end items-center">
+<div className="w-full lg:w-1/2 flex gap-x-4 justify-center lg:justify-end items-center">
 
 
 <div className="w-9 h-9 rounded-full bg-teal-400"></div>
@@ -99,10 +100,10 @@ return(
 
 
 
-<div className="flex">
+<div className="flex flex-col lg:flex-row">
 
 
-<div className="w-1/2 py-10 px-8 bg-[#fafafa]">
+<div className="w-full lg:w-1/2 py-6 lg:py-10 px-mobilePadding lg:px-8 bg-[#fafafa]">
 
 
 <p className=" font-extrabold text-2xl mb-10 text-primary">
@@ -118,11 +119,11 @@ return(
 </p>
 
 
-    <div className="pl-8 pr-4 flex flex-wrap justify-between gap-y-6 font-semibold">
+    <div className="pl-4 lg:pl-8 pr-4 flex flex-col lg:flex-row flex-wrap justify-between gap-y-6 font-semibold">
 
     {[1,2,3,4].map(()=>{
 
-        return <div className="w-[47%]  bg-yellow-500">
+        return <div className="w-full lg:w-[47%]  bg-yellow-500">
 
             <input type="text" className="w-full text-[#262729] placeholder:text-[#757575]  outline-none px-3 py-2 text-xl" placeholder="Name" />    
 
@@ -146,7 +147,7 @@ captchaaa
 
 
 
-<div className="mt-10">
+<div className="mt-6 mb-3 lg:mb-0 lg:mt-10">
 
 <div className="border border-primary inline rounded-lg px-8  py-2 font-semibold text-primary text-2xl">
 
@@ -163,12 +164,7 @@ Send
 
 
 
-
-
-
-
-
-<div className="w-1/2 bg-purple-500">
+<div className="w-full lg:w-1/2 h-[450px] lg:h-auto ">
 
 
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.684340008343!2d67.03697217461504!3d24.87462844469191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e5e736977c1%3A0x70ed36c8a6891d3a!2sMazar-e-Quaid!5e0!3m2!1sen!2s!4v1684529304405!5m2!1sen!2s"  style={{border:'none',width:'100%',height:'100%'}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -207,3 +203,20 @@ Send
 
 
 
+export const getStaticProps = async()=>{
+
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
+
+
+    return{
+      props : {
+        navMenu : navMenu,
+      }
+    }
+
+
+}

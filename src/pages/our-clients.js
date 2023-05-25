@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -5,12 +6,14 @@ import Footer from "../../Components/Footer";
 import Header from "../../Components/Header";
 import { BreadCrumbs } from "../../Components/Small";
 import TempBread from "../../Components/Tempbread";
+import axiosClient from "../../utils/axiosClient";
 
-export default function OurClients({ allURLS }) {
+export default function OurClients({ allURLS,navMenu }) {
   
   
   const router = useRouter()
-  console.log(router);
+
+  
   const splittedName = router.pathname.split("/")[1].split("-").join(" ");
 
   const db = [
@@ -58,11 +61,11 @@ export default function OurClients({ allURLS }) {
 
   return (
     <div>
-      <Header text={splittedName} />
+      <Header navMenu={navMenu} text={splittedName} />
 
       <TempBread items={breadCrumbsData} />
 
-      <div className="flex flex-wrap gap-[1.78rem] bg-[#fafafa] px-8   py-12 ">
+      <div className="flex flex-wrap justify-center lg:justify-start gap-[1.78rem] bg-[#fafafa] px-mobilePadding lg:px-8   py-12 ">
         {allURLS.map((eachURL) => {
           return (
             <div className="flex  h-[120px] w-[190px] items-center bg-white">
@@ -84,17 +87,17 @@ export default function OurClients({ allURLS }) {
 
 export const getStaticProps = async()=>{
 
-  const allURLS = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/ourclienttype').then(resp=>{
-    console.log(resp.data);
+  const allURLS = await axiosClient.get('/ourclienttype').then(resp=>{
 
+  
     const getMediaURLS = resp.data.map(eachClient=>{
       return eachClient.featured_media
     })
 
 
-    const getSourceMedia = axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[...getMediaURLS]}`).then(media=>{
-      console.log(media.data);
-      return media.data
+    const getSourceMedia = axiosClient.get(`/media?include=${[...getMediaURLS]}`).then(media=>{
+
+    return media.data
     }).catch(errorObj=>{
       console.log(errorObj);
       return false
@@ -108,9 +111,17 @@ export const getStaticProps = async()=>{
 return false
   })
 
+
+  const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
+
   return {
     props : {
-      allURLS: allURLS
+      allURLS: allURLS,
+      navMenu : navMenu,
     }
   }
 

@@ -19,7 +19,10 @@ module.exports = {
       },
 
       padding:{
-        'common' : '112px'
+        'common' : '112px',
+        'mobilePadding' : '16px',
+        'tabletPadding' : '40px',
+        'desktopPadding' : '112px'
       },
 
 

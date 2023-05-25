@@ -6,14 +6,13 @@ import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import TempBread from "../../../Components/Tempbread";
 
-export default function Careers({breadcrumbs,allCareers}){
+export default function Careers({breadcrumbs,allCareers,navMenu}){
 
 
   const router = useRouter();
 
-console.log(router);
 
-
+  
     const splittedName = router.pathname.split('/')[1].split('-').join(' ')
 
 
@@ -64,24 +63,24 @@ return {
         <div >
 
 
-<HeaderComp  text="Careers" />
+<HeaderComp navMenu={navMenu}  text="Careers" />
 
 
 <TempBread items={breadCrumbsData} />
 
 
 
-<div  className="px-common py-10 space-y-8 text-primary">
+<div  className=" px-mobilePadding md:px-tabletPadding lg:px-common py-10 space-y-8 text-primary">
 
 
 {allCareers?allCareers.map((eachcareer)=>{
 
 
-    return <div style={{transition:'all 0.4s'}} className="hover:shadow-lg flex px-8 border py-9 rounded-lg">
+    return <div style={{transition:'all 0.4s'}} className="hover:shadow-lg flex flex-col text-center md:text-left md:flex-row px-8 border py-9 rounded-lg">
 
         <Link href={`/careers/${eachcareer.slug}`} className="font-bold text-xl underline ">{eachcareer?.title?.rendered}</Link>
 
-<Link href={`/careers/${eachcareer.slug}`} className="ml-auto font-semibold border border-primary rounded-3xl px-6 py-1.5">
+<Link href={`/careers/${eachcareer.slug}`} className="text-center mt-3 md:mt-0 md:ml-auto font-semibold border border-primary rounded-3xl px-6 py-1.5">
     View Details
 </Link>
 
@@ -124,13 +123,20 @@ const allCareers =  await axios.get('http://localhost/revivedigitalbackend/wp-js
   return false;
 })
 
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
+
 
 
     return{
         props:{
     
     allCareers: allCareers,
-            
+
+    navMenu : navMenu,
             
     
     

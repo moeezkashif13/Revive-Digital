@@ -4,9 +4,8 @@ import { useEffect } from "react";
 
 export default function MasonryComp({gotAllWork}){
 
-  
-
-
+    
+    
 return (
     <div>
 
@@ -15,24 +14,24 @@ return (
     gap={20}
     defaultDirection={"end"}
     align={"justify"}
-    column={4}
+    column={3}
     columnSize={0}
     
     columnSizeRatio={0}
-    onRenderComplete={e => {
-      console.log(e);
-    }}
+    // onRenderComplete={e => {
+    //   console.log(e);
+    // }}
   >
    {gotAllWork?.data?.map((eachWork,index)=>{
 
-console.log(eachWork);
+
 
 const getImage = gotAllWork?.mediaURL[index]
 
 
 
 
-    return  <div className="item relative ">
+    return  <div className="w-full lg:w-[25%] item relative ">
 
 <div className="h-full w-full overflow-hidden">
 
@@ -45,7 +44,7 @@ const getImage = gotAllWork?.mediaURL[index]
 
 
 {/* (index + 1) % 4 === 2) */}
-<div className={`absolute bottom-5  ${(index+1)%4===1 ?'left-12':'left-5' }   `}>
+<div className={`absolute bottom-5  ${(index+1)%4===1 ?'left-3 lg:left-12':'left-3 lg:left-5' }   `}>
 
     <div className="bg-primary font-medium inline px-4 py-1.5 rounded-md"  >
 
@@ -55,7 +54,7 @@ btmkdddddd
 
 
 
-    <p className="mt-2.5   font-bold text-[1.6vw]" dangerouslySetInnerHTML={{__html:eachWork?.excerpt?.rendered}} ></p>
+    <p className="mt-2.5   font-bold text-[5vw] lg:text-[1.6vw]" dangerouslySetInnerHTML={{__html:eachWork?.excerpt?.rendered}} ></p>
 
 
 </div>

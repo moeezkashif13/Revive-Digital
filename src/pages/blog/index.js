@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Footer from "../../../Components/Footer";
@@ -5,13 +6,13 @@ import HeaderComp from "../../../Components/Header";
 import { BreadCrumbs, EachBlogCard, Loader } from "../../../Components/Small";
 import TempBread from "../../../Components/Tempbread";
 
-import tempdata from '../../../Components/tempdata.json'
+import axiosClient from "../../../utils/axiosClient";
 
 
 var pagesCount = [];
 
 
-export default function Blog({breadcrumbs}){
+export default function Blog({breadcrumbs,navMenu}){
 
   const [allBlogPosts,setAllBlogPosts] = useState([])
 
@@ -34,7 +35,7 @@ useEffect(()=>{
     
     setAllBlogPosts([]);
     
-   const allBlogs =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media&page=${pageNumber}&order=asc`).then(resp=>{
+   const allBlogs =  await axiosClient.get(`/blog?_fields=title,excerpt,slug,featured_media&page=${pageNumber}&order=asc`).then(resp=>{
 
    
     if(pagesCount.length==0){
@@ -157,7 +158,7 @@ const fetchNewPages = (event)=>{
         <div>
 
 
-<HeaderComp  text="Blog"  />
+<HeaderComp navMenu={navMenu}  text="Blog"  />
 
 {/* <BreadCrumbs/> */}
 
@@ -165,7 +166,7 @@ const fetchNewPages = (event)=>{
 
 
 
-<div className={`px-28  pt-10 ${errorMessage?'pb-10':'pb-20'} bg-[#FAFAFA] flex flex-wrap justify-between gap-y-8`}>
+<div className={` px-mobilePadding md:px-tabletPadding lg:px-desktopPadding  pt-10 ${errorMessage?'pb-10':'pb-20'} bg-[#FAFAFA] flex flex-wrap justify-center md:justify-between gap-y-8`}>
 
 
 {allBlogPosts.length>0?allBlogPosts.map((eachBlogDetail)=>{
@@ -189,19 +190,12 @@ const fetchNewPages = (event)=>{
 
 {errorMessage?null:
 
-<div className="flex justify-center gap-x-5 py-5 font-semibold ">
+<div className="flex flex-wrap gap-y-4 justify-center gap-x-5 py-5 font-semibold ">
 
 {pagesCount.map(eachNumber=>{
     return <div style={{transition:'all 0.4s'}} onClick={fetchNewPages} className="hover:bg-primary hover:text-white   border border-primary cursor-pointer text-primary underline px-3 py-1 ">{eachNumber}</div>
 })}
 
-
-
-
-
-<div className="border border-primary text-primary px-3 py-1 ">check {/*......*/}</div>
-
-<div className="border border-primary text-primary px-3 py-1 underline ">checkk {/*lastttt*/}</div>
 
 
 
@@ -269,6 +263,11 @@ const db = [
 
 // TEMPPPPPPPP
 
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
 
 
     return {
@@ -279,6 +278,7 @@ const db = [
             // TEMPPPPPPPP
         breadcrumbs: data.breadcrumbs,
         courseTitle: data.courseTitle,
+        navMenu : navMenu,
 // TEMPPPPPPPP
 
 

@@ -6,17 +6,20 @@ import { useEffect, useState } from "react"
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import MasonryComp from "../../Components/Masonry";
-import { CommonHeading } from "../../Components/Small";
+import { CommonHeading, Quote } from "../../Components/Small";
 
 
 import { Splide, SplideSlide,SplideTrack } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
+import axiosClient from "../../utils/axiosClient";
 
 
 
-export default function Home() {
+export default function Home({gotAllWork,navMenu}) {
 
 
+
+  
   const heroSectArr = [
 
     {special:'WE',main:'help you get more leads through Digital Marketing'},
@@ -33,11 +36,11 @@ export default function Home() {
 <div>
 
 {/* FIRSTTT SECTIONNN STARTT */}
-    <div className="h-[550px]  relative ">
+    <div className="h-[650px] lg:h-[550px]  relative ">
       
     <div className=" h-full heroSectVideoDiv">
 
-    <video width="100%" height="100%"  autoPlay loop muted playsinline>
+    <video className="w-full h-full object-cover"  autoPlay loop muted playsinline>
 <source src="/intro.mp4" type="video/mp4" />
 </video>
 
@@ -46,31 +49,31 @@ export default function Home() {
 
 
 
-<div className="absolute top-4 pl-4 h-full frontDiv w-full text-white" >
+<div className="absolute top-2 lg:top-4 pl-2 lg:pl-4 h-full frontDiv w-full text-white" >
   
-<div className="h-full" style={{backgroundColor:'rgba(0,0,0,0.7)'}}>
+<div className="h-full px-6 pt-6" style={{backgroundColor:'rgba(0,0,0,0.7)'}}>
 
 
 {/* NAVBARR STARTT */}
 
-<Navbar/>
+<Navbar navMenu={navMenu}  />
 
 {/* NAVBARR ENDDD */}
 
 
 
 
-<div className=" h-full  z-20  absolute bottom-0 w-[65%] flex flex-col justify-center" style={{left:'50%',transform:'translateX(-50%)'}}> 
+<div className=" h-auto lg:h-full mt-8  lg:mt-0  z-20  relative lg:absolute lg:left-[50%] lg:-translate-x-[50%] bottom-0 w-full  lg:w-[65%] flex flex-col justify-center " > 
 
 
 {/* <h1 className="text-[4.2rem] font-semibold leading-[5.5rem] "> */}
 
-<Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:2000,arrows:false,pagination:false,}}  hasTrack={ false }>
+<Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:3000,arrows:false,pagination:false,}}  hasTrack={ false }>
   <SplideTrack >
     {heroSectArr.map((elem)=>{
       return     <SplideSlide>
 
-<h1 className="text-[4.25rem] font-semibold leading-[5.5rem] ">
+<h1 className="text-4xl leading-[3rem] text-center lg:text-start lg:text-[4.25rem] font-semibold lg:leading-[5.5rem] ">
 
 <span className="text-primary">{elem.special}</span>
 <span> {elem.main}</span>
@@ -90,7 +93,7 @@ export default function Home() {
 {/* </h1> */}
 
 
-<div className="flex gap-x-7 mt-7 font-medium">
+<div className="flex gap-x-7 mt-7 justify-center lg:justify-start font-medium">
 
 
 <Link href="/who-we-are" className="border  px-6 py-1 rounded-2xl">Who we are</Link>
@@ -130,13 +133,13 @@ export default function Home() {
 <div className="py-8">
 
 
-<div className="mb-10 ml-28">
+<div className="mb-10 pl-mobilePadding  lg:pl-desktopPadding">
   <CommonHeading/>
 </div>
 
 
 
-<MasonryComp/>
+<MasonryComp  gotAllWork={gotAllWork} />
 
 
 
@@ -157,14 +160,13 @@ export default function Home() {
 
 
 
-
 <div>
 
 {[1,2,3,4].map((elem,index)=>{
 
-return <div className={`flex flex-col  ${index%2!=0&&'flex-row-reverse'} `}>
+return <div className={`flex flex-col lg:flex-row  ${index%2!=0&&'lg:flex-row-reverse'} `}>
 
-<div className="w-full lg:w-1/2  px-4 lg:px-24 py-10">
+<div className="w-full lg:w-1/2  px-mobilePadding lg:px-24 py-10">
 
 
 <CommonHeading   special="full"   main="service digital marketing agency"  />  
@@ -194,7 +196,7 @@ return <div className={`flex flex-col  ${index%2!=0&&'flex-row-reverse'} `}>
 
 
 
-  <img className="w-full h-full object-cover max-w-full" src="https://revive.digital/wp-content/uploads/2017/06/digital-marketing-agency.jpg" alt="" />
+  <img className="w-full h-full object-cover max-w-full" src="" alt="" />
 
 </div>
 
@@ -232,3 +234,75 @@ return <div className={`flex flex-col  ${index%2!=0&&'flex-row-reverse'} `}>
 
   )
 }
+
+
+export const getStaticProps = async () => {
+  const gotAllWork = await axiosClient
+    .get(
+      "/ourworktype?order=desc"
+    )
+    .then(async (resp) => {
+     
+      const getAllWorksMediaIDS = resp.data.map((eachWork) => {
+        return eachWork.featured_media;
+      });
+
+      
+      const getWorkMediaURL = await axiosClient
+        .get(
+          `/media?include=${[...getAllWorksMediaIDS]}`
+        )
+        .then((gotMedia) => {
+
+          
+          const main = getAllWorksMediaIDS.map((eachID) => {
+
+            const check = gotMedia.data.filter((eachMedia) => {
+              
+              return eachMedia.id == eachID;
+            });
+
+
+
+            return check[0];
+          });
+
+
+          return main;
+        })
+        .catch((errorObj) => {
+          console.log(errorObj);
+        });
+
+      // console.log(
+      //   getWorkMediaURL,
+      //   "getWorkMediaURL getWorkMediaURL getWorkMediaURL"
+      // );
+
+
+      return {
+        data: resp.data,
+        mediaURL: getWorkMediaURL,
+      };
+    })
+    .catch((err) => {
+      console.log(err, "err err err");
+    });
+
+
+    // console.log(gotAllWork,'gotAllWork gotAllWork gotAllWork');
+
+    const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+      return resp.data.items
+          
+  })
+
+
+  return {
+    props: {
+      gotAllWork: gotAllWork,
+      navMenu : navMenu,
+    },
+  };
+};

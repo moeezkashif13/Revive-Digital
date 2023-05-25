@@ -1,15 +1,30 @@
+
 import axios from "axios";
-import { useEffect } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import CustomError from "../../../../../Components/CustomError";
 import Footer from "../../../../../Components/Footer";
 import HeaderComp from "../../../../../Components/Header";
-import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../../Components/Small";
+import { BreadCrumbs, CommonHeading, DetailsSection, Loader } from "../../../../../Components/Small";
 import TempBread from "../../../../../Components/Tempbread";
+import axiosClient from "../../../../../utils/axiosClient";
+
+
+const splittingText = (text) => {
+  if (text) {
+    const splitText = text.split(" ");
+
+    const getFirstWord = splitText.shift();
+
+    const joiningRemainingWords = splitText.join(" ");
+
+    return { getFirstWord, joiningRemainingWords };
+  }
+};
 
 
 
-
-export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks}){
+export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks,navMenu}){
 
 
   
@@ -18,6 +33,7 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
   }
 
 
+  
 
 
 
@@ -29,7 +45,56 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
         })
 
         
-    
+        const {custom_fields} = gotMainService[0]
+
+
+        
+        
+        const [bothSectionMedia,setBothSectionMedia] = useState({});
+
+        const [imageLoading,setImageLoading] = useState(false);
+
+        useEffect(()=>{
+
+          const fetchMedias = async()=>{
+
+            setImageLoading(true);
+
+          const firstSectionMedia = custom_fields["each-service-details-section-image-video"][0]
+          
+          const secondSectionMedia = custom_fields["each-service-details-section-second-image-video"][0]
+
+
+          const mediaArray = [firstSectionMedia,secondSectionMedia]
+
+          const gotMedias = await axiosClient.get(`/media?include=${[...mediaArray]}`).then(resp=>{
+            return resp.data
+          }).catch(err=>{
+            console.log(err);
+          })
+
+          setImageLoading(false)
+
+
+          setBothSectionMedia(gotMedias)
+
+
+        }
+
+
+        fetchMedias()
+
+        },[])
+
+
+
+const firstSectionHeading = custom_fields["each-service-details-section-heading"][0]
+const secondSectionHeading = custom_fields["each-service-details-section-second-heading"][0]
+
+const firstSection = splittingText(firstSectionHeading);
+const secondSection = splittingText(secondSectionHeading);
+
+
 
     return(
         <div>
@@ -38,45 +103,98 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 
 
 
-<HeaderComp specialAppearanceFields={gotMainService.custom_fields} anotherAppearance={true}   />
+<HeaderComp navMenu={navMenu}  specialAppearanceFields={custom_fields} anotherAppearance={true}   />
 
 <TempBread items={breadCrumbsData} />
-
-
-
-<DetailsSection   secondType={true}  />
 
 
 
 {/*  */}
 
 
-<div className="py-14">
+<div
+      className={`flex flex-col lg:flex-row gap-x-3.5   `}
+    >
+      <div className={`w-full lg:w-1/2 px-mobilePadding lg:px-20 py-8 lg:py-16   bg-[#FAFAFA] `}>
+        <CommonHeading   special={firstSection.getFirstWord} main={firstSection.joiningRemainingWords} />
+
+        <div className="lg:space-y-5 text-[#777777]"  dangerouslySetInnerHTML={{__html:custom_fields['each-service-details-section-paragraph']}} >
+          {/* <p>
+            Revive are a full service digital marketing agency. We flourish when
+            we look after your entire digital presence – from the rankings in
+            Google, to the social media, the brand, the messages, and the
+            website.
+          </p>
+
+          <p>
+            We came from website design, and that is still the primary vehicle
+            we use to help promote your business online. But now we look at the
+            big picture. How your logo and colours work along with your business
+            stationery and livery. Your ranking in the search engines. Your paid
+            marketing. Your social media. Conversion rates of visitors to
+            enquiries and sales. Is your website actually working?
+          </p>
+
+          <p>
+            The services we offer are varied, but all tie together to form a
+            digital arsenal, allowing you to grow your business and expand your
+            brand online.
+          </p>
+
+            <div>
+              <Link
+                className="rounded-2xl border border-primary px-6 py-1.5 text-primary underline"
+                href="/"
+              >
+                Find out more
+              </Link>
+            </div> */}
+        </div>
+      </div>
+
+      <div className={`w-full lg:w-1/2  ` }  >
+        
+
+{imageLoading?<div className="flex justify-center items-center h-full"><Loader/></div>:
+
+        
+        <img  className="w-full max-w-full h-full object-cover" src={bothSectionMedia[0]?.source_url} alt="" />
+
+      }
 
 
-<p className="text-center mb-12 text-[#262729] font-semibold text-3xl">Fabulous clients we work with</p>
 
-<div className="px-28  flex flex-wrap justify-between gap">
+      </div>
+    </div>
+
+
+
+{/*  */}
+
+
+
+
+{/*  */}
+
+
+<div className="py-8 lg:py-14">
+
+
+<p className="text-center mb-7 lg:mb-12 text-[#262729] font-semibold text-3xl">Fabulous clients we work with</p>
+
+<div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding  flex flex-wrap justify-center  md:justify-between  gap ">
     
     
     {gotMediaLinks?gotMediaLinks.map((eachLogo)=>{
-        return <div className=" w-[90px]   flex items-center  ">
+        return <div className=" w-[180px] h-[150px]    flex items-center  ">
 
-            <img   className=" max-w-full  object-contain   " src={eachLogo.source_url} alt="" />
+            <img   className=" max-w-full w-full  h-full  object-contain   " src={eachLogo.source_url} alt="" />
 
         </div>
 
     }):<div className="font-semibold text-2xl text-primary mx-auto">No images available</div>}
 
 
-
-{/* <div className=" bg-blue-500 flex items-center  ">
-
-            <img   className=" max-w-full  " src="/layslogo.png" alt="" />
-
-        </div> */}
-
-
 </div>
 
 
@@ -91,8 +209,64 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 {/*  */}
 
 
-<DetailsSection  secondType={true} reverse={true} />
+<div
+      className={`flex flex-col  gap-x-3.5 lg:flex-row-reverse `}
+    >
+      <div className={`w-full lg:w-1/2 px-mobilePadding lg:px-20 py-8 lg:py-16   bg-[#FAFAFA] `}>
 
+      <CommonHeading   special={secondSection.getFirstWord} main={secondSection.joiningRemainingWords} />
+
+
+        <div className="lg:space-y-5 text-[#777777]" dangerouslySetInnerHTML={{__html:custom_fields['each-service-details-section-second-paragraph']}} >
+          {/* <p>
+            Revive are a full service digital marketing agency. We flourish when
+            we look after your entire digital presence – from the rankings in
+            Google, to the social media, the brand, the messages, and the
+            website.
+          </p>
+
+          <p>
+            We came from website design, and that is still the primary vehicle
+            we use to help promote your business online. But now we look at the
+            big picture. How your logo and colours work along with your business
+            stationery and livery. Your ranking in the search engines. Your paid
+            marketing. Your social media. Conversion rates of visitors to
+            enquiries and sales. Is your website actually working?
+          </p>
+
+          <p>
+            The services we offer are varied, but all tie together to form a
+            digital arsenal, allowing you to grow your business and expand your
+            brand online.
+          </p>
+
+            <div>
+              <Link
+                className="rounded-2xl border border-primary px-6 py-1.5 text-primary underline"
+                href="/"
+              >
+                Find out more
+              </Link>
+            </div> */}
+        </div>
+      </div>
+
+      <div className={`w-full lg:w-1/2  ` }  >
+        
+
+
+
+      {imageLoading?<div className="flex justify-center items-center h-full"><Loader/></div>:
+
+        
+<img  className="w-full max-w-full h-full object-cover" src={bothSectionMedia[1]?.source_url} alt="" />
+
+}
+
+
+
+      </div>
+    </div>
 
 
 
@@ -108,10 +282,10 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 <p className="text-2xl font-medium">What do our clients say</p>
 
 
-<p className="px-32 text-primary my-4 text-2xl font-medium leading-[2.3rem]">"I have been using Revive since 2005 for our website builds and digital marketing. Not only do they build excellent websites with reliable back end technology they know how to get the best out of e-marketing. A team of experts who have the experience and knowledge to make your website and marketing work."</p>
+<p style={{overflowWrap:'break-word'}} className=" px-6 lg:px-32 text-primary  my-4 text-2xl font-medium leading-[2.3rem]">{custom_fields['each-service-quote-quote']}</p>
 
 
-<p className="font-bold">Ian Banks</p>
+<p className="font-bold">{custom_fields['each-service-quote-author']}</p>
 
 
 </div>
@@ -123,10 +297,10 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 {/*  */}
 
 
-<div className="mb-4 flex gap-x-4 px-4">
+<div className="mb-0 lg:mb-4 flex  flex-col lg:flex-row gap-x-4  lg:px-4">
 
 
-<div className="bg-green-300 w-[390px] min-w-[390px]">
+<div className="bg-green-300 w-full lg:w-[390px] lg:min-w-[390px]">
 
         <img className="w-full max-h-full h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/07/e-commerce-websites-contact.jpg" alt="" />
 
@@ -135,7 +309,7 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 
 
 
-<div className="bg-[#FAFAFA]   space-y-6 py-28 pl-20 pr-12">
+<div className="bg-[#FAFAFA]    space-y-6 py-6 lg:py-28 pl-mobilePadding lg:pl-20 pr-mobilePadding lg:pr-12">
     
 
 <CommonHeading  special="contact" main="" />
@@ -149,7 +323,7 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
 
 {['Name','Email','Phone'].map((elem)=>{
 
-    return <div className="w-[230px] ">
+    return <div className=" w-full lg:w-[230px] ">
 
         <label htmlFor={elem}  className="font-semibold" >{elem}:*</label>
 
@@ -245,7 +419,7 @@ const splitIt = serviceName.split('-').join(' ')
   // TEMPPPPPPPP
   
 
-const gotMainService =  await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?slug=${serviceName}`).then(resp=>{
+const gotMainService =  await axiosClient.get(`/eachservice?slug=${serviceName}`).then(resp=>{
     // console.log(resp.data,'resp.data resp.data resp.data');
   return resp.data;
 
@@ -255,12 +429,11 @@ const gotMainService =  await axios.get(`http://localhost/revivedigitalbackend/w
     return err;
   })
 
-  console.log(gotMainService);
-
+  
   if(gotMainService.length>0){
 
-    console.log(gotMainService[0],);
 
+    
 // RELATED TO BREADCRUMS 
 
 const db = [
@@ -322,10 +495,9 @@ let gotMediaLinks;
 
   if(getCompanyLogos.length>0){
 
- await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[...getCompanyLogos]}`).then(media=>{
+ await axiosClient.get(`/media?include=${[...getCompanyLogos]}`).then(media=>{
 
- console.log(media.data,'media.datamedia.data media.data')
-
+ 
  gotMediaLinks=media.data
 
 //  return media.data
@@ -343,6 +515,15 @@ let gotMediaLinks;
 
 }
 
+
+const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
+
+
+
     return {
 
       props: {
@@ -351,7 +532,11 @@ let gotMediaLinks;
         
         gotMainService: gotMainService,
         gotMediaLinks: gotMediaLinks,
-      
+        
+        navMenu :navMenu,
+
+
+
       },
     };
 

@@ -2,10 +2,11 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
+import axiosClient from "../utils/axiosClient";
 
 export const BreadCrumbs = () => {
   return (
-    <div className="mb-8 mt-12 flex items-center  space-x-2 pl-28 font-medium text-[#777777]">
+    <div className="mb-8 mt-12 flex items-center  space-x-2 pl-mobilePadding lg:pl-28 font-medium text-[#777777]">
       <div>
         <FaHome />
       </div>
@@ -26,7 +27,7 @@ export const CommonHeading = ({
       <span className="relative  text-black">
         {special}
 
-        <span className="absolute left-0 top-9 h-1 w-full rounded-xl bg-[#EC0044]"></span>
+        <span className="absolute left-0  top-7 lg:top-9 h-1 w-full rounded-xl bg-[#EC0044]"></span>
       </span>{" "}
       {main}
     </p>
@@ -35,12 +36,12 @@ export const CommonHeading = ({
 
 export const Quote = ({ author, quote }) => {
   return (
-    <div className="relative flex bg-[#262729] px-28 py-6  text-primary">
+    <div className="relative flex bg-[#262729] px-[50px] md:px-[75px] lg:px-desktopPadding py-6  text-primary">
       <div>
         <div className="relative text-3xl font-bold">
           {quote}
 
-          <div className="absolute -left-10 -top-1 text-6xl">"</div>
+          <div className="absolute -left-8 top-0 lg:-left-10 lg:-top-1 text-6xl">"</div>
         </div>
 
         <p className="mt-3 italic text-white">{author}</p>
@@ -59,12 +60,11 @@ export const EachBlogCard = ({ details }) => {
     // ${details?.featured_image}
 
     if (details?.featured_media > 0) {
-      axios
+      axiosClient
         .get(
-          `http://localhost/revivedigitalbackend/wp-json/wp/v2/media/${details.featured_media}`
+          `/media/${details.featured_media}`
         )
         .then((resp) => {
-          console.log(resp.data);
 
           setFeaturedImage({
             imageAvailable: true,
@@ -125,6 +125,7 @@ export const EachBlogCard = ({ details }) => {
 };
 
 export const DetailsSection = ({ reverse, noFindOut, secondType,details,index,allMedia }) => {
+  
 
   const heading = index==0?details['heading']:details[`heading_${index}`]
 
@@ -134,30 +135,25 @@ export const DetailsSection = ({ reverse, noFindOut, secondType,details,index,al
 
   const joiningRemainingWords = splitText.join(" ");
 
-  console.log(getFirstWord);
-  console.log(joiningRemainingWords);
 
   const paragraph = index==0?details['paragraph']:details[`paragraph_${index}`]
 
   const image = index==0?details['image']:details[`image_${index}`];
 
-console.log(image);
-
   const getLinkedImage = allMedia.filter(eachMedia=>eachMedia.id==image)
   
-  console.log(getLinkedImage);
-  
+
   const backgroundColor = index==0?details['background-color']:details[`background-color_${index}`]
   
   
 
   return (
     <div
-      className={`flex ${secondType && "gap-x-3.5"}  ${
-        reverse && "flex-row-reverse"
+      className={`flex flex-col lg:flex-row ${secondType && "gap-x-3.5"}  ${
+        reverse && "lg:flex-row-reverse"
       } `}
     >
-      <div className={`w-1/2 px-20 py-16  ${secondType && "bg-[#FAFAFA]"} `}>
+      <div className={`w-full lg:w-1/2 px-mobilePadding lg:px-20 py-8 lg:py-16  ${secondType && "bg-[#FAFAFA]"} `}>
         <CommonHeading  special={getFirstWord} main={joiningRemainingWords} />
 
         <div className="space-y-5 text-[#777777]" dangerouslySetInnerHTML={{__html:paragraph}} >
@@ -196,12 +192,12 @@ console.log(image);
         </div>
       </div>
 
-      <div className={`w-1/2  ` } style={{backgroundColor:backgroundColor}}  >
+      <div className={`w-full lg:w-1/2 h-[400px] lg:h-auto ` } style={{backgroundColor:backgroundColor}}  >
         
         {getLinkedImage[0].mime_type=='video/mp4'?
 
 <div className="w-full h-full videoElem">
-<video  className="object-cover h-full" autoPlay loop muted playsinline>
+<video  className="object-cover w-full h-full" autoPlay loop muted playsinline>
           <source src={getLinkedImage[0].source_url} type="video/mp4" />
         </video>
         </div>   
@@ -224,18 +220,18 @@ console.log(image);
 };
 
 
-export const CloneDetailsSection = ({ reverse, noFindOut, secondType,details,index,allMedia }) => {
+export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
 
   
   
 
   return (
     <div
-      className={`flex ${secondType && "gap-x-3.5"}  ${
-        reverse && "flex-row-reverse"
+      className={`flex flex-col lg:flex-row   ${secondType && "gap-x-3.5"}  ${
+        reverse && "lg:flex-row-reverse "
       } `}
     >
-      <div className={`w-1/2 px-20 py-16  ${secondType && "bg-[#FAFAFA]"} `}>
+      <div className={`w-full lg:w-1/2 px-mobilePadding lg:px-20 py-8 lg:py-16  ${secondType && "bg-[#FAFAFA]"} `}>
         <CommonHeading  special="first" main="remaining words" />
 
         <div className="space-y-5 text-[#777777]"  >
@@ -274,13 +270,13 @@ export const CloneDetailsSection = ({ reverse, noFindOut, secondType,details,ind
         </div>
       </div>
 
-      <div className={`w-1/2  ` }  >
+      <div className={`w-full lg:w-1/2 h-[400px] lg:h-auto  ` }  >
         
 
 
 
         
-        <img  className="w-full max-w-full h-full object-cover" src={''} alt="" />
+        <img  className="w-full max-w-full h-full object-cover" src={'https://revive.digital/wp-content/uploads/2017/06/web.jpg'} alt="" />
 
 
 

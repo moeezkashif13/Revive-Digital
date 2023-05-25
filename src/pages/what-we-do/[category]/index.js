@@ -1,19 +1,27 @@
+
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import CustomError from "../../../../Components/CustomError";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
+import axiosClient from "../../../../utils/axiosClient";
 
 
 const mainArr = [];
 
 
 
-export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields}){
-console.log(metaFields);
+export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields,navMenu}){
+
+
+  if(allMainServices.length==0){
+    return <CustomError type="service" />
+  }
+
   
 
     const router = useRouter();
@@ -35,7 +43,7 @@ return (
 
             <div>
 
-<HeaderComp special="website" main="design" /> 
+<HeaderComp navMenu={navMenu} special="website" main="design" /> 
 
 
 {/* <BreadCrumbs/> */}
@@ -46,14 +54,14 @@ return (
 
 
 {/*  */}
-<div className="px-28 py-10  bg-[#FAFAFA]">
+<div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding py-10  bg-[#FAFAFA]">
 
 
 <CommonHeading special="website" main="design services" />
 
 
 
-<div className={`flex flex-wrap justify-between gap-y-8 ${getAssociatedServices.length>0?'mt-10':'mt-0'}`}>
+<div className={`flex flex-wrap  gap-x-8 lg:gap-x-0 justify-center lg:justify-between gap-y-8 ${getAssociatedServices.length>0?'mt-10':'mt-0'}`}>
 {getAssociatedServices.length>0?getAssociatedServices.map((eachService)=>{
 
 
@@ -118,11 +126,6 @@ const subString = eachCheck.substring(8,50)
 
 })
 
-console.log(checking);
-
-console.log(hello);
-
-console.log(index);
 
     return <DetailsSection allMedia={getMedia} details={hello} index={index} reverse={index%2!=0&&true}  />
 
@@ -163,31 +166,37 @@ export const getServerSideProps = async (context)=>{
     const categoryName = context.query.category;
 
 
-    const getAssociatedServices = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/services-categories').then(async resp=>{
+    const getAssociatedServices = await axiosClient.get('/services-categories').then(async resp=>{
 
         const filterMainCateg = resp.data.filter(eachCateg=>{
           return eachCateg.slug == categoryName
         })
 
+if(filterMainCateg.length>0){
+        return await axiosClient.get(`/eachservice?${filterMainCateg[0].taxonomy}=${filterMainCateg[0].id}`).then(response=>{
 
-        return await axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/eachservice?${filterMainCateg[0].taxonomy}=${filterMainCateg[0].id}`).then(response=>{
 
-          return response.data;
+        return response.data;
 
 
         }).catch(errObj=>{
-          console.log(errObj);
+          console.log(errObj,'errObj errObj errObj');
         })
+  
         
+}else{
+  return []
+}
+
+  
 
 
 
         }).catch(err=>{
           console.log(err);
         })
-    
-    
 
+        
 
 
             // TEMPPPPPPPPPPPPPP
@@ -231,8 +240,7 @@ const db = [
   
   // TEMPPPPPPPP
 
-    const getMedia = await axios('http://localhost/revivedigitalbackend/wp-json/wp/v2/media?per_page=100').then(resp=>{
-      console.log(resp.data);
+    const getMedia = await axiosClient('/media?per_page=100').then(resp=>{
 
     return resp.data
 
@@ -245,12 +253,16 @@ const db = [
 
     let metaFields = {}
 
-    const allMainServices = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/mainservices').then(resp=>{
+    const allMainServices = await axiosClient.get('/mainservices').then(resp=>{
 
 
       const mainPage = resp.data.filter(eachPage=>{
         return eachPage.slug==categoryName
       })
+
+
+if(mainPage.length>0){
+
 
       metaFields = {...mainPage[0].custom_fields}
 
@@ -286,7 +298,6 @@ return Number(s[0])
 let uniqueChars = [...new Set(howMuchNumbers)];
 
 
-
 const seperate = uniqueChars.map(checkAvien=>{
 
 
@@ -304,7 +315,9 @@ const finalArray = [prefixes,...seperate]
 
 return finalArray;
 
-
+}else{
+  return []
+}
 
       // const objWork = mainPage[0].custom_fields
 
@@ -317,10 +330,11 @@ return finalArray;
 
 
 
-
-console.log(allMainServices,' allMainServices allMainServices allMainServices allMainServices');
-
-
+    const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  
+return resp.data.items
+    
+    })
 
 
 
@@ -329,7 +343,9 @@ console.log(allMainServices,' allMainServices allMainServices allMainServices al
     return {
         props : {
 
-            
+          
+          navMenu : navMenu,
+
             getAssociatedServices:getAssociatedServices,
             getMedia: getMedia,
 
