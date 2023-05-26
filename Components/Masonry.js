@@ -1,10 +1,22 @@
 import { MasonryGrid } from "@egjs/react-grid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function MasonryComp({gotAllWork}){
 
+
+    const [columnsCount,setColumnsCount]  = useState(0);
+
+    useEffect(()=>{
+
+        console.log(window.innerWidth);
+
+        window.innerWidth>1000?setColumnsCount(3):setColumnsCount(1);
+
+
+    },[])
     
+
     
 return (
     <div>
@@ -14,7 +26,7 @@ return (
     gap={20}
     defaultDirection={"end"}
     align={"justify"}
-    column={3}
+    column={columnsCount}
     columnSize={0}
     
     columnSizeRatio={0}
