@@ -140,7 +140,9 @@ return resp.data.items
             
     
     
-        }
+        },
+    revalidate:60,
+
     }
 
 

@@ -304,5 +304,6 @@ export const getStaticProps = async () => {
       gotAllWork: gotAllWork,
       navMenu : navMenu,
     },
+    revalidate:60,
   };
 };

@@ -238,7 +238,9 @@ return resp.data.items
       singleCareer : singleCareer,
       moreJobRoles: moreJobRoles,
       navMenu : navMenu,
-    }
+    },
+    revalidate:60,
+
   }
 
 

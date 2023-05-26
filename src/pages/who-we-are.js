@@ -257,5 +257,7 @@ export const getStaticProps = async () => {
 
       fetchMediaURL: fetchMediaURL,
     },
+    revalidate:60,
+
   };
 };

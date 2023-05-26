@@ -63,7 +63,9 @@ return resp.data.items
     return {
         props : {
             navMenu : navMenu,
-        }
+        },
+    revalidate:60,
+
     }
 
 

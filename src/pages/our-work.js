@@ -139,6 +139,8 @@ return resp.data.items
       gotAllWork: gotAllWork,
       navMenu : navMenu
     },
+    revalidate:60,
+
   };
 };
 

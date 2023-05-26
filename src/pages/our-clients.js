@@ -122,7 +122,9 @@ return resp.data.items
     props : {
       allURLS: allURLS,
       navMenu : navMenu,
-    }
+    },
+    revalidate:60,
+
   }
 
 }
