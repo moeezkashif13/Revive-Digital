@@ -1,3 +1,5 @@
+import axiosClient from "./axiosClient"
+
 export const ManageContent = ()=>{
 
 
@@ -47,5 +49,51 @@ document.querySelectorAll('blockquote').forEach(eachBlockquote=>{
 
     
 })
+
+}
+
+
+
+
+export const splittingText = (text) => {
+    if (text) {
+      const splitText = text.split(" ");
+  
+      const getFirstWord = splitText.shift();
+  
+      const joiningRemainingWords = splitText.join(" ");
+  
+      return [ getFirstWord, joiningRemainingWords ];
+    }
+  };
+
+
+  export const extractFields = (customFieldsObject,field)=>{
+
+    const getFields = Object.keys(customFieldsObject).filter(eachField=>{
+        return eachField.includes(field)
+    });
+
+    return getFields;
+
+    
+
+
+  }
+
+
+
+export const fetchDetailsSectionImages = async(mediaIDSarray)=>{
+
+ const gotImages = await axiosClient.get(`/media?include=${[...mediaIDSarray]}`).then(allMedia=>{
+
+    return allMedia.data
+
+ }).catch(err=>{
+    console.log(err);
+    return false;
+ })
+
+ return gotImages;
 
 }

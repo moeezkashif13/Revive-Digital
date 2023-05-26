@@ -2,6 +2,7 @@ import axios from "axios";
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import { BreadCrumbs, CloneDetailsSection, CommonHeading, DetailsSection } from "../../../Components/Small";
+import { menuFetchURL } from "../../../utils/axiosClient";
 
 export default function WhatWeDo({navMenu}){
 
@@ -54,7 +55,7 @@ return <CloneDetailsSection noFindOut={index==0&&true} reverse={index%2==0&&true
 
 export const getStaticProps = async()=>{
 
-    const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+    const navMenu =  await axios.get(menuFetchURL).then(resp=>{
   
 return resp.data.items
     

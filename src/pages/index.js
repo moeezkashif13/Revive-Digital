@@ -11,11 +11,12 @@ import { CommonHeading, Quote } from "../../Components/Small";
 
 import { Splide, SplideSlide,SplideTrack } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
-import axiosClient from "../../utils/axiosClient";
+import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
+import { extractFields, fetchDetailsSectionImages, splittingText } from "../../utils/utils";
 
 
 
-export default function Home({gotAllWork,navMenu}) {
+export default function Home({gotAllWork,navMenu,fetchHomepageRelated,gotDetailsSectionImages}) {
 
 
 
@@ -29,7 +30,23 @@ export default function Home({gotAllWork,navMenu}) {
 
   ]
 
+  const {custom_fields} = fetchHomepageRelated;
 
+  const heroSectText = Object.keys(custom_fields).filter(eachField=>{
+    return eachField.includes('homepage-hero-section-text')
+  });
+
+
+  // console.log(custom_fields);
+
+  const detailsSectionHeadingsArray = extractFields(custom_fields,"homepage-details-section-heading");
+  const detailsSectionParagraphsArray = extractFields(custom_fields,"homepage-details-section-paragraph");
+
+  const detailsSectionImagesArray = extractFields(custom_fields,"homepage-details-section-image-video")
+
+  
+
+  
 
   return (
 
@@ -70,13 +87,19 @@ export default function Home({gotAllWork,navMenu}) {
 
 <Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:3000,arrows:false,pagination:false,}}  hasTrack={ false }>
   <SplideTrack >
-    {heroSectArr.map((elem)=>{
+    {heroSectText.map((elem)=>{
+
+const gotText = splittingText(custom_fields[elem][0])
+
+
+
+
       return     <SplideSlide>
 
 <h1 className="text-4xl leading-[3rem] text-center lg:text-start lg:text-[4.25rem] font-semibold lg:leading-[5.5rem] ">
 
-<span className="text-primary">{elem.special}</span>
-<span> {elem.main}</span>
+<span className="text-primary">{gotText[0]}</span>
+<span> {gotText[1]}</span>
 
 </h1>
       
@@ -162,26 +185,41 @@ export default function Home({gotAllWork,navMenu}) {
 
 <div>
 
-{[1,2,3,4].map((elem,index)=>{
+{detailsSectionHeadingsArray.map((elem,index)=>{
+
+const splitHeading = splittingText(custom_fields[elem][0])
+
+const getRelavantPara = custom_fields[detailsSectionParagraphsArray[index]][0]
+
+const getRelavantMediaID = custom_fields[detailsSectionImagesArray[index]][0];
+
+const getRelavantMediURL = gotDetailsSectionImages.filter(eachMediaURL=>{
+  return eachMediaURL.id == getRelavantMediaID
+})[0];
+
+console.log(getRelavantMediURL);
+
+
+
 
 return <div className={`flex flex-col lg:flex-row  ${index%2!=0&&'lg:flex-row-reverse'} `}>
 
 <div className="w-full lg:w-1/2  px-mobilePadding lg:px-24 py-10">
 
 
-<CommonHeading   special="full"   main="service digital marketing agency"  />  
+<CommonHeading   special={splitHeading[0]}   main={splitHeading[1]}  />  
 
 
 
-<div className="text-[15px] flex flex-col gap-y-5">
-  <p>Revive Digital is a full-service digital marketing agency based in Essex that specialises in search engine marketing and web design. We’re the digital marketing agency for some of the most discerning clients across London, locally in the South East and nationally too. They come to us for unmistakeable branding, awesome websites, powerfully effective marketing strategies, share-worthy social media, brilliant videos and fabulous apps.</p>
+<div className="text-[15px] flex flex-col gap-y-5" dangerouslySetInnerHTML={{__html:getRelavantPara}}>
+  {/* <p>Revive Digital is a full-service digital marketing agency based in Essex that specialises in search engine marketing and web design. We’re the digital marketing agency for some of the most discerning clients across London, locally in the South East and nationally too. They come to us for unmistakeable branding, awesome websites, powerfully effective marketing strategies, share-worthy social media, brilliant videos and fabulous apps.</p>
 
 <p>We’re not just an agency; we’re inventors, we’re creative and digital engineers.</p>
 
 
 <p>With us you’ll find a team of professionals, each one passionate about their field. They listen, they help. They’ll be honest if something isn’t right for you or could be done better. They monitor, analyse and improve… constantly and consistently.</p>
 
-<p>Because at Revive.Digital we want people to be moved to action by your marketing. Not just see it.</p>
+<p>Because at Revive.Digital we want people to be moved to action by your marketing. Not just see it.</p> */}
 
 
 </div>
@@ -196,7 +234,7 @@ return <div className={`flex flex-col lg:flex-row  ${index%2!=0&&'lg:flex-row-re
 
 
 
-  <img className="w-full h-full object-cover max-w-full" src="" alt="" />
+  <img className="w-full h-full object-cover max-w-full" src={getRelavantMediURL.source_url} alt="" />
 
 </div>
 
@@ -290,19 +328,53 @@ export const getStaticProps = async () => {
     });
 
 
-    // console.log(gotAllWork,'gotAllWork gotAllWork gotAllWork');
+    
+    const fetchHomepageRelated = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/homepage?slug=homepage-content').then(resp=>{
+      return resp.data[0]
+    }).catch(err=>{
+      console.log(err);
+    })
 
-    const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+
+
+    const {custom_fields} = fetchHomepageRelated;
+
+  const detailsSectionImagesArray = extractFields(custom_fields,"homepage-details-section-image-video").map(eachObjKey=>{
+
+      return custom_fields[eachObjKey][0]
+
+  });
+
+// console.log(detailsSectionImagesArray,'detailsSectionImagesArray detailsSectionImagesArray');
+
+
+const gotDetailsSectionImages = await fetchDetailsSectionImages(detailsSectionImagesArray);
+
+
+
+// console.log(gotDetailsSectionImages,'gotDetailsSectionImages gotDetailsSectionImages gotDetailsSectionImages');
+
+
+    const navMenu =  await axios.get(menuFetchURL).then(resp=>{
   
       return resp.data.items
           
   })
 
 
+
+
+
+
   return {
     props: {
       gotAllWork: gotAllWork,
       navMenu : navMenu,
+
+      fetchHomepageRelated : fetchHomepageRelated,
+
+      gotDetailsSectionImages : gotDetailsSectionImages,
+
     },
     revalidate:60,
   };

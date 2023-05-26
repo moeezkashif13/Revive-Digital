@@ -102,7 +102,7 @@ export default function Navbar({navMenu}){
 
     useEffect(()=>{
   
-  // axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+  // axios.get(menuFetchURL).then(resp=>{
   
   // // console.log(resp.data.items);
   

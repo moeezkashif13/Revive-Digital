@@ -7,7 +7,7 @@ import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
-import axiosClient from "../../../../utils/axiosClient";
+import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
 import { ManageContent } from "../../../../utils/utils";
 
 
@@ -276,7 +276,7 @@ if (!data) {
 
 // TEMPPPPPPPP
 
-const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+const navMenu =  await axios.get(menuFetchURL).then(resp=>{
   
 return resp.data.items
     

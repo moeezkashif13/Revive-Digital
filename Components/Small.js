@@ -27,7 +27,7 @@ export const CommonHeading = ({
       <span className="relative  text-black">
         {special}
 
-        <span className="absolute left-0  top-7 lg:top-9 h-1 w-full rounded-xl bg-[#EC0044]"></span>
+        <span className="absolute left-0  top-7 lg:top-7 h-1 w-full rounded-xl bg-[#EC0044]"></span>
       </span>{" "}
       {main}
     </p>

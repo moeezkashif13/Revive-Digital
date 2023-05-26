@@ -7,7 +7,7 @@ import Footer from "../../../../../Components/Footer";
 import HeaderComp from "../../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection, Loader } from "../../../../../Components/Small";
 import TempBread from "../../../../../Components/Tempbread";
-import axiosClient from "../../../../../utils/axiosClient";
+import axiosClient, { menuFetchURL } from "../../../../../utils/axiosClient";
 
 
 const splittingText = (text) => {
@@ -516,7 +516,7 @@ let gotMediaLinks;
 }
 
 
-const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+const navMenu =  await axios.get(menuFetchURL).then(resp=>{
   
 return resp.data.items
     

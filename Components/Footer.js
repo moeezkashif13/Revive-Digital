@@ -12,7 +12,7 @@ export default function Footer(){
   </div>
 
 
-  <div className="relative left-44 top-5 lg:absolute    lg:left-[50%]" style={{transform:'translateX(-50%)'}}>
+  <div className="relative left-44 top-5 lg:bottom-0 lg:absolute lg:top-3 lg:flex lg:flex-col lg:justify-center    lg:left-[50%]" style={{transform:'translateX(-50%)'}}>
     <p className="text-center lg:text-left text-[14px]">7th Floor, Maitland House, Warrior Square, Southend on Sea, Essex, SS1 2JY</p>
 
 <div className="space-x-5 text-center text-sm mt-1">

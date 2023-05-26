@@ -1,13 +1,13 @@
 import axios from "axios";
+import { useEffect } from "react";
 import Footer from "../../Components/Footer";
 import HeaderComp from "../../Components/Header";
 
 
 import TempBread from "../../Components/Tempbread";
+import { menuFetchURL } from "../../utils/axiosClient";
 
 export default function Contact({navMenu}){
-
-
 
 
         // TEMPPPPPPPPPPPPPP
@@ -205,7 +205,7 @@ Send
 
 export const getStaticProps = async()=>{
 
-const navMenu =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3').then(resp=>{
+const navMenu =  await axios.get(menuFetchURL).then(resp=>{
   
 return resp.data.items
     
