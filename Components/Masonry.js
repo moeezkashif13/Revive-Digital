@@ -11,7 +11,7 @@ export default function MasonryComp({gotAllWork}){
 
         console.log(window.innerWidth);
 
-        window.innerWidth>1000?setColumnsCount(3):setColumnsCount(1);
+        window.innerWidth>1000?setColumnsCount(4):setColumnsCount(1);
 
 
     },[])
