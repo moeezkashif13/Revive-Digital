@@ -9,6 +9,8 @@ import TempBread from "../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
 
 export default function OurClients({ allURLS,navMenu }) {
+
+  console.log(allURLS);
   
   
   const router = useRouter()
@@ -72,7 +74,7 @@ export default function OurClients({ allURLS,navMenu }) {
               <img
                 className="w-full max-w-full h-full object-contain"
                 src={eachURL.source_url}
-                alt=""
+                alt={eachURL.alt_text}
               />
             </div>
           );
@@ -87,15 +89,15 @@ export default function OurClients({ allURLS,navMenu }) {
 
 export const getStaticProps = async()=>{
 
-  const allURLS = await axiosClient.get('/ourclienttype').then(resp=>{
+  const allURLS = await axiosClient.get('/ourclienttype?per_page=100').then(resp=>{
 
-  
     const getMediaURLS = resp.data.map(eachClient=>{
       return eachClient.featured_media
-    })
+    });
 
 
-    const getSourceMedia = axiosClient.get(`/media?include=${[...getMediaURLS]}`).then(media=>{
+    
+    const getSourceMedia = axiosClient.get(`/media?include=${[...getMediaURLS]}&per_page=100`).then(media=>{
 
     return media.data
     }).catch(errorObj=>{

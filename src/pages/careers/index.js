@@ -118,7 +118,7 @@ return {
 export const getStaticProps = async()=>{
 
 
-const allCareers =  await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/careers').then(resp=>{
+const allCareers =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/careers').then(resp=>{
   return resp.data
 }).catch(err=>{
   return false;

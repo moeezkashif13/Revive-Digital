@@ -146,7 +146,7 @@ return resp.data.items
 
 // export const getStaticProps = async ()=>{
 
-//   const gotAllWork = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/ourwork?order=desc').then
+//   const gotAllWork = await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/ourwork?order=desc').then
 //   (resp=>{
 
 //     const getAllWorksMediaIDS = resp.data.map(eachWork=>{
@@ -156,7 +156,7 @@ return resp.data.items
 
 //     console.log(getAllWorksMediaIDS,'getAllWorksMediaIDS getAllWorksMediaIDS');
 
-//     const getWorkMediaURL = axios.get(`http://localhost/revivedigitalbackend/wp-json/wp/v2/media?include=${[...getAllWorksMediaIDS]}`).then(gotMedia=>{
+//     const getWorkMediaURL = axios.get(`https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/media?include=${[...getAllWorksMediaIDS]}`).then(gotMedia=>{
 
 //     }).catch(errorObj=>{
 //       console.log(errorObj);

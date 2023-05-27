@@ -18,7 +18,7 @@ import { extractFields, fetchDetailsSectionImages, splittingText } from "../../u
 
 export default function Home({gotAllWork,navMenu,fetchHomepageRelated,gotDetailsSectionImages}) {
 
-
+console.log(fetchHomepageRelated);
 
   
   const heroSectArr = [
@@ -329,7 +329,7 @@ export const getStaticProps = async () => {
 
 
     
-    const fetchHomepageRelated = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/homepage?slug=homepage-content').then(resp=>{
+    const fetchHomepageRelated = await axiosClient.get('/homepage?slug=homepage-content').then(resp=>{
       return resp.data[0]
     }).catch(err=>{
       console.log(err);

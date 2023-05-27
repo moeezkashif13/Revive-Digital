@@ -111,7 +111,7 @@ const fetchNewPages = (event)=>{
   // }
 
 
-  // axios.post('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog',data,{
+  // axios.post('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/blog',data,{
 
   //         headers:{
   //           // "Authorization" : `Basic admin:${process.env.NEXT_PUBLIC_APPLICATION_PASSWORD}`
@@ -129,7 +129,7 @@ const fetchNewPages = (event)=>{
 // })
 
 
-        // axios.post('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog',data,{
+        // axios.post('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/blog',data,{
 
         //   headers:{
         //     // "Authorization" : `Basic admin:${process.env.NEXT_PUBLIC_APPLICATION_PASSWORD}`
@@ -223,7 +223,7 @@ const fetchNewPages = (event)=>{
 
 export const getServerSideProps = async ()=>{
 
-    // const fetchBlogPosts = await axios.get('http://localhost/revivedigitalbackend/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media').then(resp=>{
+    // const fetchBlogPosts = await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/blog?_fields=title,excerpt,slug,featured_media').then(resp=>{
     //     return resp.data
     // }).catch(err=>{
     //     console.log(err);
