@@ -25,7 +25,7 @@ export default function WhatWeDo({navMenu}){
 
 {[1,2,3,4,5].map((elem,index)=>{
 
-return <CloneDetailsSection noFindOut={index==0&&true} reverse={index%2==0&&true}  />
+return <CloneDetailsSection key={index} noFindOut={index==0&&true} reverse={index%2==0&&true}  />
 
 })}
 

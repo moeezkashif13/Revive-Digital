@@ -185,8 +185,8 @@ const secondSection = splittingText(secondSectionHeading);
 <div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding  flex flex-wrap justify-center  md:justify-between  gap ">
     
     
-    {gotMediaLinks?gotMediaLinks.map((eachLogo)=>{
-        return <div className=" w-[180px] h-[150px]    flex items-center  ">
+    {gotMediaLinks?gotMediaLinks.map((eachLogo,index)=>{
+        return <div key={index} className=" w-[180px] h-[150px]    flex items-center  ">
 
             <img   className=" max-w-full w-full  h-full  object-contain   " src={eachLogo.source_url} alt="" />
 
@@ -321,9 +321,9 @@ const secondSection = splittingText(secondSectionHeading);
 <div className="px-6 flex flex-wrap justify-between  gap-y-4">
 
 
-{['Name','Email','Phone'].map((elem)=>{
+{['Name','Email','Phone'].map((elem,index)=>{
 
-    return <div className=" w-full lg:w-[230px] ">
+    return <div key={index} className=" w-full lg:w-[230px] ">
 
         <label htmlFor={elem}  className="font-semibold" >{elem}:*</label>
 

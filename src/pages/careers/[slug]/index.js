@@ -67,10 +67,11 @@ export default function CareerName({singleCareer,moreJobRoles,navMenu}){
 
         <div>
 
+
 <HeaderComp  navMenu={navMenu} text={splittedName}  />
 
 
-<TempBread items={breadCrumbsData} />
+<TempBread key={Math.floor(Math.random()*1000)} items={breadCrumbsData} />
 
 
 
@@ -132,11 +133,11 @@ export default function CareerName({singleCareer,moreJobRoles,navMenu}){
 
 <div className="pl-6 font-semibold flex flex-col gap-y-3 pt-2">
 
-{moreJobRoles.map((eachJob)=>{
+{moreJobRoles.map((eachJob,index)=>{
 
   if(eachJob?.title?.rendered==singleCareer?.title?.rendered)return;
 
-return <Link href={`/careers/${eachJob?.slug}`}>{eachJob?.title?.rendered}</Link>
+return <Link key={index} href={`/careers/${eachJob?.slug}`}>{eachJob?.title?.rendered}</Link>
 
 
 })}

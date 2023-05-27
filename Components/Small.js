@@ -100,15 +100,15 @@ export const EachBlogCard = ({ details }) => {
       </div>
 
       <div className="space-y-5 px-2 py-4">
-        <p
+        <span
           className="eachBlogCardHeading h-[56px] text-lg font-bold underline "
           dangerouslySetInnerHTML={{ __html: details?.title?.rendered }}
-        ></p>
+        ></span>
 
-        <p
+        <span
           className="eachBlogCardExcerpt h-[145px]"
           dangerouslySetInnerHTML={{ __html: details?.excerpt?.rendered }}
-        ></p>
+        ></span>
 
         <div>
           <Link
@@ -288,5 +288,5 @@ export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
 
 
 export const Loader = () => {
-  return <div class="lds-dual-ring"></div>;
+  return <div className="lds-dual-ring"></div>;
 };

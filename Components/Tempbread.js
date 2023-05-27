@@ -4,7 +4,8 @@ import Link from "next/link";
 const TempBread = ({ items }) => {
 
   return (
-    <div className="flex flex-col md:flex-row  lg:pl-28 mt-6 lg:mt-12 mb-4 lg:mb-8 space-x-2 items-center text-[#777777] font-medium capitalize">
+
+  <div  key={Math.floor(Math.random()*1000)} className="flex flex-col md:flex-row  lg:pl-28 mt-6 lg:mt-12 mb-4 lg:mb-8 space-x-2 items-center text-[#777777] font-medium capitalize">
       {items.map((crumb, i) => {
         const isLastItem = i === items.length - 1;
         if (!isLastItem) {
@@ -12,17 +13,18 @@ const TempBread = ({ items }) => {
             <>
               <Link
                 href={crumb.path}
-                key={i}
+                key={Math.floor(Math.random()*1000)}
+
                 className="text-indigo-500 hover:text-indigo-400 hover:underline"
               >
                 {crumb.label}
               </Link>
               {/* separator */}
-              <span> / </span>
+              <span > / </span>
             </>
           );
         } else {
-          return <p>{crumb.label}</p>;
+          return <p  >{crumb.label}</p>;
         }
       })}
     </div>

@@ -62,10 +62,10 @@ return (
 
 
 <div className={`flex flex-wrap  gap-x-8 lg:gap-x-0 justify-center lg:justify-between gap-y-8 ${getAssociatedServices.length>0?'mt-10':'mt-0'}`}>
-{getAssociatedServices.length>0?getAssociatedServices.map((eachService)=>{
+{getAssociatedServices.length>0?getAssociatedServices.map((eachService,index)=>{
 
 
-    return <div className="w-[255px] bg-white">
+    return <div key={index} className="w-[255px] bg-white">
 
             <div className="w-full h-[160px] ">
                 
@@ -127,7 +127,7 @@ const subString = eachCheck.substring(8,50)
 })
 
 
-    return <DetailsSection allMedia={getMedia} details={hello} index={index} reverse={index%2!=0&&true}  />
+    return <DetailsSection key={index} allMedia={getMedia} details={hello} index={index} reverse={index%2!=0&&true}  />
 
 
 })}

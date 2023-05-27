@@ -74,10 +74,10 @@ return {
 <div  className=" px-mobilePadding md:px-tabletPadding lg:px-common py-10 space-y-8 text-primary">
 
 
-{allCareers?allCareers.map((eachcareer)=>{
+{allCareers?allCareers.map((eachcareer,index)=>{
 
 
-    return <div style={{transition:'all 0.4s'}} className="hover:shadow-lg flex flex-col text-center md:text-left md:flex-row px-8 border py-9 rounded-lg">
+    return <div key={index} style={{transition:'all 0.4s'}} className="hover:shadow-lg flex flex-col text-center md:text-left md:flex-row px-8 border py-9 rounded-lg">
 
         <Link href={`/careers/${eachcareer.slug}`} className="font-bold text-xl underline ">{eachcareer?.title?.rendered}</Link>
 

@@ -169,8 +169,8 @@ const fetchNewPages = (event)=>{
 <div className={` px-mobilePadding md:px-tabletPadding lg:px-desktopPadding  pt-10 ${errorMessage?'pb-10':'pb-20'} bg-[#FAFAFA] flex flex-wrap justify-center md:justify-between gap-y-8`}>
 
 
-{allBlogPosts.length>0?allBlogPosts.map((eachBlogDetail)=>{
-    return <EachBlogCard  details={eachBlogDetail}   />
+{allBlogPosts.length>0?allBlogPosts.map((eachBlogDetail,index)=>{
+    return <EachBlogCard  key={index} details={eachBlogDetail}   />
 }):<Loader/>}
 
 
@@ -192,8 +192,8 @@ const fetchNewPages = (event)=>{
 
 <div className="flex flex-wrap gap-y-4 justify-center gap-x-5 py-5 font-semibold ">
 
-{pagesCount.map(eachNumber=>{
-    return <div style={{transition:'all 0.4s'}} onClick={fetchNewPages} className="hover:bg-primary hover:text-white   border border-primary cursor-pointer text-primary underline px-3 py-1 ">{eachNumber}</div>
+{pagesCount.map((eachNumber,index)=>{
+    return <div key={index} style={{transition:'all 0.4s'}} onClick={fetchNewPages} className="hover:bg-primary hover:text-white   border border-primary cursor-pointer text-primary underline px-3 py-1 ">{eachNumber}</div>
 })}
 
 

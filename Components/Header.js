@@ -26,13 +26,13 @@ export default function HeaderComp({
   const mainString = splittingText();
 
   return (
-    <div className="relative  h-[700px] lg:h-[380px] capitalize     ">
+    <div className={`relative  ${anotherAppearance?'h-[700px] ':'h-[550px]'}  lg:h-[380px] capitalize     `}>
       <div className="absolute left-0 top-10 z-20 w-full px-12   text-white ">
         <Navbar navMenu={navMenu} />
       </div>
 
       <div className="heroSectVideoDiv h-full ">
-        <video className="w-full h-full object-cover" autoPlay loop muted playsinline>
+        <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
           <source src="/intro.mp4" type="video/mp4" />
         </video>
       </div>
@@ -47,7 +47,7 @@ export default function HeaderComp({
           {/* NAVBARR ENDDD */}
 
           {anotherAppearance ? (
-            <div className="  relative top-[340px]   lg:absolute lg:-bottom-3    z-20 flex  lg:h-full w-full flex-col items-center justify-center gap-y-4">
+            <div className="  relative top-[340px] lg:top-0   lg:absolute lg:-bottom-3    z-20 flex  lg:h-full w-full flex-col items-center justify-center gap-y-4">
               <p className="text-3xl lg:text-5xl font-medium">
                 {specialAppearanceFields?.["each-service-header"]}
               </p>
@@ -75,9 +75,9 @@ export default function HeaderComp({
               </div>
             </div>
           ) : (
-            <div className=" absolute  bottom-4  left-0 lg:left-28 z-20 flex  h-1/2  w-full text-center lg:text-start lg:w-[65%]    flex-col justify-center text-4xl font-extrabold   ">
-              <p>
-                <span className="relative ">
+            <div className=" absolute  bottom-4  left-0 lg:left-28 z-20 flex  h-1/2  w-full text-center lg:text-start lg:w-[65%]     flex-col justify-center text-4xl font-extrabold   ">
+              <p className="leading-[3.2rem]">
+                <span className="relative  ">
                   {mainString ? (
                     <span>{mainString.getFirstWord}</span>
                   ) : (

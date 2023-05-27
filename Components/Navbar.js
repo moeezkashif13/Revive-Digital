@@ -14,8 +14,8 @@ const WhoWeAreLink = ({elem})=>{
    <div Link={`/what-we-do/`} className="flex flex-col gap-y-2.5">
   
   
-  {elem?.children?.map((main)=>{
-    return <Link href={`/${main.object_slug}`} className="text-secondary font-medium text-[15px]">{main.title}</Link>
+  {elem?.children?.map((main,index)=>{
+    return <Link key={index} href={`/${main.object_slug}`} className="text-secondary font-medium text-[15px]">{main.title}</Link>
   })}
   
   
@@ -40,7 +40,7 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
 
   <div className=" flex flex-wrap flex-col   lg:flex-row gap-x-5 gap-y-3  ">
   
-    {checkArr?.map(eachChild=>{
+    {checkArr?.map((eachChild,index)=>{
   
   if(eachChild){
 
@@ -48,7 +48,7 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   
   
   
-    return <><Link href={`/what-we-do/${eachChild.slug}`} className=" w-full text-center lg:text-left  flex flex-col gap-y-1  lg:w-[22.8%] ">
+    return <><Link key={index} href={`/what-we-do/${eachChild.slug}`} className=" w-full text-center lg:text-left  flex flex-col gap-y-1  lg:w-[22.8%] ">
 
 <p className="mb-2 text-lg  text-primary font-semibold">
   
@@ -57,8 +57,8 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
 
 </p>
 
-{eachChild[checkavien[0]]?.map((main)=>{
-  return <Link href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
+{eachChild[checkavien[0]]?.map((main,index)=>{
+  return <Link key={index} href={`/what-we-do/${eachChild.slug}/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
 })}
 
 
@@ -182,9 +182,9 @@ return (
 <div className="flex flex-col w-full lg:w-auto items-center lg:items-start lg:flex-row gap-y-3 gap-x-5 z-40 ">
 
 
-{navMenu.map(elem=>{
+{navMenu.map((elem,index)=>{
 
-  return <div className={` flex  w-full justify-center lg:w-auto lg:justify-start  relative `}>
+  return <div key={index} className={` flex  w-full justify-center lg:w-auto lg:justify-start  relative `}>
 
 
 

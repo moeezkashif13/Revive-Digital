@@ -68,9 +68,9 @@ export default function OurClients({ allURLS,navMenu }) {
       <TempBread items={breadCrumbsData} />
 
       <div className="flex flex-wrap justify-center lg:justify-start gap-[1.78rem] bg-[#fafafa] px-mobilePadding lg:px-8   py-12 ">
-        {allURLS.map((eachURL) => {
+        {allURLS.map((eachURL,index) => {
           return (
-            <div className="flex  h-[120px] w-[190px] items-center bg-white">
+            <div key={index} className="flex  h-[120px] w-[190px] items-center bg-white">
               <img
                 className="w-full max-w-full h-full object-contain"
                 src={eachURL.source_url}

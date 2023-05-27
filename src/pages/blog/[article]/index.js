@@ -148,11 +148,11 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
-{recentPosts?.map((eachRecentPost)=>{
+{recentPosts?.map((eachRecentPost,index)=>{
 
 
 
-return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRecentPost?.title?.rendered}</Link>
+return <Link key={index} className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRecentPost?.title?.rendered}</Link>
 
 
 
@@ -176,8 +176,8 @@ return <Link className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRe
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
 
-{blogCategories?.map((eachCategory)=>{
-    return <Link  href={`/blog/category/${eachCategory.slug}`}><span className="underline">{eachCategory.name}</span> ({eachCategory.count}) </Link>
+{blogCategories?.map((eachCategory,index)=>{
+    return <Link key={index}  href={`/blog/category/${eachCategory.slug}`}><span className="underline">{eachCategory.name}</span> ({eachCategory.count}) </Link>
 
     
 

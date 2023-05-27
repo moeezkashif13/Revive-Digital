@@ -18,7 +18,6 @@ import { extractFields, fetchDetailsSectionImages, splittingText } from "../../u
 
 export default function Home({gotAllWork,navMenu,fetchHomepageRelated,gotDetailsSectionImages}) {
 
-console.log(fetchHomepageRelated);
 
   
   const heroSectArr = [
@@ -57,7 +56,7 @@ console.log(fetchHomepageRelated);
       
     <div className=" h-full heroSectVideoDiv">
 
-    <video className="w-full h-full object-cover"  autoPlay loop muted playsinline>
+    <video className="w-full h-full object-cover"  autoPlay loop muted playsInline>
 <source src="/intro.mp4" type="video/mp4" />
 </video>
 
@@ -87,14 +86,14 @@ console.log(fetchHomepageRelated);
 
 <Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:3000,arrows:false,pagination:false,}}  hasTrack={ false }>
   <SplideTrack >
-    {heroSectText.map((elem)=>{
+    {heroSectText.map((elem,index)=>{
 
 const gotText = splittingText(custom_fields[elem][0])
 
 
 
 
-      return     <SplideSlide>
+      return     <SplideSlide key={index}>
 
 <h1 className="text-4xl leading-[3rem] text-center lg:text-start lg:text-[4.25rem] font-semibold lg:leading-[5.5rem] ">
 
@@ -197,12 +196,12 @@ const getRelavantMediURL = gotDetailsSectionImages.filter(eachMediaURL=>{
   return eachMediaURL.id == getRelavantMediaID
 })[0];
 
-console.log(getRelavantMediURL);
 
 
 
 
-return <div className={`flex flex-col lg:flex-row  ${index%2!=0&&'lg:flex-row-reverse'} `}>
+
+return <div key={index} className={`flex flex-col lg:flex-row  ${index%2!=0&&'lg:flex-row-reverse'} `}>
 
 <div className="w-full lg:w-1/2  px-mobilePadding lg:px-24 py-10">
 
@@ -280,6 +279,8 @@ export const getStaticProps = async () => {
       "/ourworktype?order=desc"
     )
     .then(async (resp) => {
+
+      console.log(resp.data,'resp.data resp.data resp.data');
      
       const getAllWorksMediaIDS = resp.data.map((eachWork) => {
         return eachWork.featured_media;

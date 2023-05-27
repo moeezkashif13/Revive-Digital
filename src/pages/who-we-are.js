@@ -1,4 +1,5 @@
 
+import axios from "axios";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -10,7 +11,8 @@ import {
   EachBlogCard,
   Quote,
 } from "../../Components/Small";
-import axiosClient from "../../utils/axiosClient";
+import TempBread from "../../Components/Tempbread";
+import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
 
 function isNumeric(str) {
   if (typeof str != "string") return false; // we only process strings!
@@ -20,7 +22,7 @@ function isNumeric(str) {
   ); // ...and ensure strings of whitespace fail
 }
 
-export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
+export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs,navMenu }) {
   
   
   const getTeamMembers = Object.keys(custom_fields).filter((eachField) =>
@@ -49,11 +51,59 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
 
   let secondremainingWords = detailsSectHeadingFirst.slice(1).join(" ");
 
+
+
+
+        // TEMPPPPPPPPPPPPPP
+
+
+        const db = [
+          {
+            "slug": "learn-python",
+            "courseTitle": "Learn Python: Python for Beginners",
+            "breadcrumbs": [
+              {
+                "text": "Home",
+                "url": "/"
+              },
+              {
+                "text": "Contact",
+                "url": "/contact"
+              },
+           
+            ]
+          }
+        ]
+      
+      
+        const slug = 'learn-python';
+        // simulate a call to the backend server here to get the data
+        const data = db.find((page) => page.slug === slug);
+        if (!data) {
+          return {
+            notFound: true,
+          };
+        }
+      
+      // TEMPPPPPPPP
+      
+      const breadCrumbsData = data.breadcrumbs.map((c) => {
+          return {
+            label: c.text,
+            path: c.url,
+          };
+        })
+
+
+
   return (
     <div>
-      {/* <HeaderComp text="who we are" /> */}
+
+      <HeaderComp navMenu={navMenu} text="who we are" />
 
       {/* <BreadCrumbs /> */}
+
+      <TempBread items={breadCrumbsData} />
 
       {/*  */}
 
@@ -67,29 +117,7 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
               __html: custom_fields["who-we-are-details-section-paragraph"][0],
             }}
           >
-            {/* <p>
-              Your website, your brand, your logo, your colours. Your letters,
-              business cards, your packaging, your lorries, your cars. Your
-              advertising.
-            </p>
-
-            <p>They all make a statement about you.</p>
-
-            <p>
-              Revive isn’t just websites, or graphics. We’re not just keywords
-              and acronyms. We understand. We seek to learn what makes you tick,
-              and what your customers see in you, and want from you. We
-              visualise you, your vision and message, and we monitor, analyse
-              and improve, constantly, consistently.
-            </p>
-
-            <p>
-              We’re your partner. We don’t work for you, but we do work with
-              you. We’ll be clear – and we’ll tell you if something isn’t right.
-              We’ll always listen, always help. We won’t try and do anything
-              we’re not really good at. When you work with Revive, you expect
-              excellence, clarity, and results. We deliver.
-            </p> */}
+           
           </div>
         </div>
 
@@ -103,29 +131,7 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
                 custom_fields["who-we-are-details-section-paragraph_1"][0],
             }}
           >
-            {/* <p>
-              Your website, your brand, your logo, your colours. Your letters,
-              business cards, your packaging, your lorries, your cars. Your
-              advertising.
-            </p>
-
-            <p>They all make a statement about you.</p>
-
-            <p>
-              Revive isn’t just websites, or graphics. We’re not just keywords
-              and acronyms. We understand. We seek to learn what makes you tick,
-              and what your customers see in you, and want from you. We
-              visualise you, your vision and message, and we monitor, analyse
-              and improve, constantly, consistently.
-            </p>
-
-            <p>
-              We’re your partner. We don’t work for you, but we do work with
-              you. We’ll be clear – and we’ll tell you if something isn’t right.
-              We’ll always listen, always help. We won’t try and do anything
-              we’re not really good at. When you work with Revive, you expect
-              excellence, clarity, and results. We deliver.
-            </p> */}
+           
           </div>
         </div>
       </div>
@@ -136,8 +142,8 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
         <CommonHeading special="our" main="blog" />
 
         <div className="flex flex-wrap justify-center md:justify-between gap-y-8">
-          {fetchBlogs.map((eachArticle) => {
-            return <EachBlogCard details={eachArticle} />;
+          {fetchBlogs.map((eachArticle,index) => {
+            return <EachBlogCard key={index} details={eachArticle} />;
           })}
         </div>
 
@@ -173,7 +179,7 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
             });
 
             return (
-              <div className="w-[245px]">
+              <div key={index} className="w-[245px]">
                 <div className=" h-[245px] w-full bg-white ">
                   <img
                     className=" h-full   w-full max-w-full object-contain  "
@@ -247,11 +253,23 @@ export const getStaticProps = async () => {
       console.log(err);
     });
 
+
+
+    const navMenu =  await axios.get(menuFetchURL).then(resp=>{
+  
+      return resp.data.items
+          
+  })
+
+
+
   return {
     props: {
       // WhoWeAreData: WhoWeAreData,
 
       fetchBlogs: fetchBlogs,
+
+      navMenu : navMenu,
 
       custom_fields: custom_fields,
 
