@@ -103,7 +103,7 @@ export const getStaticProps = async()=>{
     });
 
 
-    const getSourceMedia = await axiosClient.get(`/mediaaaa?include=${[...getMediaURLS]}&per_page=100`)
+    const getSourceMedia = await axiosClient.get(`/media?include=${[...getMediaURLS]}&per_page=100`)
 
     allURLS = getSourceMedia.data;
 
