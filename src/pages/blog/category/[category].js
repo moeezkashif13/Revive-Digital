@@ -10,7 +10,7 @@ import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 
-export default function ArticleCategory({message,data,categoryName,breadcrumbs}){
+export default function ArticleCategory({message,data,categoryName,breadcrumbs,navMenu}){
 
 if(!data){
   return   <CustomError message={message} type="category" />
@@ -39,7 +39,7 @@ const [allArticles,setAllArticles] = useState([])
 
 
 
-{/* <HeaderComp navMenu={navMenu}  text={categoryName} /> */}
+<HeaderComp navMenu={navMenu}  text={categoryName} />
 
 
 <TempBread items={breadCrumbsData} />
@@ -223,7 +223,7 @@ const db = [
 
 
 
-// const navMenu =  await fetchWholeNavbar()
+const navMenu =  await fetchWholeNavbar()
 
 
 return{
@@ -231,7 +231,7 @@ return{
 
         data : mainData,
         message : message,
-        // navMenu : navMenu,
+        navMenu : navMenu,
 
 // TEMPPPPPPPP
       categoryName:categoryName,

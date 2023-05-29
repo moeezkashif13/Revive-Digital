@@ -8,7 +8,7 @@ import TempBread from "../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
 import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
-export default function Contact(){
+export default function Contact({navMenu}){
 
         // TEMPPPPPPPPPPPPPP
 
@@ -57,7 +57,7 @@ return(
     <div>
 
 
-{/* <HeaderComp navMenu={navMenu} text="Contact"  /> */}
+<HeaderComp navMenu={navMenu} text="Contact"  />
 
 {/* <BreadCrumbs/> */}
 
@@ -199,19 +199,19 @@ Send
 
 
 
-// export const getStaticProps = async()=>{
+export const getStaticProps = async()=>{
 
-// const navMenu = await fetchWholeNavbar()
-
-
-//     return{
-//       props : {
-//         navMenu : navMenu
-//         // navMenu : {navMenu,checkArr:checkArr},
+const navMenu = await fetchWholeNavbar()
 
 
-//       }
-//     }
+    return{
+      props : {
+        navMenu : navMenu
+        // navMenu : {navMenu,checkArr:checkArr},
 
 
-// }
+      }
+    }
+
+
+}

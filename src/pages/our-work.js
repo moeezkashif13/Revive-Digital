@@ -59,7 +59,7 @@ export default function OurWork(props) {
     <div>
       {/* HEADERRRRR STARTTT */}
 
-      {/* <HeaderComp navMenu={props.navMenu} text={splittedName} /> */}
+      <HeaderComp navMenu={props.navMenu} text={splittedName} />
 
       {/* HEADERRRRR ENDDD */}
 
@@ -172,7 +172,7 @@ try {
 
 
 
-// const navMenu = await fetchWholeNavbar();
+const navMenu = await fetchWholeNavbar();
 
 
 
@@ -181,7 +181,7 @@ try {
   return {
     props : {
 
-      // navMenu : navMenu,
+      navMenu : navMenu,
 
 globalError : globalError,
 gotAllWork : gotAllWork,

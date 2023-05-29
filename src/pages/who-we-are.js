@@ -23,7 +23,7 @@ function isNumeric(str) {
   ); // ...and ensure strings of whitespace fail
 }
 
-export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
+export default function WhoWeAre({ custom_fields, fetchMediaURL,navMenu, fetchBlogs }) {
   
   
   const getTeamMembers = Object.keys(custom_fields).filter((eachField) =>
@@ -100,7 +100,7 @@ export default function WhoWeAre({ custom_fields, fetchMediaURL, fetchBlogs }) {
   return (
     <div>
 
-      {/* <HeaderComp navMenu={navMenu} text="who we are" /> */}
+      <HeaderComp navMenu={navMenu} text="who we are" />
 
       {/* <BreadCrumbs /> */}
 
@@ -256,7 +256,7 @@ export const getStaticProps = async () => {
 
 
 
-    // const navMenu =  await fetchWholeNavbar()
+    const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -266,7 +266,7 @@ export const getStaticProps = async () => {
 
       fetchBlogs: fetchBlogs,
 
-      // navMenu : navMenu,
+      navMenu : navMenu,
 
       custom_fields: custom_fields,
 

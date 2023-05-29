@@ -16,7 +16,7 @@ const mainArr = [];
 
 
 
-export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields}){
+export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields,navMenu}){
 
   
   
@@ -47,7 +47,7 @@ return (
 
             <div>
 
-{/* <HeaderComp navMenu={navMenu} special={router.query.category} main="services" />  */}
+<HeaderComp navMenu={navMenu} special={router.query.category} main="services" /> 
 
 
 {/* <BreadCrumbs/> */}
@@ -342,7 +342,7 @@ return finalArray;
 
 
 
-    // const navMenu =  await fetchWholeNavbar();
+    const navMenu =  await fetchWholeNavbar();
 
 
 
@@ -352,7 +352,7 @@ return finalArray;
         props : {
 
           
-          // navMenu : navMenu,
+          navMenu : navMenu,
 
             getAssociatedServices:getAssociatedServices,
             getMedia: getMedia,

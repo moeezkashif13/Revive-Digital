@@ -8,7 +8,7 @@ import TempBread from "../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../utils/fetchWholeNavbar";
 
-export default function Careers({breadcrumbs,allCareers}){
+export default function Careers({breadcrumbs,allCareers,navMenu}){
 
 
   const router = useRouter();
@@ -65,7 +65,7 @@ return {
         <div >
 
 
-{/* <HeaderComp navMenu={navMenu}  text="Careers" /> */}
+<HeaderComp navMenu={navMenu}  text="Careers" />
 
 
 <TempBread items={breadCrumbsData} />
@@ -125,7 +125,7 @@ const allCareers =  await axiosClient.get('/careers?_fields=slug,title').then(re
   return false;
 })
 
-// const navMenu =  await fetchWholeNavbar()
+const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -134,7 +134,7 @@ const allCareers =  await axiosClient.get('/careers?_fields=slug,title').then(re
     
     allCareers: allCareers,
 
-    // navMenu : navMenu,
+    navMenu : navMenu,
             
     
     

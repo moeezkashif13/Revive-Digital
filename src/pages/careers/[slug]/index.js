@@ -11,7 +11,7 @@ import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 import { ManageContent } from "../../../../utils/utils";
 
-export default function CareerName({singleCareer,moreJobRoles}){
+export default function CareerName({singleCareer,moreJobRoles,navMenu}){
 
       const splittedName = singleCareer.title.rendered.split('-').join(' ')
   
@@ -69,7 +69,7 @@ export default function CareerName({singleCareer,moreJobRoles}){
         <div>
 
 
-{/* <HeaderComp  navMenu={navMenu} text={splittedName}  /> */}
+<HeaderComp  navMenu={navMenu} text={splittedName}  />
 
 
 <TempBread key={Math.floor(Math.random()*1000)} items={breadCrumbsData} />
@@ -227,7 +227,7 @@ export const getStaticProps = async({params })=>{
   })
 
   
-  // const navMenu =  await fetchWholeNavbar();
+  const navMenu =  await fetchWholeNavbar();
 
 
 
@@ -235,7 +235,7 @@ export const getStaticProps = async({params })=>{
     props : {
       singleCareer : singleCareer,
       moreJobRoles: moreJobRoles,
-      // navMenu : navMenu,
+      navMenu : navMenu,
     },
     revalidate:10,
 

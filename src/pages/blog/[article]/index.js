@@ -15,7 +15,7 @@ import { ManageContent } from "../../../../utils/utils";
 
 
 
-export default function Article({gotArticle,breadcrumbs}){
+export default function Article({gotArticle,breadcrumbs,navMenu}){
 
 
   if(!gotArticle){
@@ -92,7 +92,7 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 
 
 
-{/* <HeaderComp navMenu={navMenu} text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  /> */}
+<HeaderComp navMenu={navMenu} text={gotArticle.title.rendered} special="understanding" main="and implementing the meta pixel (formerly facebook pixel)"  />
 
 
 <TempBread items={breadCrumbsData} />
@@ -290,7 +290,7 @@ export const getServerSideProps = async(context)=>{
 
 
 
-// const navMenu =  await fetchWholeNavbar();
+const navMenu =  await fetchWholeNavbar();
 
   
 
@@ -298,7 +298,7 @@ return {
   props:{
     gotArticle:gotArticle,
 
-    // navMenu : navMenu,
+    navMenu : navMenu,
 
     // TEMPPPPPPPP
     

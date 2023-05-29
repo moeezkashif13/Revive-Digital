@@ -7,7 +7,7 @@ import axiosClient, { menuFetchURL } from "../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../utils/fetchWholeNavbar";
 import { extractFields, fetchDetailsSectionImages } from "../../../utils/utils";
 
-export default function WhatWeDo({whatWeDoData,fetchMedia}){
+export default function WhatWeDo({whatWeDoData,fetchMedia,navMenu}){
 
 
 const {custom_fields} = whatWeDoData
@@ -26,7 +26,7 @@ const extractFindOutButton = extractFields(custom_fields,"what-we-do-details-sec
         <div >
 
 
-{/* <HeaderComp navMenu={navMenu} special="What" main="we do" /> */}
+<HeaderComp navMenu={navMenu} special="What" main="we do" />
 
 
 <BreadCrumbs/>
@@ -100,13 +100,13 @@ const fetchMedia = await fetchDetailsSectionImages(extractMediaIDS);
 
 
         
-    // const navMenu =  await fetchWholeNavbar();
+    const navMenu =  await fetchWholeNavbar();
 
     return {
         props : {
             whatWeDoData : whatWeDoData.data[0],
             fetchMedia : fetchMedia,
-            // navMenu : navMenu,
+            navMenu : navMenu,
         },
     revalidate:10,
 

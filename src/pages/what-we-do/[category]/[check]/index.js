@@ -22,7 +22,7 @@ const splittingText = (text) => {
 
 
 
-export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks}){
+export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks,navMenu}){
 
   console.log(gotMainService);
 
@@ -103,7 +103,7 @@ const secondSection = splittingText(secondSectionHeading);
 
 
 
-{/* <HeaderComp navMenu={navMenu}  specialAppearanceFields={custom_fields} anotherAppearance={true}   /> */}
+<HeaderComp navMenu={navMenu}  specialAppearanceFields={custom_fields} anotherAppearance={true}   />
 
 <TempBread items={breadCrumbsData} />
 
@@ -519,7 +519,7 @@ let gotMediaLinks;
 }
 
 
-// const navMenu =  await fetchWholeNavbar()
+const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -532,7 +532,7 @@ let gotMediaLinks;
         gotMainService: gotMainService,
         gotMediaLinks: gotMediaLinks,
         
-        // navMenu :navMenu,
+        navMenu :navMenu,
 
 
 

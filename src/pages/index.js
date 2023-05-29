@@ -22,6 +22,8 @@ export default function Home({gotAllWork,getWorkMediaURL,fetchHomepageRelated,go
   const gotAllWorkObj = {data:gotAllWork,mediaURL:getWorkMediaURL}
 
   
+
+  
   const {custom_fields} = fetchHomepageRelated;
 
   const heroSectText = Object.keys(custom_fields).filter(eachField=>{
