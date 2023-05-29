@@ -8,6 +8,7 @@ import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 import { ManageContent } from "../../../../utils/utils";
 
 export default function CareerName({singleCareer,moreJobRoles,navMenu}){
@@ -226,11 +227,7 @@ export const getStaticProps = async({params })=>{
   })
 
   
-  const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+  const navMenu =  await fetchWholeNavbar();
 
 
 
@@ -240,7 +237,7 @@ return resp.data.items
       moreJobRoles: moreJobRoles,
       navMenu : navMenu,
     },
-    revalidate:60,
+    revalidate:10,
 
   }
 

@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CustomError from "../../../../../Components/CustomError";
@@ -8,6 +9,7 @@ import HeaderComp from "../../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection, Loader } from "../../../../../Components/Small";
 import TempBread from "../../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../../../utils/fetchWholeNavbar";
 
 
 const splittingText = (text) => {
@@ -26,6 +28,7 @@ const splittingText = (text) => {
 
 export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks,navMenu}){
 
+  console.log(gotMainService);
 
   
   if(errorCame){
@@ -48,8 +51,6 @@ export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLink
         const {custom_fields} = gotMainService[0]
 
 
-        
-        
         const [bothSectionMedia,setBothSectionMedia] = useState({});
 
         const [imageLoading,setImageLoading] = useState(false);
@@ -96,10 +97,13 @@ const secondSection = splittingText(secondSectionHeading);
 
 
 
-    return(
-        <div>
-            
 
+    return(
+
+
+
+
+        <div>
 
 
 
@@ -394,6 +398,8 @@ const secondSection = splittingText(secondSectionHeading);
 
 
         </div>
+    
+    
     )
 
 }
@@ -480,6 +486,7 @@ if (!data) {
 
   const {custom_fields} = gotMainService[0];
 
+  console.log(custom_fields,'custom_fields custom_fields custom_fields');
 
   const getCompanyLogos = Object.keys(custom_fields).filter(eachField=>{
     return eachField.includes('company-logo')
@@ -516,11 +523,7 @@ let gotMediaLinks;
 }
 
 
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu =  await fetchWholeNavbar()
 
 
 

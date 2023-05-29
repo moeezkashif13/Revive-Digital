@@ -6,6 +6,7 @@ import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import TempBread from "../../../Components/Tempbread";
 import { menuFetchURL } from "../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../utils/fetchWholeNavbar";
 
 export default function Careers({breadcrumbs,allCareers,navMenu}){
 
@@ -124,11 +125,7 @@ const allCareers =  await axios.get('https://workingrevivedigital.000webhostapp.
   return false;
 })
 
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -142,7 +139,7 @@ return resp.data.items
     
     
         },
-    revalidate:60,
+    revalidate:10,
 
     }
 

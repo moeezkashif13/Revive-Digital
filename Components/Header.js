@@ -53,7 +53,7 @@ export default function HeaderComp({
               </p>
               {/* {specialAppearanceFields?.['each-service-paragraph']} */}
               <p className=" w-full lg:w-1/2 text-[1rem] lg:text-xl text-center font-semibold ">
-                {specialAppearanceFields?.["each-service-paragraph"]} das nasknd asnd snad {" "} 
+                {specialAppearanceFields?.["each-service-paragraph"]} {" "} 
               </p>
 
               <div className="flex flex-col lg:flex-row gap-y-6 gap-x-6 text-lg font-semibold text-white">

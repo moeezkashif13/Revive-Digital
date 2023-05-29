@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import {FaPhoneAlt} from 'react-icons/fa'
 import axiosClient from "../utils/axiosClient";
 
-const WhoWeAreLink = ({elem})=>{
-  return   <div  className="  bg-[#ffffff] lg:bg-[#ffffffe6] flex justify-center absolute top-7 z-20 w-[250px] lg:w-[350px] px-6 py-4" style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
+const WhoWeAreLink = ({elem,show})=>{
+  return   <div  className={` ${show?'visible':'invisible'}   bg-[#ffffff] lg:bg-[#ffffffe6] flex justify-center absolute top-7 z-20 w-[250px] lg:w-[350px] px-6 py-4`} style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
   
-   <div Link={`/what-we-do/`} className="flex flex-col gap-y-2.5">
+   <Link href={`/what-we-do/`} className="flex flex-col gap-y-2.5">
   
   
   {elem?.children?.map((main,index)=>{
@@ -19,7 +19,7 @@ const WhoWeAreLink = ({elem})=>{
   })}
   
   
-      </div>
+      </Link>
     
   </div>
   
@@ -31,16 +31,16 @@ const WhoWeAreLink = ({elem})=>{
 }
 
 
-const WhatWeDoLink = ({parentTitle,checkArr,})=>{
+const WhatWeDoLink = ({parentTitle,checkArr,show})=>{
   
   // 
   
   // toggleIt
-  return   <div  className=" bg-[#ffffff] lg:bg-[#ffffffe6] absolute top-7 shadow-2xl z-20  w-full lg:w-[750px] px-6 py-4  " style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
+  return   <div  className={` ${show?'visible':'invisible'} bg-[#ffffff] lg:bg-[#ffffffe6] absolute top-7 shadow-2xl z-20  w-full lg:w-[750px] px-6 py-4  `} style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className=" flex flex-wrap flex-col   lg:flex-row gap-x-5 gap-y-3  ">
   
-    {checkArr?.map((eachChild,index)=>{
+    {checkArr.length>0?checkArr.map((eachChild,index)=>{
   
   if(eachChild){
 
@@ -75,7 +75,7 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
   
 
       
-    })}
+    }):<div className="text-2xl capitalize text-red-500 mx-auto">error in fetchingg. Please reload the page</div>}
   </div>
   
   
@@ -92,70 +92,65 @@ const WhatWeDoLink = ({parentTitle,checkArr,})=>{
 
 
 
-export default function Navbar({navMenu}){
-
+export default function Navbar({navMenu,}){
 
     // const [navMenu,setNavMenu] = useState([]);
 
-    const [checkArr,setCheckArr] = useState([]);
+    // const [checkArr,setCheckArr] = useState([]);
 
 
-    useEffect(()=>{
+  //   useEffect(()=>{
   
-  // axios.get(menuFetchURL).then(resp=>{
+  // // axios.get(menuFetchURL).then(resp=>{
   
-  // // console.log(resp.data.items);
+  // // // console.log(resp.data.items);
   
-  //   setNavMenu(resp.data.items)
+  // //   setNavMenu(resp.data.items)
   
-  // })
+  // // })
 
 
-  const fetchInnerWhatWeDoTax = ()=>{
+  // const fetchInnerWhatWeDoTax = ()=>{
 
-    axiosClient.get('/services-categories?order=desc').then(resp=>{
-      // console.log(resp.data);
-
-
-      const gotARR = resp.data.map(eachTax=>{
-
-        if(eachTax.count==0){
-          return;
-        }
+  //   axiosClient.get('/services-categories?order=desc').then(resp=>{
+  //     // console.log(resp.data);
 
 
-        return  axiosClient.get(`/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
+  //     const gotARR = resp.data.map(eachTax=>{
+
+  //       if(eachTax.count==0){
+  //         return;
+  //       }
 
 
-          return {
-            [eachTax.name] :gotIt.data,
-            slug: eachTax.slug
-          }
-        })
+  //       return  axiosClient.get(`/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
 
-      });
 
-       Promise.all(gotARR).then(check=>{
+  //         return {
+  //           [eachTax.name] :gotIt.data,
+  //           slug: eachTax.slug
+  //         }
+  //       })
+
+  //     });
+
+  //      Promise.all(gotARR).then(check=>{
       
-        setCheckArr(check)
+  //       // setCheckArr(check)
 
-      })
+  //     })
+
       
-
-      // console.log(gotARR);
-
+  //   })
 
 
-    })
+  // }
 
 
-  }
-
-
-  fetchInnerWhatWeDoTax()
+  // fetchInnerWhatWeDoTax()
 
   
-    },[])
+  //   },[])
 
 
     
@@ -168,7 +163,7 @@ export default function Navbar({navMenu}){
 
 return (
 
-    <div className="   flex  flex-col lg:flex-row gap-y-3 justify-between items-center capitalize  ">
+    <nav   className="   flex  flex-col lg:flex-row gap-y-3 justify-between items-center capitalize  ">
 
 
 
@@ -182,74 +177,77 @@ return (
 <div className="flex flex-col w-full lg:w-auto items-center lg:items-start lg:flex-row gap-y-3 gap-x-5 z-40 ">
 
 
-{navMenu.map((elem,index)=>{
+{navMenu.navMenu?
+
+navMenu.navMenu.map((elem,index)=>{
+
 
   return <div key={index} className={` flex  w-full justify-center lg:w-auto lg:justify-start  relative `}>
-
-
-
-<Link href={`/${elem.object_slug}`} className={`text-lg  font-medium  `}>
   
-<p  onMouseEnter={(event)=>{
-
-
-if(event.target.innerText=='Who We Are'){
   
-  setShowWhoWeAreLink(true)
-}else{
-  setShowWhoWeAreLink(false)
-
-}
-
-
-if(event.target.innerText=='What We Do'){
   
-  setShowWhatWeDo(true)
-}else{
-  setShowWhatWeDo(false)
-
-}
-
-
-
-}}  >{elem.title}</p>
-
-
- {(showWhoWeAreLink&&elem.title=='Who we are')&&
-
-<WhoWeAreLink  elem={elem} />
-
-}
-
-{(showWhatWeDo&&elem.title == 'What we do')&&
-
-<WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
-
-
-}
-
-
-
-
-{/*
-
-{elem.title=='What we do'&&
-
+  <Link href={`/${elem.object_slug}`} className={`text-lg  font-medium  `}>
+  
+  <p  onMouseEnter={()=>{
+  
+  if(elem.title == 'What we do'){
+    setShowWhatWeDo(true)
+  }else{
+    setShowWhatWeDo(false)
+  }
+  
+  if(elem.title == 'Who we are'){
+    setShowWhoWeAreLink(true)
+  }else{
+    setShowWhoWeAreLink(false)
+  }
+  
+  }}
+  >{elem.title}</p>
+  
+  
+  {elem.title == 'Who we are'&&
+  <WhoWeAreLink show={showWhoWeAreLink} elem={elem} />
+  
+  }
+  
+  
+  {elem.title=='What we do'&&
+  
+  <WhatWeDoLink show={showWhatWeDo} parentTitle={elem.title}  checkArr={navMenu.checkArr} />
+  
+  }
+  
+  
+  
+  {/*
+  
+  {elem.title=='What we do'&&
+  
   <WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
-
-
-} */}
-
-
-
+  
+  
+  } */}
+  
+  
+  
   
   </Link>
-
-
-
-
+  
+  
+  
+  
   </div>
-})}
+  })
+  
+
+
+
+:
+
+
+<div className="text-red-500 text-2xl -mt-2 font-bold " style={{textTransform:'none'}}>Error in fetching navbar. Please reload the page</div>}
+
 
 </div>
 
@@ -266,7 +264,7 @@ if(event.target.innerText=='What We Do'){
 
 </div>
 
-</div>
+</nav>
 
 
 )

@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 
 export default function MasonryComp({gotAllWork}){
 
-    console.log(gotAllWork);
     
     const [columnsCount,setColumnsCount]  = useState(0);
 
     useEffect(()=>{
 
-        console.log(window.innerWidth);
 
         window.innerWidth>1000?setColumnsCount(4):setColumnsCount(1);
 
@@ -36,8 +34,6 @@ return (
     // }}
   >
    {gotAllWork?.data?.map((eachWork,index)=>{
-
-console.log(eachWork);
 
 
 const getImage = gotAllWork?.mediaURL[index]

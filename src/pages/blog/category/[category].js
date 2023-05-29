@@ -2,13 +2,19 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import CustomError from "../../../../Components/CustomError";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, EachBlogCard } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 
-export default function ArticleCategory({data,categoryName,breadcrumbs,navMenu}){
+export default function ArticleCategory({message,data,categoryName,breadcrumbs,navMenu}){
+
+if(!data){
+  return   <CustomError message={message} type="category" />
+}
 
 const router = useRouter();
 
@@ -122,13 +128,19 @@ return <EachBlogCard/>
 
 export const getServerSideProps = async(context)=>{
 
+  let mainData = false;
+  let message = '';
 
-    const categoryName = context.query.category
+  const categoryName = context.query.category;
+
+
+  try {
+
 
     const url = `/blog-category?per_page=50`;
     
 
-     const mainData = await axiosClient.get(url).then(async resp=>{
+      await axiosClient.get(url).then(async resp=>{
 
         const requiredCategory = resp.data.filter(eachCateg=>{
 
@@ -142,23 +154,33 @@ export const getServerSideProps = async(context)=>{
         return responseObj.data
 
         }).catch(errorObj=>{
-            console.log(errorObj);
+          mainData = false;
+          console.log('i musttt logged innn');
+            throw new Error('Error caused by a network error.')
+
         })
 
         
 
-        return {mainDataCheck:articlesByCateg,count:requiredCategory[0].count}
+        mainData = {mainDataCheck:articlesByCateg,count:requiredCategory[0].count}
 
     }else{
-        return {mainDataCheck:404}
+      mainData = {mainDataCheck:404}  
+
     }
 
-
     }).catch(err=>{
-        console.log(err);
+      mainData = false;
+      throw new Error('This category does not exist');
     })
 
 
+  } catch (error) {
+    console.log(error);
+    message = error.message;
+    mainData = false;
+    
+  }
 
 
 
@@ -204,11 +226,7 @@ const db = [
 
 
 
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -217,7 +235,7 @@ return{
     props:{
 
         data : mainData,
-
+        message : message,
         navMenu : navMenu,
 
 // TEMPPPPPPPP

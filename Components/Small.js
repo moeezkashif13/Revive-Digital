@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import axiosClient from "../utils/axiosClient";
+import { splittingText } from "../utils/utils";
 
 export const BreadCrumbs = () => {
   return (
@@ -22,10 +23,12 @@ export const CommonHeading = ({
   special = "digital",
   main = "marketing agency servicing essex and london",
 }) => (
-  <div className=" text-primary">
-    <p className="mb-6 text-2xl font-semibold">
+  <div className=" text-primary capitalize">
+    <p className="mb-6 text-2xl font-semibold ">
       <span className="relative  text-black">
-        {special}
+
+      {special}
+  
 
         <span className="absolute left-0  top-7 lg:top-7 h-1 w-full rounded-xl bg-[#EC0044]"></span>
       </span>{" "}
@@ -220,10 +223,9 @@ export const DetailsSection = ({ reverse, noFindOut, secondType,details,index,al
 };
 
 
-export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
+export const CloneDetailsSection = ({ content,reverse, noFindOut, secondType }) => {
 
-  
-  
+  const splitText = splittingText(content.heading)
 
   return (
     <div
@@ -232,10 +234,10 @@ export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
       } `}
     >
       <div className={`w-full lg:w-1/2 px-mobilePadding lg:px-20 py-8 lg:py-16  ${secondType && "bg-[#FAFAFA]"} `}>
-        <CommonHeading  special="first" main="remaining words" />
+        <CommonHeading   special={splitText[0]} main={splitText[1]} />
 
-        <div className="space-y-5 text-[#777777]"  >
-          <p>
+        <div className="space-y-5 text-[#777777]" dangerouslySetInnerHTML={{__html:content.paragraph}} >
+          {/* <p>
             Revive are a full service digital marketing agency. We flourish when
             we look after your entire digital presence – from the rankings in
             Google, to the social media, the brand, the messages, and the
@@ -255,19 +257,22 @@ export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
             The services we offer are varied, but all tie together to form a
             digital arsenal, allowing you to grow your business and expand your
             brand online.
-          </p>
+          </p> */}
 
-          {!noFindOut && (
-            <div>
-              <Link
+         
+        </div>
+
+        {!noFindOut && (
+            <div className="mt-6">
+              <Link target={"_blank"}
                 className="rounded-2xl border border-primary px-6 py-1.5 text-primary underline"
-                href="/"
+                href={content.findOutButton}
               >
                 Find out more
               </Link>
             </div>
           )}
-        </div>
+
       </div>
 
       <div className={`w-full lg:w-1/2 h-[400px] lg:h-auto  ` }  >
@@ -276,7 +281,7 @@ export const CloneDetailsSection = ({ reverse, noFindOut, secondType }) => {
 
 
         
-        <img  className="w-full max-w-full h-full object-cover" src={'https://revive.digital/wp-content/uploads/2017/06/web.jpg'} alt="" />
+        <img  className="w-full max-w-full h-full object-cover" src={content.image.source_url} alt="" />
 
 
 

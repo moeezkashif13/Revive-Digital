@@ -9,6 +9,7 @@ import HeaderComp from "../../../../Components/Header";
 import { BreadCrumbs, CommonHeading, DetailsSection } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 
 
 const mainArr = [];
@@ -17,7 +18,8 @@ const mainArr = [];
 
 export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields,navMenu}){
 
-
+  
+  
   if(allMainServices.length==0){
     return <CustomError type="service" />
   }
@@ -25,6 +27,8 @@ export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,
   
 
     const router = useRouter();
+
+    console.log(router);
 
     const breadCrumbsData = breadcrumbs.map((c) => {
         return {
@@ -43,7 +47,7 @@ return (
 
             <div>
 
-<HeaderComp navMenu={navMenu} special="website" main="design" /> 
+<HeaderComp navMenu={navMenu} special={router.query.category} main="services" /> 
 
 
 {/* <BreadCrumbs/> */}
@@ -57,7 +61,7 @@ return (
 <div className="px-mobilePadding md:px-tabletPadding lg:px-desktopPadding py-10  bg-[#FAFAFA]">
 
 
-<CommonHeading special="website" main="design services" />
+<CommonHeading special={router.query.category} main=" services" />
 
 
 
@@ -65,11 +69,19 @@ return (
 {getAssociatedServices.length>0?getAssociatedServices.map((eachService,index)=>{
 
 
+const relavantImage = getMedia.filter(eachURL=>{
+  return eachURL.id == eachService.featured_media
+})
+
+
+
+
+
     return <div key={index} className="w-[255px] bg-white">
 
             <div className="w-full h-[160px] ">
                 
-                {/* <img className="w-full max-w-full  h-full object-cover" src="https://revive.digital/wp-content/uploads/2017/07/e-commerce-2.jpg" alt="" /> */}
+        <img className={`w-full max-w-full  h-full   ${relavantImage.length>0?'object-cover':'object-contain'}  `} src={relavantImage.length>0?relavantImage[0].source_url:'/no-image-found.png'} alt="" />
 
 
             </div>
@@ -330,11 +342,7 @@ return finalArray;
 
 
 
-    const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+    const navMenu =  await fetchWholeNavbar();
 
 
 

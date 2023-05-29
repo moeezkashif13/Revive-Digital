@@ -3,11 +3,13 @@ import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CustomError from "../../../../Components/CustomError";
 import Footer from "../../../../Components/Footer";
 import HeaderComp from "../../../../Components/Header";
-import { BreadCrumbs, CommonHeading } from "../../../../Components/Small";
+import { BreadCrumbs, CommonHeading, Loader } from "../../../../Components/Small";
 import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 import { ManageContent } from "../../../../utils/utils";
 
 
@@ -15,6 +17,10 @@ import { ManageContent } from "../../../../utils/utils";
 
 export default function Article({gotArticle,breadcrumbs,navMenu}){
 
+
+  if(!gotArticle){
+    return <CustomError type="article" />
+  }
 
   
     const [blogCategories,setBlogCategories] = useState([])
@@ -148,16 +154,14 @@ const breadCrumbsData = breadcrumbs.map((c) => {
 
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
-{recentPosts?.map((eachRecentPost,index)=>{
+{recentPosts.length>0?recentPosts.map((eachRecentPost,index)=>{
 
 
 
 return <Link key={index} className="underline" href={`/blog/${eachRecentPost.slug}`}>{eachRecentPost?.title?.rendered}</Link>
 
 
-
-
-})}
+}):<Loader/>}
 
 
 
@@ -176,12 +180,12 @@ return <Link key={index} className="underline" href={`/blog/${eachRecentPost.slu
 <div className="pl-6 font-semibold flex flex-col gap-y-4 pt-4">
 
 
-{blogCategories?.map((eachCategory,index)=>{
+{blogCategories.length>0?blogCategories?.map((eachCategory,index)=>{
     return <Link key={index}  href={`/blog/category/${eachCategory.slug}`}><span className="underline">{eachCategory.name}</span> ({eachCategory.count}) </Link>
 
     
 
-})}
+}):<Loader/>}
 
 
 
@@ -222,65 +226,73 @@ return <Link key={index} className="underline" href={`/blog/${eachRecentPost.slu
 
 export const getServerSideProps = async(context)=>{
 
+  let gotArticle = false;
+  let data = {breadcrumbs:'',courseTitle:''};
 
-   const gotArticle =  await axiosClient.get(`/blog/?slug=${context.query.article}`).then(resp=>{
-
+  try {
     
-        delete resp.data[0]['_links']
+    const resp =  await axiosClient.get(`/blog/?slug=${context.query.article}`)
 
-        return resp.data[0]
+    resp.data[0]['_links']
+
+    gotArticle = resp.data[0]
+
+    const db = [
+      {
+        "slug": gotArticle.slug,
+        "courseTitle": "Learn Python: Python for Beginners",
+        "breadcrumbs": [
+          {
+            "text": "Home",
+            "url": "/"
+          },
+          {
+            "text": "Blog",
+            "url": "/blog"
+          },
+          {
+            "text": gotArticle.title.rendered,
+            "url": "/blog/branding"
+          },
+          // {
+          //   "text": "Python",
+          //   "url": "/course/python"
+          // }
+        ]
+      }
+    ]
+    
+    
+    const slug = gotArticle.slug;
+    // simulate a call to the backend server here to get the data
+    data = db.find((page) => page.slug === slug);
+    if (!data) {
+      return {
+        notFound: true,
+      };
+    }
+    
+    // TEMPPPPPPPP
+
+} catch (error) {
+      
+  console.log('errorrrr');
+
+  console.log('gotArticle');
+
+  gotArticle = false;
 
 
-}).catch(err=>{
-  console.log(err);
-})
+
+}
 
 
 
 // TEMPPPPPPPPPPPPPP
 
-const db = [
-  {
-    "slug": gotArticle.slug,
-    "courseTitle": "Learn Python: Python for Beginners",
-    "breadcrumbs": [
-      {
-        "text": "Home",
-        "url": "/"
-      },
-      {
-        "text": "Blog",
-        "url": "/blog"
-      },
-      {
-        "text": gotArticle.title.rendered,
-        "url": "/blog/branding"
-      },
-      // {
-      //   "text": "Python",
-      //   "url": "/course/python"
-      // }
-    ]
-  }
-]
 
 
-const slug = gotArticle.slug;
-// simulate a call to the backend server here to get the data
-const data = db.find((page) => page.slug === slug);
-if (!data) {
-  return {
-    notFound: true,
-  };
-}
-
-// TEMPPPPPPPP
-
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu =  await fetchWholeNavbar();
 
   
 
@@ -291,8 +303,14 @@ return {
     navMenu : navMenu,
 
     // TEMPPPPPPPP
+    
+
+
     breadcrumbs: data.breadcrumbs,
     courseTitle: data.courseTitle,
+    
+    
+
 // TEMPPPPPPPP
 
 

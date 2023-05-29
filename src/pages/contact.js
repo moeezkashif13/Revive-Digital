@@ -5,10 +5,10 @@ import HeaderComp from "../../Components/Header";
 
 
 import TempBread from "../../Components/Tempbread";
-import { menuFetchURL } from "../../utils/axiosClient";
+import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
+import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
 export default function Contact({navMenu}){
-
 
         // TEMPPPPPPPPPPPPPP
 
@@ -49,10 +49,6 @@ const breadCrumbsData = data.breadcrumbs.map((c) => {
       path: c.url,
     };
   })
-
-
-
-
 
 
 return(
@@ -205,16 +201,15 @@ Send
 
 export const getStaticProps = async()=>{
 
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu = await fetchWholeNavbar()
 
 
     return{
       props : {
-        navMenu : navMenu,
+        navMenu : navMenu
+        // navMenu : {navMenu,checkArr:checkArr},
+
+
       }
     }
 

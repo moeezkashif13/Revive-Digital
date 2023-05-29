@@ -7,6 +7,7 @@ import { BreadCrumbs, EachBlogCard, Loader } from "../../../Components/Small";
 import TempBread from "../../../Components/Tempbread";
 
 import axiosClient, { menuFetchURL } from "../../../utils/axiosClient";
+import fetchWholeNavbar from "../../../utils/fetchWholeNavbar";
 
 
 var pagesCount = [];
@@ -263,11 +264,7 @@ const db = [
 
 // TEMPPPPPPPP
 
-const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-return resp.data.items
-    
-    })
+const navMenu =  await fetchWholeNavbar();
 
 
     return {

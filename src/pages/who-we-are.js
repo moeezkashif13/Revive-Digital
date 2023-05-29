@@ -13,6 +13,7 @@ import {
 } from "../../Components/Small";
 import TempBread from "../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
+import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
 function isNumeric(str) {
   if (typeof str != "string") return false; // we only process strings!
@@ -255,11 +256,7 @@ export const getStaticProps = async () => {
 
 
 
-    const navMenu =  await axios.get(menuFetchURL).then(resp=>{
-  
-      return resp.data.items
-          
-  })
+    const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -275,7 +272,7 @@ export const getStaticProps = async () => {
 
       fetchMediaURL: fetchMediaURL,
     },
-    revalidate:60,
+    revalidate:10,
 
   };
 };
