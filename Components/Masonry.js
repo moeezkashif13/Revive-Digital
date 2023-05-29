@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 export default function MasonryComp({gotAllWork}){
 
     
-    const [columnsCount,setColumnsCount]  = useState(0);
+    // const [columnsCount,setColumnsCount]  = useState(0);
 
-    useEffect(()=>{
-
-
-        window.innerWidth>1000?setColumnsCount(4):setColumnsCount(1);
+    // useEffect(()=>{
 
 
-    },[])
+    //     window.innerWidth>1000?setColumnsCount(4):setColumnsCount(1);
+
+
+    // },[])
     
 
     
@@ -25,7 +25,7 @@ return (
     gap={20}
     defaultDirection={"end"}
     align={"justify"}
-    column={columnsCount}
+    column={4}
     columnSize={0}
     
     columnSizeRatio={0}
