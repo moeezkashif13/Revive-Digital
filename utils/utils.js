@@ -76,8 +76,6 @@ export const splittingText = (text) => {
 
     return getFields;
 
-    
-
 
   }
 
@@ -85,7 +83,7 @@ export const splittingText = (text) => {
 
 export const fetchDetailsSectionImages = async(mediaIDSarray)=>{
 
- const gotImages = await axiosClient.get(`/media?include=${[...mediaIDSarray]}`).then(allMedia=>{
+ const gotImages = await axiosClient.get(`/media?include=${[...mediaIDSarray]}&_fields=id,source_url`).then(allMedia=>{
 
     return allMedia.data
 

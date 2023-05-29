@@ -25,7 +25,7 @@ try {
 
     try {
 
-        const resp =  await axiosClient.get('/services-categories?order=desc')
+        const resp =  await axiosClient.get('/services-categories?order=desc&_fields=count,taxonomy,id,name,slug')
         const filterTruthy = resp.data.map(eachTax=>{
       
         if(eachTax.count==0){

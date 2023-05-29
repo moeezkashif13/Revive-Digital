@@ -59,7 +59,7 @@ export default function OurWork(props) {
     <div>
       {/* HEADERRRRR STARTTT */}
 
-      <HeaderComp navMenu={props.navMenu} text={splittedName} />
+      {/* <HeaderComp navMenu={props.navMenu} text={splittedName} /> */}
 
       {/* HEADERRRRR ENDDD */}
 
@@ -107,7 +107,7 @@ export const getStaticProps = async()=>{
 
   try {
     
-    const resp = await axiosClient.get('/ourworktype?order=desc');
+    const resp = await axiosClient.get('/ourworktype?order=desc&_fields=featured_media,title,excerpt');
 
     const removeFalsyValue = resp.data.filter(eachWork=>{
       return eachWork.featured_media!==0
@@ -137,7 +137,7 @@ const getAllWorksMediaIDS = gotAllWork.map((eachWork) => {
 
 try { 
 
-  const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}`  )
+  const fetchingMedia = await axiosClient.get(`/media?per_page=100&_fields=id,source_url&include=${[...getAllWorksMediaIDS]}`  )
 
   const main = getAllWorksMediaIDS.map((eachID) => {
 
@@ -172,7 +172,7 @@ try {
 
 
 
-const navMenu = await fetchWholeNavbar();
+// const navMenu = await fetchWholeNavbar();
 
 
 
@@ -181,7 +181,7 @@ const navMenu = await fetchWholeNavbar();
   return {
     props : {
 
-      navMenu : navMenu,
+      // navMenu : navMenu,
 
 globalError : globalError,
 gotAllWork : gotAllWork,

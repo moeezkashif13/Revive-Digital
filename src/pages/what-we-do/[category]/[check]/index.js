@@ -1,12 +1,8 @@
-
-import axios from "axios";
-import Head from "next/head";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import CustomError from "../../../../../Components/CustomError";
 import Footer from "../../../../../Components/Footer";
 import HeaderComp from "../../../../../Components/Header";
-import { BreadCrumbs, CommonHeading, DetailsSection, Loader } from "../../../../../Components/Small";
+import {CommonHeading, Loader } from "../../../../../Components/Small";
 import TempBread from "../../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../../../utils/fetchWholeNavbar";
@@ -26,7 +22,7 @@ const splittingText = (text) => {
 
 
 
-export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks,navMenu}){
+export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks}){
 
   console.log(gotMainService);
 
@@ -107,7 +103,7 @@ const secondSection = splittingText(secondSectionHeading);
 
 
 
-<HeaderComp navMenu={navMenu}  specialAppearanceFields={custom_fields} anotherAppearance={true}   />
+{/* <HeaderComp navMenu={navMenu}  specialAppearanceFields={custom_fields} anotherAppearance={true}   /> */}
 
 <TempBread items={breadCrumbsData} />
 
@@ -425,7 +421,7 @@ const splitIt = serviceName.split('-').join(' ')
   // TEMPPPPPPPP
   
 
-const gotMainService =  await axiosClient.get(`/eachservice?slug=${serviceName}`).then(resp=>{
+const gotMainService =  await axiosClient.get(`/eachservice?slug=${serviceName}&_fields=custom_fields`).then(resp=>{
     // console.log(resp.data,'resp.data resp.data resp.data');
   return resp.data;
 
@@ -502,7 +498,7 @@ let gotMediaLinks;
 
   if(getCompanyLogos.length>0){
 
- await axiosClient.get(`/media?include=${[...getCompanyLogos]}`).then(media=>{
+ await axiosClient.get(`/media?include=${[...getCompanyLogos]}&_fields=source_url`).then(media=>{
 
  
  gotMediaLinks=media.data
@@ -523,7 +519,7 @@ let gotMediaLinks;
 }
 
 
-const navMenu =  await fetchWholeNavbar()
+// const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -536,7 +532,7 @@ const navMenu =  await fetchWholeNavbar()
         gotMainService: gotMainService,
         gotMediaLinks: gotMediaLinks,
         
-        navMenu :navMenu,
+        // navMenu :navMenu,
 
 
 

@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import Footer from "../../../Components/Footer";
 import HeaderComp from "../../../Components/Header";
 import TempBread from "../../../Components/Tempbread";
-import { menuFetchURL } from "../../../utils/axiosClient";
+import axiosClient, { menuFetchURL } from "../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../utils/fetchWholeNavbar";
 
-export default function Careers({breadcrumbs,allCareers,navMenu}){
+export default function Careers({breadcrumbs,allCareers}){
 
 
   const router = useRouter();
@@ -65,7 +65,7 @@ return {
         <div >
 
 
-<HeaderComp navMenu={navMenu}  text="Careers" />
+{/* <HeaderComp navMenu={navMenu}  text="Careers" /> */}
 
 
 <TempBread items={breadCrumbsData} />
@@ -119,13 +119,13 @@ return {
 export const getStaticProps = async()=>{
 
 
-const allCareers =  await axios.get('https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2/careers').then(resp=>{
+const allCareers =  await axiosClient.get('/careers?_fields=slug,title').then(resp=>{
   return resp.data
 }).catch(err=>{
   return false;
 })
 
-const navMenu =  await fetchWholeNavbar()
+// const navMenu =  await fetchWholeNavbar()
 
 
 
@@ -134,7 +134,7 @@ const navMenu =  await fetchWholeNavbar()
     
     allCareers: allCareers,
 
-    navMenu : navMenu,
+    // navMenu : navMenu,
             
     
     

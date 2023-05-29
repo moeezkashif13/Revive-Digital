@@ -10,7 +10,7 @@ import TempBread from "../../../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../../../utils/axiosClient";
 import fetchWholeNavbar from "../../../../utils/fetchWholeNavbar";
 
-export default function ArticleCategory({message,data,categoryName,breadcrumbs,navMenu}){
+export default function ArticleCategory({message,data,categoryName,breadcrumbs}){
 
 if(!data){
   return   <CustomError message={message} type="category" />
@@ -39,7 +39,7 @@ const [allArticles,setAllArticles] = useState([])
 
 
 
-<HeaderComp navMenu={navMenu}  text={categoryName} />
+{/* <HeaderComp navMenu={navMenu}  text={categoryName} /> */}
 
 
 <TempBread items={breadCrumbsData} />
@@ -137,10 +137,7 @@ export const getServerSideProps = async(context)=>{
   try {
 
 
-    const url = `/blog-category?per_page=50`;
-    
-
-      await axiosClient.get(url).then(async resp=>{
+      await axiosClient.get(`/blog-category?per_page=50&_fields=title,excerpt,featured_media,id,slug,taxonomy,count`).then(async resp=>{
 
         const requiredCategory = resp.data.filter(eachCateg=>{
 
@@ -149,7 +146,7 @@ export const getServerSideProps = async(context)=>{
 
         if(requiredCategory.length>0){
 
-        const articlesByCateg = await axiosClient.get(`/blog?${requiredCategory[0].taxonomy}=${requiredCategory[0].id}`).then(responseObj=>{
+        const articlesByCateg = await axiosClient.get(`/blog?${requiredCategory[0].taxonomy}=${requiredCategory[0].id}&_fields=title,excerpt,featured_media,id,slug`).then(responseObj=>{
 
         return responseObj.data
 
@@ -226,9 +223,7 @@ const db = [
 
 
 
-const navMenu =  await fetchWholeNavbar()
-
-
+// const navMenu =  await fetchWholeNavbar()
 
 
 return{
@@ -236,7 +231,7 @@ return{
 
         data : mainData,
         message : message,
-        navMenu : navMenu,
+        // navMenu : navMenu,
 
 // TEMPPPPPPPP
       categoryName:categoryName,

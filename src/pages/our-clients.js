@@ -9,7 +9,7 @@ import TempBread from "../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
 import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
-export default function OurClients({ allURLS,navMenu }) {
+export default function OurClients({ allURLS }) {
   
   
   const router = useRouter()
@@ -62,7 +62,7 @@ export default function OurClients({ allURLS,navMenu }) {
 
   return (
     <div>
-      <Header navMenu={navMenu} text={splittedName} />
+      {/* <Header navMenu={navMenu} text={splittedName} /> */}
 
       <TempBread items={breadCrumbsData} />
 
@@ -96,14 +96,14 @@ export const getStaticProps = async()=>{
 
   try {
 
-   const resp = await axiosClient.get('/ourclienttype?per_page=100')
+   const resp = await axiosClient.get('/ourclienttype?per_page=100&_fields=featured_media')
 
     const getMediaURLS = resp.data.map(eachClient=>{
       return eachClient.featured_media
     });
 
 
-    const getSourceMedia = await axiosClient.get(`/media?include=${[...getMediaURLS]}&per_page=100`)
+    const getSourceMedia = await axiosClient.get(`/media?include=${[...getMediaURLS]}&per_page=100&_fields=source_url,alt_text`)
 
     allURLS = getSourceMedia.data;
 
@@ -118,13 +118,13 @@ export const getStaticProps = async()=>{
 
 
 
-  const navMenu =  await fetchWholeNavbar();
+  // const navMenu =  await fetchWholeNavbar();
     
   
   return {
     props : {
       allURLS: allURLS,
-      navMenu : navMenu,
+      // navMenu : navMenu,
     },
     revalidate:10,
 

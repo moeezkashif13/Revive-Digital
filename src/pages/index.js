@@ -17,20 +17,11 @@ import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
 
 
-export default function Home({gotAllWork,getWorkMediaURL,navMenu,fetchHomepageRelated,gotDetailsSectionImages}) {
+export default function Home({gotAllWork,getWorkMediaURL,fetchHomepageRelated,gotDetailsSectionImages}) {
 
   const gotAllWorkObj = {data:gotAllWork,mediaURL:getWorkMediaURL}
 
   
-  const heroSectArr = [
-
-    {special:'WE',main:'help you get more leads through Digital Marketing'},
-    {special:'WE',main:'help you get more leads through Digital Marketing'},
-    {special:'WE',main:'help you get more leads through Digital Marketing'},
-
-
-  ]
-
   const {custom_fields} = fetchHomepageRelated;
 
   const heroSectText = Object.keys(custom_fields).filter(eachField=>{
@@ -74,7 +65,7 @@ export default function Home({gotAllWork,getWorkMediaURL,navMenu,fetchHomepageRe
 
 {/* NAVBARR STARTT */}
 
-<Navbar navMenu={navMenu}  />
+{/* <Navbar navMenu={navMenu}  /> */}
 
 {/* NAVBARR ENDDD */}
 
@@ -289,7 +280,7 @@ export const getStaticProps = async () => {
 
     try {
     
-      const resp = await axiosClient.get('/ourworktype?order=desc');
+      const resp = await axiosClient.get('/ourworktype?order=desc&_fields=featured_media,source_url,title,excerpt');
   
       const removeFalsyValue = resp.data.filter(eachWork=>{
         return eachWork.featured_media!==0
@@ -319,7 +310,7 @@ export const getStaticProps = async () => {
   
   try { 
   
-    const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}`  )
+    const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}&_fields=id,source_url`  )
   
     const main = getAllWorksMediaIDS.map((eachID) => {
   
@@ -354,64 +345,8 @@ export const getStaticProps = async () => {
 
 
 
-
-
-
-  // const gotAllWork = await axiosClient
-  //   .get(
-  //     "/ourworktype?order=desc"
-  //   )
-  //   .then(async (resp) => {
-
-  //     const getAllWorksMediaIDS = resp.data.map((eachWork) => {
-  //       return eachWork.featured_media;
-  //     });
-
-      
-  //     const getWorkMediaURL = await axiosClient
-  //       .get(
-  //         `/media?include=${[...getAllWorksMediaIDS]}`
-  //       )
-  //       .then((gotMedia) => {
-
-          
-  //         const main = getAllWorksMediaIDS.map((eachID) => {
-
-  //           const check = gotMedia.data.filter((eachMedia) => {
-              
-  //             return eachMedia.id == eachID;
-  //           });
-
-
-
-  //           return check[0];
-  //         });
-
-
-  //         return main;
-  //       })
-  //       .catch((errorObj) => {
-  //         console.log(errorObj);
-  //       });
-
-  //     // console.log(
-  //     //   getWorkMediaURL,
-  //     //   "getWorkMediaURL getWorkMediaURL getWorkMediaURL"
-  //     // );
-
-
-  //     return {
-  //       data: resp.data,
-  //       mediaURL: getWorkMediaURL,
-  //     };
-  //   })
-  //   .catch((err) => {
-  //     console.log(err, "err err err");
-  //   });
-
-
     
-    const fetchHomepageRelated = await axiosClient.get('/homepage?slug=homepage-content').then(resp=>{
+    const fetchHomepageRelated = await axiosClient.get('/homepage?slug=homepage-content&_fields=custom_fields').then(resp=>{
       return resp.data[0]
     }).catch(err=>{
       console.log(err);
@@ -437,7 +372,7 @@ const gotDetailsSectionImages = await fetchDetailsSectionImages(detailsSectionIm
 // console.log(gotDetailsSectionImages,'gotDetailsSectionImages gotDetailsSectionImages gotDetailsSectionImages');
 
 
-const navMenu = await fetchWholeNavbar();
+// const navMenu = await fetchWholeNavbar();
 
 
 
@@ -448,13 +383,13 @@ const navMenu = await fetchWholeNavbar();
     props: {
       gotAllWork: gotAllWork,
       getWorkMediaURL : getWorkMediaURL,
-      navMenu : navMenu,
+      // navMenu : navMenu,
 
       fetchHomepageRelated : fetchHomepageRelated,
 
       gotDetailsSectionImages : gotDetailsSectionImages,
 
     },
-    revalidate:10,
+    revalidate:15,
   };
 };

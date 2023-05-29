@@ -16,7 +16,7 @@ const mainArr = [];
 
 
 
-export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields,navMenu}){
+export default function WhatWeDoEachCategory({getAssociatedServices,breadcrumbs,getMedia,allMainServices,metaFields}){
 
   
   
@@ -47,7 +47,7 @@ return (
 
             <div>
 
-<HeaderComp navMenu={navMenu} special={router.query.category} main="services" /> 
+{/* <HeaderComp navMenu={navMenu} special={router.query.category} main="services" />  */}
 
 
 {/* <BreadCrumbs/> */}
@@ -178,7 +178,7 @@ export const getServerSideProps = async (context)=>{
     const categoryName = context.query.category;
 
 
-    const getAssociatedServices = await axiosClient.get('/services-categories').then(async resp=>{
+    const getAssociatedServices = await axiosClient.get('/services-categories?_fields=slug,taxonomy,id,featured_media,mime_type,title,excerpt,id').then(async resp=>{
 
         const filterMainCateg = resp.data.filter(eachCateg=>{
           return eachCateg.slug == categoryName
@@ -252,7 +252,7 @@ const db = [
   
   // TEMPPPPPPPP
 
-    const getMedia = await axiosClient('/media?per_page=100').then(resp=>{
+    const getMedia = await axiosClient('/media?per_page=100&_fields=featured_media,mime_type,id,source_url').then(resp=>{
 
     return resp.data
 
@@ -265,7 +265,7 @@ const db = [
 
     let metaFields = {}
 
-    const allMainServices = await axiosClient.get('/mainservices').then(resp=>{
+    const allMainServices = await axiosClient.get('/mainservices?_fields=slug,custom_fields,mime_type').then(resp=>{
 
 
       const mainPage = resp.data.filter(eachPage=>{
@@ -342,7 +342,7 @@ return finalArray;
 
 
 
-    const navMenu =  await fetchWholeNavbar();
+    // const navMenu =  await fetchWholeNavbar();
 
 
 
@@ -352,7 +352,7 @@ return finalArray;
         props : {
 
           
-          navMenu : navMenu,
+          // navMenu : navMenu,
 
             getAssociatedServices:getAssociatedServices,
             getMedia: getMedia,
