@@ -274,9 +274,7 @@ export const getServerSideProps = async(context)=>{
 
 } catch (error) {
       
-  console.log('errorrrr');
-
-  console.log('gotArticle');
+  
 
   gotArticle = false;
 

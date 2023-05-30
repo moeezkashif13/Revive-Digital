@@ -166,8 +166,8 @@ try {
 } catch (error) {
 
   globalError = error.message;
-  console.log(error.message,'error.message error.message error.message');
-    
+
+  
 }
 
 

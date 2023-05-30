@@ -24,8 +24,7 @@ const splittingText = (text) => {
 
 export default function Check({errorCame,breadcrumbs,gotMainService,gotMediaLinks,navMenu}){
 
-  console.log(gotMainService);
-
+  
   
   if(errorCame){
     return <CustomError/>
@@ -482,8 +481,7 @@ if (!data) {
 
   const {custom_fields} = gotMainService[0];
 
-  console.log(custom_fields,'custom_fields custom_fields custom_fields');
-
+  
   const getCompanyLogos = Object.keys(custom_fields).filter(eachField=>{
     return eachField.includes('company-logo')
   }).map(eachLogo=>{
