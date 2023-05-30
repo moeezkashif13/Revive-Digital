@@ -125,7 +125,7 @@ export const getStaticProps = async()=>{
       allURLS: allURLS,
       navMenu : navMenu,
     },
-    revalidate:10,
+    revalidate:3,
 
   }
 

@@ -139,7 +139,7 @@ const navMenu =  await fetchWholeNavbar()
     
     
         },
-    revalidate:10,
+    revalidate:3,
 
     }
 

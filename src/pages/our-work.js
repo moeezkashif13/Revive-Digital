@@ -288,7 +288,7 @@ gotAllWork : gotAllWork,
 //       gotAllWork: gotAllWork,
 //       navMenu : navMenu
 //     },
-//     revalidate:10,
+//     revalidate:3,
 
 //   };
 // };

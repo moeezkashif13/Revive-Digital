@@ -108,7 +108,7 @@ const fetchMedia = await fetchDetailsSectionImages(extractMediaIDS);
             fetchMedia : fetchMedia,
             navMenu : navMenu,
         },
-    revalidate:10,
+    revalidate:3,
 
     }
 
@@ -119,7 +119,7 @@ const fetchMedia = await fetchDetailsSectionImages(extractMediaIDS);
             
             error : true,
         },
-        revalidate : 60,
+        revalidate : 3,
     }
     
 }

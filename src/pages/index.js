@@ -508,6 +508,6 @@ const navMenu = await fetchWholeNavbar();
       gotDetailsSectionImages : gotDetailsSectionImages,
 
     },
-    revalidate:15,
+    revalidate:3,
   };
 };

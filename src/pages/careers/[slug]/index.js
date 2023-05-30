@@ -237,7 +237,7 @@ export const getStaticProps = async({params })=>{
       moreJobRoles: moreJobRoles,
       navMenu : navMenu,
     },
-    revalidate:10,
+    revalidate:3,
 
   }
 

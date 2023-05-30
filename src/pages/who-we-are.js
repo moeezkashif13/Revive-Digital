@@ -272,7 +272,7 @@ export const getStaticProps = async () => {
 
       fetchMediaURL: fetchMediaURL,
     },
-    revalidate:10,
+    revalidate:3,
 
   };
 };
