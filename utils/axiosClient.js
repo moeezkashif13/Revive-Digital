@@ -3,15 +3,15 @@ import axios from 'axios';
 
 const axiosClient = axios.create();
 
-// const URL = process.env.NODE_ENV == 'development' ? 'http://localhost/revivedigitalbackend/wp-json/wp/v2' : 'https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2' 
+const URL = process.env.NODE_ENV == 'development' ? 'http://localhost/revivedigitalbackend/wp-json/wp/v2' : 'https://workingrevivedigital.000webhostapp.com/wp-json/wp/v2' 
 
-const URL = 'http://localhost/revivedigitalbackend/wp-json/wp/v2'
-
-
-export const menuFetchURL = 'http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3'
+// const URL = 'http://localhost/revivedigitalbackend/wp-json/wp/v2'
 
 
-// export const menuFetchURL = process.env.NODE_ENV == 'development' ? 'http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3': 'https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3'
+// export const menuFetchURL = 'http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3'
+
+
+export const menuFetchURL = process.env.NODE_ENV == 'development' ? 'http://localhost/revivedigitalbackend/wp-json/wp-api-menus/v2/menus/3': 'https://workingrevivedigital.000webhostapp.com/wp-json/wp-api-menus/v2/menus/3'
 
 
 
