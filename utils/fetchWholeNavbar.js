@@ -51,7 +51,7 @@ try {
       
       })
 
-
+      
       await Promise.all(checkingAvien).then(check=>{
 
 

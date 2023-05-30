@@ -11,7 +11,7 @@ const clone = require('rfdc')()
 
 
 const WhoWeAreLink = ({elem,show})=>{
-  console.log(elem);
+  
   return   <div  className={` ${show?'visible':'invisible'}   bg-[#ffffff] lg:bg-[#ffffffe6] flex justify-center absolute top-7 z-20 w-[250px] lg:w-[350px] px-6 py-4`} style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
@@ -47,7 +47,6 @@ const WhatWeDoLink = ({parentTitle,checkArr,show})=>{
   
     {checkArr.length>0?checkArr.map((eachChild,index)=>{
   
-  console.log(eachChild);
 
   if(eachChild){
 

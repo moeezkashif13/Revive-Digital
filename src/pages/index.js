@@ -17,10 +17,8 @@ import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
 
 
-export default function Home({fetchHomepageRelated,gotDetailsSectionImages}) {
+export default function Home({fetchHomepageRelated,gotDetailsSectionImages,navMenu}) {
 
-// const [gotAllWork,setGotAllWork] = useState([]);
-// const [getWorkMediaURL,setGetWorkMediaURL] = useState([]);
 
 const [gotAllWorkObj,setGotAllWorkObj] = useState({
   data:false,mediaURL:false
@@ -89,8 +87,7 @@ useEffect(()=>{
     return eachWork.featured_media;
   });
 
-  console.log(getAllWorksMediaIDS);
-    
+
     const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}&_fields=id,source_url`  )
   
     const main = getAllWorksMediaIDS.map((eachID) => {
@@ -140,7 +137,7 @@ fetchMedia()
   });
 
 
-  // console.log(custom_fields);
+  
 
   const detailsSectionHeadingsArray = extractFields(custom_fields,"homepage-details-section-heading");
   const detailsSectionParagraphsArray = extractFields(custom_fields,"homepage-details-section-paragraph");
@@ -184,7 +181,7 @@ fetchMedia()
 
 {/* NAVBARR STARTT */}
 
-{/* <Navbar navMenu={navMenu}  /> */}
+<Navbar navMenu={navMenu}  />
 
 {/* NAVBARR ENDDD */}
 
@@ -193,8 +190,6 @@ fetchMedia()
 
 <div className=" h-auto lg:h-full mt-8  lg:mt-0  z-20  relative lg:absolute lg:left-[50%] lg:-translate-x-[50%] bottom-0 w-full  lg:w-[65%] flex flex-col justify-center " > 
 
-
-{/* <h1 className="text-[4.2rem] font-semibold leading-[5.5rem] "> */}
 
 <Splide  options={{type:'loop',autoplay:true,pauseOnHover:true,interval:3000,arrows:false,pagination:false,}}  hasTrack={ false }>
   <SplideTrack >
@@ -276,7 +271,9 @@ const gotText = splittingText(custom_fields[elem][0])
 
 <MasonryComp  gotAllWork={gotAllWorkObj} />
 
-:<Loader/>}
+:<div className="flex justify-center">
+  <Loader/>
+  </div>}
 
 
 
@@ -493,7 +490,7 @@ const gotDetailsSectionImages = await fetchDetailsSectionImages(detailsSectionIm
 // console.log(gotDetailsSectionImages,'gotDetailsSectionImages gotDetailsSectionImages gotDetailsSectionImages');
 
 
-// const navMenu = await fetchWholeNavbar();
+const navMenu = await fetchWholeNavbar();
 
 
 
@@ -504,7 +501,7 @@ const gotDetailsSectionImages = await fetchDetailsSectionImages(detailsSectionIm
     props: {
       // gotAllWork: gotAllWork,
       // getWorkMediaURL : getWorkMediaURL,
-      // navMenu : navMenu,
+      navMenu : navMenu,
 
       fetchHomepageRelated : fetchHomepageRelated,
 
