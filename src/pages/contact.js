@@ -8,7 +8,7 @@ import TempBread from "../../Components/Tempbread";
 import axiosClient, { menuFetchURL } from "../../utils/axiosClient";
 import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
-export default function Contact({navMenu}){
+export default function Contact(){
 
         // TEMPPPPPPPPPPPPPP
 
@@ -57,7 +57,7 @@ return(
     <div>
 
 
-<HeaderComp navMenu={navMenu} text="Contact"  />
+{/* <HeaderComp navMenu={navMenu} text="Contact"  /> */}
 
 {/* <BreadCrumbs/> */}
 

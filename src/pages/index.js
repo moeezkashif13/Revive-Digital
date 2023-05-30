@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import MasonryComp from "../../Components/Masonry";
-import { CommonHeading, Quote } from "../../Components/Small";
+import { CommonHeading, Loader, Quote } from "../../Components/Small";
 
 
 import { Splide, SplideSlide,SplideTrack } from '@splidejs/react-splide';
@@ -17,9 +17,118 @@ import fetchWholeNavbar from "../../utils/fetchWholeNavbar";
 
 
 
-export default function Home({gotAllWork,getWorkMediaURL,fetchHomepageRelated,gotDetailsSectionImages}) {
+export default function Home({fetchHomepageRelated,gotDetailsSectionImages}) {
 
-  const gotAllWorkObj = {data:gotAllWork,mediaURL:getWorkMediaURL}
+// const [gotAllWork,setGotAllWork] = useState([]);
+// const [getWorkMediaURL,setGetWorkMediaURL] = useState([]);
+
+const [gotAllWorkObj,setGotAllWorkObj] = useState({
+  data:false,mediaURL:false
+})
+
+
+
+
+  useEffect(()=>{
+    
+    const fetchingOurWork = async()=>{
+
+      try {
+    
+
+        try {
+        
+          const resp = await axiosClient.get('/ourworktype?order=desc&_fields=featured_media,source_url,title,excerpt');
+      
+          const removeFalsyValue = resp.data.filter(eachWork=>{
+            return eachWork.featured_media!==0
+          });
+      
+          setGotAllWorkObj(oldVal=>{
+return{            ...oldVal,
+            data:removeFalsyValue,
+          }
+          })
+      
+          
+        } catch (error) {
+      
+      
+          // gotAllWork = {fetchingError:true,message : 'Error in fetching'}
+      
+          throw new Error('Error in fetching work')
+          
+        }    
+      } catch (error) {
+       
+        console.log(error);
+        
+      }
+
+    }
+
+    fetchingOurWork()
+
+
+  },[])
+
+
+useEffect(()=>{
+
+  const fetchMedia = async()=>{
+    
+  
+  
+  
+  try { 
+  
+    
+    
+  
+  const getAllWorksMediaIDS = gotAllWorkObj?.data?.map((eachWork) => {
+    return eachWork.featured_media;
+  });
+
+  console.log(getAllWorksMediaIDS);
+    
+    const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}&_fields=id,source_url`  )
+  
+    const main = getAllWorksMediaIDS.map((eachID) => {
+  
+                  const check = fetchingMedia.data.filter((eachMedia) => {
+                    
+                    return eachMedia.id == eachID;
+                  });
+      
+                  return check[0];
+      
+      
+                });
+      
+                setGotAllWorkObj(oldVal=>{
+                  return{            ...oldVal,
+                              mediaURL:main,
+                            }
+                            })
+
+                
+  } catch (error) {
+  
+  
+    // throw new Error('Error in fetching media')
+  
+    // getWorkMediaURL = {mediaFetchingError:true,message:'mediaaa fetchingg me errorrrr aagyaaa'}
+    
+  }
+
+}
+
+fetchMedia()
+
+
+},[gotAllWorkObj.data])
+
+  
 
   
 
@@ -39,6 +148,14 @@ export default function Home({gotAllWork,getWorkMediaURL,fetchHomepageRelated,go
   const detailsSectionImagesArray = extractFields(custom_fields,"homepage-details-section-image-video")
 
   
+
+
+
+
+
+
+
+
 
   
 
@@ -155,9 +272,11 @@ const gotText = splittingText(custom_fields[elem][0])
 </div>
 
 
+{gotAllWorkObj.mediaURL?
 
 <MasonryComp  gotAllWork={gotAllWorkObj} />
 
+:<Loader/>}
 
 
 
@@ -277,73 +396,73 @@ export const getStaticProps = async () => {
   let globalError = false;
 
 
-  try {
+  // try {
     
 
-    try {
+  //   try {
     
-      const resp = await axiosClient.get('/ourworktype?order=desc&_fields=featured_media,source_url,title,excerpt');
+  //     const resp = await axiosClient.get('/ourworktype?order=desc&_fields=featured_media,source_url,title,excerpt');
   
-      const removeFalsyValue = resp.data.filter(eachWork=>{
-        return eachWork.featured_media!==0
-      });
+  //     const removeFalsyValue = resp.data.filter(eachWork=>{
+  //       return eachWork.featured_media!==0
+  //     });
   
-      gotAllWork = removeFalsyValue;
+  //     gotAllWork = removeFalsyValue;
   
       
-    } catch (error) {
+  //   } catch (error) {
   
   
-      // gotAllWork = {fetchingError:true,message : 'Error in fetching'}
+  //     // gotAllWork = {fetchingError:true,message : 'Error in fetching'}
   
-      throw new Error('Error in fetching work')
+  //     throw new Error('Error in fetching work')
       
       
   
-    }
+  //   }
   
   
   
-  const getAllWorksMediaIDS = gotAllWork.map((eachWork) => {
-    return eachWork.featured_media;
-  });
+  // const getAllWorksMediaIDS = gotAllWork.map((eachWork) => {
+  //   return eachWork.featured_media;
+  // });
   
   
   
-  try { 
+  // try { 
   
-    const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}&_fields=id,source_url`  )
+  //   const fetchingMedia = await axiosClient.get(`/media?include=${[...getAllWorksMediaIDS]}&_fields=id,source_url`  )
   
-    const main = getAllWorksMediaIDS.map((eachID) => {
+  //   const main = getAllWorksMediaIDS.map((eachID) => {
   
-                  const check = fetchingMedia.data.filter((eachMedia) => {
+  //                 const check = fetchingMedia.data.filter((eachMedia) => {
                     
-                    return eachMedia.id == eachID;
-                  });
+  //                   return eachMedia.id == eachID;
+  //                 });
       
-                  return check[0];
+  //                 return check[0];
       
       
-                });
+  //               });
       
-    getWorkMediaURL = main;
+  //   getWorkMediaURL = main;
   
     
-  } catch (error) {
+  // } catch (error) {
   
   
-    throw new Error('Error in fetching media')
+  //   throw new Error('Error in fetching media')
   
-    // getWorkMediaURL = {mediaFetchingError:true,message:'mediaaa fetchingg me errorrrr aagyaaa'}
+  //   // getWorkMediaURL = {mediaFetchingError:true,message:'mediaaa fetchingg me errorrrr aagyaaa'}
     
-  }
+  // }
 
 
 
 
-  } catch (error) {
+  // } catch (error) {
     
-  }
+  // }
 
 
 
@@ -383,8 +502,8 @@ const gotDetailsSectionImages = await fetchDetailsSectionImages(detailsSectionIm
 
   return {
     props: {
-      gotAllWork: gotAllWork,
-      getWorkMediaURL : getWorkMediaURL,
+      // gotAllWork: gotAllWork,
+      // getWorkMediaURL : getWorkMediaURL,
       // navMenu : navMenu,
 
       fetchHomepageRelated : fetchHomepageRelated,

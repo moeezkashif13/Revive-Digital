@@ -11,8 +11,7 @@ try {
   
 
     try {
-    navMenu = await (await axios.get(menuFetchURL)).data.items;
-
+    navMenu = await (await axiosClient.get(`/pages?slug=contact,our-clients,our-work,who-we-are,what-we-do,blog,careers&_fields=title,slug`)).data;
 
     } catch (error) {
 
@@ -40,7 +39,7 @@ try {
       
       const checkingAvien = filterTruthy.map(eachElem=>{
       
-      return axiosClient.get(`/eachservice?${eachElem.taxonomy}=${eachElem.id}`).then(gotIt=>{
+      return axiosClient.get(`/eachservice?${eachElem.taxonomy}=${eachElem.id}&_fields=slug,title`).then(gotIt=>{
       
           return {
             [eachElem.name] :gotIt.data,

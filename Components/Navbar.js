@@ -4,18 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import {FaPhoneAlt} from 'react-icons/fa'
+import rfdc from "rfdc";
 import axiosClient from "../utils/axiosClient";
 
+const clone = require('rfdc')()
+
+
 const WhoWeAreLink = ({elem,show})=>{
+  console.log(elem);
   return   <div  className={` ${show?'visible':'invisible'}   bg-[#ffffff] lg:bg-[#ffffffe6] flex justify-center absolute top-7 z-20 w-[250px] lg:w-[350px] px-6 py-4`} style={{transition:'all 0.3s',left:'50%',transform:'translateX(-50%)'}}  >
 
   <div className="flex  justify-between">
   
    <Link href={`/what-we-do/`} className="flex flex-col gap-y-2.5">
   
-  
-  {elem?.children?.map((main,index)=>{
-    return <Link key={index} href={`/${main.object_slug}`} className="text-secondary font-medium text-[15px]">{main.title}</Link>
+
+  {elem?.map((main,index)=>{
+    return <Link key={index} href={`/${main.slug}`} className="text-secondary font-medium text-[15px]">{main.title.rendered}</Link>
   })}
   
   
@@ -42,6 +47,8 @@ const WhatWeDoLink = ({parentTitle,checkArr,show})=>{
   
     {checkArr.length>0?checkArr.map((eachChild,index)=>{
   
+  console.log(eachChild);
+
   if(eachChild){
 
     const checkavien = Object.keys(eachChild)
@@ -92,68 +99,20 @@ const WhatWeDoLink = ({parentTitle,checkArr,show})=>{
 
 
 
-export default function Navbar({navMenu,}){
+export default function Navbar({navMenu}){
 
-    // const [navMenu,setNavMenu] = useState([]);
+  const clonedNavMenu = navMenu.navMenu
 
-    // const [checkArr,setCheckArr] = useState([]);
+  const filter = clonedNavMenu.filter(eachPage=>{
+    return eachPage.slug !='blog' && eachPage.slug !='careers'
+  })
 
+const getWhoWeArePages = clonedNavMenu.filter(eachPage=>{
+  return eachPage.slug =='blog' || eachPage.slug =='careers'
 
-  //   useEffect(()=>{
-  
-  // // axios.get(menuFetchURL).then(resp=>{
-  
-  // // // console.log(resp.data.items);
-  
-  // //   setNavMenu(resp.data.items)
-  
-  // // })
+}).sort()
 
 
-  // const fetchInnerWhatWeDoTax = ()=>{
-
-  //   axiosClient.get('/services-categories?order=desc').then(resp=>{
-  //     // console.log(resp.data);
-
-
-  //     const gotARR = resp.data.map(eachTax=>{
-
-  //       if(eachTax.count==0){
-  //         return;
-  //       }
-
-
-  //       return  axiosClient.get(`/eachservice?${eachTax.taxonomy}=${eachTax.id}`).then(gotIt=>{
-
-
-  //         return {
-  //           [eachTax.name] :gotIt.data,
-  //           slug: eachTax.slug
-  //         }
-  //       })
-
-  //     });
-
-  //      Promise.all(gotARR).then(check=>{
-      
-  //       // setCheckArr(check)
-
-  //     })
-
-      
-  //   })
-
-
-  // }
-
-
-  // fetchInnerWhatWeDoTax()
-
-  
-  //   },[])
-
-
-    
     const [showWhoWeAreLink,setShowWhoWeAreLink] = useState(false);
 
     const [showWhatWeDo,setShowWhatWeDo] = useState(false);
@@ -177,57 +136,50 @@ return (
 <div className="flex flex-col w-full lg:w-auto items-center lg:items-start lg:flex-row gap-y-3 gap-x-5 z-40 ">
 
 
-{navMenu.navMenu?
+ {filter?
 
-navMenu.navMenu.map((elem,index)=>{
+filter.map((elem,index)=>{
+
 
 
   return <div key={index} className={` flex  w-full justify-center lg:w-auto lg:justify-start  relative `}>
+
   
   
-  
-  <Link href={`/${elem.object_slug}`} className={`text-lg  font-medium  `}>
+  <Link href={`/${elem.slug}`} className={`text-lg  font-medium  `}>
   
   <p  onMouseEnter={()=>{
   
-  if(elem.title == 'What we do'){
+
+  if(elem.title.rendered == 'What we do'){
     setShowWhatWeDo(true)
   }else{
     setShowWhatWeDo(false)
   }
   
-  if(elem.title == 'Who we are'){
+  if(elem.title.rendered == 'Who we are'){
     setShowWhoWeAreLink(true)
   }else{
     setShowWhoWeAreLink(false)
   }
   
   }}
-  >{elem.title}</p>
+  >{elem.title.rendered}</p>
   
   
-  {elem.title == 'Who we are'&&
-  <WhoWeAreLink show={showWhoWeAreLink} elem={elem} />
+   {elem.title.rendered == 'Who we are'&&
+  <WhoWeAreLink show={showWhoWeAreLink} elem={getWhoWeArePages} />
+}
+ 
   
-  }
-  
-  
-  {elem.title=='What we do'&&
+
+  {elem.title.rendered=='What we do'&&
   
   <WhatWeDoLink show={showWhatWeDo} parentTitle={elem.title}  checkArr={navMenu.checkArr} />
   
   }
+
   
-  
-  
-  {/*
-  
-  {elem.title=='What we do'&&
-  
-  <WhatWeDoLink parentTitle={elem.title}  checkArr={checkArr} />
-  
-  
-  } */}
   
   
   
@@ -238,7 +190,7 @@ navMenu.navMenu.map((elem,index)=>{
   
   
   </div>
-  })
+  }) 
   
 
 
@@ -246,7 +198,7 @@ navMenu.navMenu.map((elem,index)=>{
 :
 
 
-<div className="text-red-500 text-2xl -mt-2 font-bold " style={{textTransform:'none'}}>Error in fetching navbar. Please reload the page</div>}
+ <div className="text-red-500 text-2xl -mt-2 font-bold " style={{textTransform:'none'}}>Error in fetching navbar. Please reload the page</div>}  
 
 
 </div>
